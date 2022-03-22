@@ -1,0 +1,90 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    position: fixed;
+
+    font-family:verdana,helvetica,arial,sans-serif;
+    font-size:8px;
+}
+
+body {
+    display: grid;
+    grid-template-rows: 1fr;
+}
+
+#top-panel .easyui-panel {
+    height: 43px;
+    overflow: hidden;
+}
+
+#bottom-panel {
+    display: grid;
+    grid-template-columns: 500px 1fr;
+}
+
+#top-panel {
+
+}
+
+#main-panel {
+    /* display: grid;
+    grid-template-columns: 500px 1fr; */
+    height: 100%;
+}
+
+#left-panel {
+
+}
+
+#right-panel {
+
+}
+
+#notes-tab {
+    display: grid;
+    grid-template-columns: 150px 350px;
+}
+
+.tree-title {
+    font-size: 8px;
+}
+
+.datagrid-cell {
+    font-size: 8px;
+    word-break: break-all;
+}
+
+.EasyMDEContainer {
+    height: calc(100% - 49px);
+}
+
+.EasyMDEContainer .cm-s-easymde {
+    height: calc(100% - 49px) !important;
+}
+
+#search-left-panel {
+    display: grid;
+    grid-template-rows: 30px 1fr;
+}
+
+#search-left-panel-header {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+#images-left-panel {
+    display: grid;
+    grid-template-rows: 30px 1fr;
+}
+
+#images-left-panel-header {
+    display: grid;
+    grid-template-columns: 1fr 30px;
+}
+
+#todo-list-panel {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}

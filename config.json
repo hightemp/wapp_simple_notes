@@ -1,0 +1,9 @@
+{
+    "database": {
+        "schema": "sqlite",
+        "hostname": "",
+        "database": "",
+        "user": "",
+        "password": ""
+    }
+}
