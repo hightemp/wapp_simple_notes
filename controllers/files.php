@@ -18,6 +18,8 @@ if ($sMethod == 'upload_image') {
     $oImage->type = $_FILES['image']['type'];
     $oImage->filename = $oImage->timestamp.$aM[1];
 
+    R::store($oImage);
+
     $sFilePath = $sFIP."/".$oImage->filename;
     $sRelFilePath = $sIP."/".$oImage->filename;
     copy($_FILES['image']['tmp_name'], $sFilePath);

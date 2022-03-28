@@ -1,6 +1,8 @@
 <?php
 
-if ($sMethod == 'list_last_tables') {
+// $books = R::findAll( 'book' , ' ORDER BY title DESC LIMIT 10 ' );
+
+if ($sMethod == 'list_last_notes') {
     $aNotes = R::findAll(T_NOTES, "ORDER BY id DESC");
     $aResult = [];
 
@@ -11,7 +13,7 @@ if ($sMethod == 'list_last_tables') {
             'name' => $oNote->name,
             'description' => $oNote->description,
             'created_at' => $oNote->created_at,
-            'category_id' => $oNote->tcategories_id,
+            'category_id' => $oNote->tcategories->id,
             'category' => $oNote->tcategories->name
         ];
     }
@@ -19,7 +21,7 @@ if ($sMethod == 'list_last_tables') {
     die(json_encode(array_values($aResult)));
 }
 
-if ($sMethod == 'list_tables') {
+if ($sMethod == 'list_notes') {
     $aNotes = R::findAll(T_NOTES, "tcategories_id = ?", [$aRequest['category_id']]);
     $aResult = [];
 
@@ -30,26 +32,30 @@ if ($sMethod == 'list_tables') {
             'name' => $oNote->name,
             'description' => $oNote->description,
             'created_at' => $oNote->created_at,
-            'category_id' => $oNote->tcategories_id,
-            'category' => $oNote->tcategories->name
+            'category_id' => $oNote->tcategories->id,
+            'category' => $oNote->tcategories->name,
+            'tags' => R::tag($oNote)
         ];
     }
 
     die(json_encode(array_values($aResult)));
 }
 
-if ($sMethod == 'get_table') {
+if ($sMethod == 'get_note') {
     $oNote = R::findOne(T_NOTES, "id = ?", [$aRequest['id']]);
+    $oNote["category"] = $oNote->tcategories->name;
+    $oNote["category_id"] = $oNote["tcategories_id"];
     $oNote["content"] = "".file_get_contents("{$sFNP}/{$oNote->timestamp}.md");
+    $oNote["tags"] = R::tag($oNote);
     die(json_encode($oNote));
 }
 
-if ($sMethod == 'delete_table') {
+if ($sMethod == 'delete_note') {
     R::trashBatch(T_NOTES, [$aRequest['id']]);
-    die();
+    die(json_encode([]));
 }
 
-if ($sMethod == 'update_table_content') {
+if ($sMethod == 'update_note_content') {
     $oNote = R::findOne(T_NOTES, "id = ?", [$aRequest['id']]);
     $oNote->updated_at = date("Y-m-d H:i:s");
 
@@ -62,13 +68,20 @@ if ($sMethod == 'update_table_content') {
     die();
 }
 
-if ($sMethod == 'update_table') {
+if ($sMethod == 'update_note') {
     $oNote = R::findOne(T_NOTES, "id = ?", [$aRequest['id']]);
 
     $oNote->updated_at = date("Y-m-d H:i:s");
     $oNote->name = $aRequest['name'];
     $oNote->description = $aRequest['description'];
-    // $oNote->tcategories = R::findOne(T_CATEGORIES, "id = ?", $aRequest['category_id']);
+
+    if (isset($aRequest['category_id']) && !empty($aRequest['category_id'])) {
+        $oNote->tcategories = R::findOne(T_CATEGORIES, "id = ?", [$aRequest['category_id']]);
+    }
+
+    $aTags = explode(",", $aRequest['tags']);
+    $aTags = array_map(function ($aI) { return trim($aI); }, $aTags);
+    R::tag($oNote, $aTags);
 
     R::store($oNote);
 
@@ -78,7 +91,7 @@ if ($sMethod == 'update_table') {
     ]));
 }
 
-if ($sMethod == 'create_table') {    
+if ($sMethod == 'create_note') {    
     $oNote = R::dispense(T_NOTES);
 
     $oNote->created_at = date("Y-m-d H:i:s");
@@ -86,7 +99,10 @@ if ($sMethod == 'create_table') {
     $oNote->timestamp = time();
     $oNote->name = $aRequest['name'];
     $oNote->description = $aRequest['description'];
-    $oNote->tcategories = R::findOne(T_CATEGORIES, "id = ?", [$aRequest['category_id']]);
+
+    if (isset($aRequest['category_id']) && !empty($aRequest['category_id'])) {
+        $oNote->tcategories = R::findOne(T_CATEGORIES, "id = ?", [$aRequest['category_id']]);
+    }
 
     file_put_contents("{$sFNP}/{$oNote->timestamp}.md", "");
 

@@ -6,10 +6,12 @@ if ($sMethod == 'list_last_fav_notes') {
 
     foreach ($aFavNotes as $oFavNote) {
         $aResult[] = [
-            'id' => $oFavNote->{T_NOTES_OWN}->id,
-            'text' => $oFavNote->{T_NOTES_OWN}->name,
-            'category_id' => $oFavNote->{T_NOTES_OWN}->tcategories_id,
-            'category' => $oFavNote->{T_NOTES_OWN}->{T_CATEGORIES_OWN}->name
+            'id' => $oFavNote->id,
+            'note_id' => $oFavNote->tnotes->id,
+            'created_at' => $oFavNote->tnotes->created_at,
+            'text' => $oFavNote->tnotes->name,
+            'category_id' => $oFavNote->tnotes->tcategories_id,
+            'category' => $oFavNote->tnotes->tcategories->name
         ];
     }
 
@@ -18,26 +20,26 @@ if ($sMethod == 'list_last_fav_notes') {
 
 if ($sMethod == 'get_fav_note') {
     $oFavNote = R::findOne(T_FAVORIETES, "id = ?", [$aRequest['id']]);
-    $oNote = $oFavNote->{T_NOTES_OWN};
+    $oNote = $oFavNote->tnotes;
     $oNote["content"] = "".file_get_contents("{$sNP}/{$oNote->timestamp}.md");
     die(json_encode($oNote));
 }
 
-if ($sMethod == 'delete_note') {
+if ($sMethod == 'delete_fav_note') {
     R::trashBatch(T_FAVORIETES, [$aRequest['id']]);
-    die();
+    die(json_encode([]));
 }
 
-if ($sMethod == 'create_note') {    
+if ($sMethod == 'create_fav_note') {    
     $oFavNote = R::dispense(T_FAVORIETES);
 
     $oNote = R::findOne(T_NOTES, 'id = ?', [$aRequest['id']]);
-    $oFavNote->{T_NOTES_OWN} = $oNote;
+    $oFavNote->tnotes = $oNote;
 
     R::store($oFavNote);
 
     die(json_encode([
         "id" => $oFavNote->id, 
-        "name" => $oFavNote->name
+        "name" => $oFavNote->tnotes->name
     ]));
 }

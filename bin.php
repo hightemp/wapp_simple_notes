@@ -12,6 +12,171 @@ if ($argv[1] == "truncate_category") {
     die();
 }
 
+if ($argv[1] == "list_fields") {
+    $fields = R::inspect($argv[2]);
+    die(json_encode($fields));
+}
+
+if ($argv[1] == "tmp__create_scheme") {
+    R::nuke();
+
+    $oCategory = R::dispense(T_CATEGORIES);
+
+    $oCategory->name = 'Тестовая категория';
+    $oCategory->description = 'Тестовая категория';
+
+    $oCategory2 = R::dispense(T_CATEGORIES);
+    $oCategory2->name = 'Тестовая категория 2';
+    $oCategory2->description = 'Тестовая категория 2';
+    // R::store($oCategory2);
+
+    $oCategory->tcategories = $oCategory2;
+
+    R::store($oCategory);
+
+
+    $oNote = R::dispense(T_NOTES);
+
+    $oNote->created_at = date("Y-m-d H:i:s");
+    $oNote->updated_at = date("Y-m-d H:i:s");
+    $oNote->timestamp = time();
+    $oNote->name = 'Тестовая заметка';
+    $oNote->description = 'Тестовая заметка';
+
+    $oNote->tcategories = $oCategory;
+
+    R::store($oNote);
+
+
+    $oTag = R::dispense(T_TAGS);
+
+    $oTag->created_at = date("Y-m-d H:i:s");
+    $oTag->updated_at = date("Y-m-d H:i:s");
+    $oTag->timestamp = time();
+    $oTag->name = 'Тестовый тэг';
+
+    R::store($oTag);
+
+    $oTagToObjects = R::dispense(T_TAGS_TO_OBJECTS);
+
+    $oTagToObjects->ttags = $oTag;
+    $oTagToObjects->content_id = $oNote->id;
+    $oTagToObjects->content_type = 'tnotes';
+    $oTagToObjects->poly('contentType');
+
+    R::store($oTagToObjects);
+
+
+    $oTablesCategory = R::dispense(T_TABLES_CATEGORIES);
+
+    $oTablesCategory->name = 'Тестовая категория';
+    $oTablesCategory->description = 'Тестовая категория';
+
+    $oTablesCategory2 = R::dispense(T_TABLES_CATEGORIES);
+    $oTablesCategory2->name = 'Тестовая категория 2';
+    $oTablesCategory2->description = 'Тестовая категория 2';
+    // R::store($oTablesCategory2);
+
+    $oTablesCategory->ttablescategories = $oTablesCategory2;
+
+    R::store($oTablesCategory);
+
+
+    $oTable = R::dispense(T_TABLES);
+
+    $oTable->created_at = date("Y-m-d H:i:s");
+    $oTable->updated_at = date("Y-m-d H:i:s");
+    $oTable->timestamp = time();
+    $oTable->name = 'Тестовая таблица';
+    $oTable->description = 'Тестовая таблица';
+
+    $oTable->ttablescategories = $oTablesCategory;
+
+    R::store($oTable);
+
+
+    $oRandomNote = R::dispense(T_RANDOM_NOTES);
+
+    $oRandomNote->created_at = date("Y-m-d H:i:s");
+    $oRandomNote->updated_at = date("Y-m-d H:i:s");
+    $oRandomNote->timestamp = time();
+    $oRandomNote->text = 'Случайная заметка';
+
+    R::store($oRandomNote);
+
+
+    $oFavNote = R::dispense(T_FAVORIETES);
+
+    $oFavNote->tnotes = $oNote;
+
+    R::store($oFavNote);
+
+
+    $oLink = R::dispense(T_LINKS);
+
+    $oLink->created_at = date("Y-m-d H:i:s");
+    $oLink->updated_at = date("Y-m-d H:i:s");
+    $oLink->timestamp = time();
+
+    $oLink->name = 'test';
+    $oLink->url = 'test';
+
+    R::store($oLink);
+
+
+    $oTask = R::dispense(T_TASKS);
+
+    $oTask->created_at = date("Y-m-d H:i:s");
+    $oTask->updated_at = date("Y-m-d H:i:s");
+    $oTask->timestamp = time();
+    $oTask->text = 'Задача';
+    $oTask->is_ready = false;
+
+    R::store($oTask);
+
+
+    $oImage = R::dispense(T_IMAGES);
+
+    $oImage->created_at = date("Y-m-d H:i:s");
+    $oImage->updated_at = date("Y-m-d H:i:s");
+    $oImage->timestamp = time();
+    $oImage->name = 'test';
+    $oImage->type = 'image/png';
+    $oImage->filename = $oImage->timestamp.".png";
+
+    R::store($oImage);
+
+
+    $oFile = R::dispense(T_FILES);
+
+    $oFile->created_at = date("Y-m-d H:i:s");
+    $oFile->updated_at = date("Y-m-d H:i:s");
+    $oFile->timestamp = time();
+    $oFile->name = 'test';
+    $oFile->type = 'text';
+    $oFile->filename = $oImage->timestamp.".txt";
+
+    R::store($oFile);
+
+
+    R::trashBatch(T_NOTES, [$oNote->id]);
+    R::trashBatch(T_CATEGORIES, [$oCategory->id]);
+    R::trashBatch(T_CATEGORIES, [$oCategory2->id]);
+    R::trashBatch(T_TABLES, [$oTable->id]);
+    R::trashBatch(T_TABLES_CATEGORIES, [$oTablesCategory->id]);
+    R::trashBatch(T_TABLES_CATEGORIES, [$oTablesCategory2->id]);
+    R::trashBatch(T_RANDOM_NOTES, [$oRandomNote->id]);
+    R::trashBatch(T_FAVORIETES, [$oFavNote->id]);
+    R::trashBatch(T_LINKS, [$oLink->id]);
+    R::trashBatch(T_TASKS, [$oTask->id]);
+    R::trashBatch(T_IMAGES, [$oImage->id]);
+    R::trashBatch(T_FILES, [$oFile->id]);
+    R::trashBatch(T_TAGS, [$oTag->id]);
+    R::trashBatch(T_TAGS_TO_OBJECTS, [$oTagToObjects->id]);
+
+    die(json_encode([]));
+}
+
 function fnBuildRecursiveCategoriesTree(&$aResult, $aCategories) 
 {
     $aResult = [];
@@ -143,3 +308,22 @@ if ($argv[1] == "create_fav_note") {
 
     die(json_encode($oFavNote));
 }
+
+if ($argv[1] == "tmp__create_table_category") {
+    $oCategory = R::dispense(T_TABLES_CATEGORIES);
+
+    $oCategory->name = 'Тестовая категория';
+    $oCategory->description = 'Тестовая категория';
+    $oCategory->ttablescategories_id = NULL;
+    $oCategory->ttablescategories = NULL;
+
+    // if (isset($argv[2])) {
+    //     $oCategory->ttablescategories = R::findOne(T_TABLES_CATEGORIES, "id = ?", [$argv[2]]);
+    // }
+
+    R::store($oCategory);
+    R::trashBatch(T_TABLES_CATEGORIES, [$oCategory->id]);
+
+    die(json_encode([]));
+}
+

@@ -16,6 +16,7 @@ function fnBuildRecursiveCategoriesTree(&$aResult, $aCategories)
             'text' => $oCategory->name,
             'name' => $oCategory->name,
             'description' => $oCategory->name,
+            'category_id' => $oCategory->tcategories_id,
             'children' => $aTreeChildren,
             'notes_count' => $oCategory->countOwn(T_NOTES)
         ];
@@ -43,7 +44,7 @@ if ($sMethod == 'get_category') {
 
 if ($sMethod == 'delete_category') {
     R::trashBatch(T_CATEGORIES, [$aRequest['id']]);
-    die();
+    die(json_encode([]));
 }
 
 if ($sMethod == 'update_category') {
