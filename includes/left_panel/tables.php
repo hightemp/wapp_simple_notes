@@ -80,7 +80,7 @@
                             url: 'ajax.php?method=list_tags',
                             method: 'get',
                             value: '',
-                            valueField: 'id',
+                            valueField: 'text',
                             textField: 'text',
                             limitToList: false,
                             hasDownArrow: true,

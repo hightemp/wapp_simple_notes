@@ -20,6 +20,13 @@ if ($sMethod == 'list_objects_for_tags') {
     die(json_encode(array_values($aResult)));
 }
 
+if ($sMethod == 'create_tag') {
+    $oTag = R::dispense(T_TAGS);
+    $oTag->name = $aRequest['name'];
+    R::store($oTag);
+    die(json_encode($oTag));
+}
+
 if ($sMethod == 'update_tag') {
     $oTag = R::findOne(T_TAGS, "id = ?", [$aRequest['id']]);
     $oTag->name = $aRequest['name'];

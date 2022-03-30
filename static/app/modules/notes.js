@@ -44,6 +44,9 @@ export class Notes {
     static get oNoteCategoryIDComboTree() {
         return $('#note-dlg-category_id-combotree');
     }
+    static get oTagsTagBox() {
+        return $('#note-tags-box');
+    }
 
     static get oEditDialogSaveBtn() {
         return $('#note-dlg-save-btn');
@@ -79,15 +82,12 @@ export class Notes {
     static fnDialogFormLoad(oRows={}) {
         this.oCategoryIDComboTree.combotree('reload');
         this.oNoteCategoryIDComboTree.combotree('reload');
+        this.oTagsTagBox.tagbox('reload');
         this.oDialogForm.form('clear');
         this.oDialogForm.form('load', oRows);
     }
 
     static fnShowCreateWindow() {
-        // if (!this.oSelectedCategory || !this.oSelectedCategory.id) {
-        //     fnAlertMessage('Не выбрана категория');
-        //     return;
-        // }
         this.sURL = this.oURLs.create;
         var oData = {}
 
@@ -117,6 +117,9 @@ export class Notes {
     static fnSave() {
         this.oDialogForm.form('submit', {
             url: this.sURL,
+            queryParams: {
+                'tags_list': this.oTagsTagBox.tagbox('getValues').join(',')
+            },
             iframe: false,
             onSubmit: function(){
                 return $(this).form('validate');

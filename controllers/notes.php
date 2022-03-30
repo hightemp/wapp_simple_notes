@@ -14,7 +14,8 @@ if ($sMethod == 'list_last_notes') {
             'description' => $oNote->description,
             'created_at' => $oNote->created_at,
             'category_id' => $oNote->tcategories->id,
-            'category' => $oNote->tcategories->name
+            'category' => $oNote->tcategories->name,
+            'tags' => fnGetTabsAsStringList($aRequest['id'], T_NOTES)
         ];
     }
 
@@ -34,7 +35,7 @@ if ($sMethod == 'list_notes') {
             'created_at' => $oNote->created_at,
             'category_id' => $oNote->tcategories->id,
             'category' => $oNote->tcategories->name,
-            'tags' => R::tag($oNote)
+            'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES)
         ];
     }
 
@@ -46,7 +47,7 @@ if ($sMethod == 'get_note') {
     $oNote["category"] = $oNote->tcategories->name;
     $oNote["category_id"] = $oNote["tcategories_id"];
     $oNote["content"] = "".file_get_contents("{$sFNP}/{$oNote->timestamp}.md");
-    $oNote["tags"] = R::tag($oNote);
+    $oNote["tags"] = fnGetTabsAsStringList($aRequest['id'], T_NOTES);
     die(json_encode($oNote));
 }
 
@@ -79,9 +80,7 @@ if ($sMethod == 'update_note') {
         $oNote->tcategories = R::findOne(T_CATEGORIES, "id = ?", [$aRequest['category_id']]);
     }
 
-    $aTags = explode(",", $aRequest['tags']);
-    $aTags = array_map(function ($aI) { return trim($aI); }, $aTags);
-    R::tag($oNote, $aTags);
+    fnSetTags($aRequest['id'], T_NOTES, explode(",", $aRequest['tags_list']));
 
     R::store($oNote);
 
@@ -103,6 +102,8 @@ if ($sMethod == 'create_note') {
     if (isset($aRequest['category_id']) && !empty($aRequest['category_id'])) {
         $oNote->tcategories = R::findOne(T_CATEGORIES, "id = ?", [$aRequest['category_id']]);
     }
+
+    fnSetTags($oNote->id, T_NOTES, explode(",", $aRequest['tags_list']));
 
     file_put_contents("{$sFNP}/{$oNote->timestamp}.md", "");
 

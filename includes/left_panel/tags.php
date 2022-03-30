@@ -41,7 +41,7 @@
             <form id="tags-dlg-fm" method="post" novalidate style="margin:0;padding:5px">
                 <div style="margin-bottom:10px">
                     <label>Заголовок:</label>
-                    <input name="title" class="easyui-textbox" required="true" style="width:100%">
+                    <input name="name" class="easyui-textbox" required="true" style="width:100%">
                 </div>
             </form>
         </div>
@@ -68,7 +68,7 @@
                             url: 'ajax.php?method=list_tags',
                             method: 'get',
                             value: '',
-                            valueField: 'id',
+                            valueField: 'text',
                             textField: 'text',
                             limitToList: false,
                             hasDownArrow: true,

@@ -13,7 +13,7 @@ if ($sMethod == 'list_last_tables') {
             'created_at' => $oTable->created_at,
             'category_id' => $oTable->ttablescategories->id,
             'category' => $oTable->ttablescategories->name,
-            'tags' => R::tag($oTable)
+            'tags' => fnGetTabsAsStringList($oTable->id, T_TABLES)
         ];
     }
 
@@ -33,7 +33,7 @@ if ($sMethod == 'list_tables') {
             'created_at' => $oTable->created_at,
             'category_id' => $oTable->ttablescategories->id,
             'category' => $oTable->ttablescategories->name,
-            'tags' => R::tag($oTable)
+            'tags' => fnGetTabsAsStringList($oTable->id, T_TABLES)
         ];
     }
 
@@ -47,6 +47,7 @@ if ($sMethod == 'get_table') {
         file_put_contents($sFilePath, json_encode((Object) []));
     }
     $oTable["content"] = "".file_get_contents($sFilePath);
+    $oTable["tags"] = fnGetTabsAsStringList($aRequest['id'], T_TABLES);
     die(json_encode($oTable));
 }
 
@@ -69,16 +70,13 @@ if ($sMethod == 'update_table_content') {
 }
 
 if ($sMethod == 'update_table') {
-    var_export($_REQUEST);
-    die();
     $oTable = R::findOne(T_TABLES, "id = ?", [$aRequest['id']]);
 
     $oTable->updated_at = date("Y-m-d H:i:s");
     $oTable->name = $aRequest['name'];
     $oTable->description = $aRequest['description'];
-    // $oTable->ttablescategories = R::findOne(T_CATEGORIES, "id = ?", $aRequest['category_id']);
 
-    R::tag($oTable, explode(",", $aRequest['tags_list']));
+    fnSetTags($aRequest['id'], T_TABLES, explode(",", $aRequest['tags_list']));
 
     R::store($oTable);
 
@@ -100,7 +98,7 @@ if ($sMethod == 'create_table') {
 
     file_put_contents("{$sFTP}/{$oTable->timestamp}.json", "");
 
-    R::tag($oTable, explode(",", $aRequest['tags_list']));
+    fnSetTags($aRequest['id'], T_TABLES, explode(",", $aRequest['tags_list']));
 
     R::store($oTable);
 

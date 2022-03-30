@@ -92,7 +92,22 @@
                     </div>
                     <div style="margin-bottom:10px">
                         <label>Тэги:</label>
-                        <input name="tags" class="easyui-textbox" style="width:100%">
+                        <input 
+                            name="tags"
+                            id="note-tags-box"
+                            class="easyui-tagbox" 
+                            style="width:100%" 
+                            data-options="
+                                url: 'ajax.php?method=list_tags',
+                                method: 'get',
+                                value: '',
+                                valueField: 'text',
+                                textField: 'text',
+                                limitToList: false,
+                                hasDownArrow: true,
+                                prompt: 'Тэги'
+                            "
+                        >
                     </div>
                     <div style="margin-bottom:10px">
                         <label>Описание:</label>

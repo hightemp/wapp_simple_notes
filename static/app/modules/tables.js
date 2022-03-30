@@ -69,6 +69,7 @@ export class Tables {
     }
     static fnDialogFormLoad(oRows={}) {
         this.oCategoryIDComboTree.combotree('reload');
+        this.oTagsTagBox.tagbox('reload');
         this.oDialogForm.form('clear');
         this.oDialogForm.form('load', oRows);
     }
@@ -96,7 +97,7 @@ export class Tables {
         this.oDialogForm.form('submit', {
             url: this.sURL,
             queryParams: {
-                'tags_list': this.oTagsTagBox.combotree('getValues').join(',')
+                'tags_list': this.oTagsTagBox.tagbox('getValues').join(',')
             },
             iframe: false,
             onSubmit: function(){
