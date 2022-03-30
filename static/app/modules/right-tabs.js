@@ -80,9 +80,11 @@ export class RightTabs {
         document.body.addEventListener('paste', ((event) => {
             // console.log('paste');
             var iI = this.fnGetSelectedTabIndex();
-            if (this.oTabsTablesIDs[iI]) {
+            if (this.oTabsTablesIDs[iI] && document.activeElement==document.body) {
                 event.preventDefault();
 
+                oE.history.add(oE.getData());
+                
                 let paste = (event.clipboardData || window.clipboardData).getData('text');
                 // console.log(['paste', paste]);
 
@@ -90,6 +92,9 @@ export class RightTabs {
                 var oE = this.oSpreadsheets[this.oTabsTablesIDs[iI]].editor;
 
                 for (var iR in aLines) {
+                    if (!aLines[iR] && iR==aLines.length-1) {
+                        continue;
+                    }
                     var aCell = aLines[iR].split(/\t/);
                     for (var iC in aCell) {
                         oE.cellText(this.iSelectedRow*1 + iR*1, this.iSelectedColumn*1 + iC*1, aCell[iC]);
