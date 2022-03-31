@@ -9,6 +9,7 @@ export class Notes {
         update: tpl`ajax.php?method=update_note&id=${0}`,
         delete: 'ajax.php?method=delete_note',
         list: tpl`ajax.php?method=list_notes&category_id=${0}`,
+        list_tags: 'ajax.php?method=list_tags',
         get_note: 'ajax.php?method=get_note',
     }
     static oWindowTitles = {
@@ -21,8 +22,8 @@ export class Notes {
         notes_edit_click: "notes:edit_click",
         notes_save: "notes:save",
         notes_item_click: "notes:item_click",
-        fav_notes_add_note: "fav_notes:add_note",
-        fav_notes_remove_note: "fav_notes:remove_note",
+        fav_notes_click_add_note: "fav_notes:click_add_note",
+        fav_notes_click_remove_note: "fav_notes:click_remove_note",
     }
 
     static get oDialog() {
@@ -179,7 +180,7 @@ export class Notes {
                 'json'
             );
         }).bind(this))
-        $(document).on(this.oEvents.notes_create_new_click, ((oEvent, iID) => {
+        $(document).on(this.oEvents.notes_create_new_click, ((oEvent) => {
             this.fnShowCreateWindow();
         }).bind(this))
 
@@ -213,8 +214,27 @@ export class Notes {
         $(document).trigger(this.oEvents.notes_item_click, [ oRow ]);
     }
 
+    static fnFireEvent_FavAddItemClick(oRow) {
+        $(document).trigger(this.oEvents.fav_notes_click_add_note, [ oRow ]);
+    }
+
+    static fnFireEvent_FavRemoveItemClick(oRow) {
+        $(document).trigger(this.oEvents.fav_notes_click_remove_note, [ oRow ]);
+    }
+
     static fnInitComponent(iCategoryID)
     {
+        this.oTagsTagBox.tagbox({
+            url: this.oURLs.list_tags,
+            method: 'get',
+            value: [],
+            valueField: 'text',
+            textField: 'text',
+            limitToList: false,
+            hasDownArrow: true,
+            prompt: 'Тэги'
+        });
+
         this.fnComponent({
             url: this.oURLs.list(iCategoryID),
 
@@ -231,10 +251,10 @@ export class Notes {
                         top: oEvent.pageY,
                         onClick: ((item) => {
                             if (item.id == 'add_to_fav') {
-                                $(document).trigger(this.oEvents.fav_notes_add_note, [ oNode ]);
+                                this.fnFireEvent_FavAddItemClick(oNode);
                             }
                             if (item.id == 'remove_from_fav') {
-                                $(document).trigger(this.oEvents.fav_notes_remove_note, [ oNode ]);
+                                this.fnFireEvent_FavRemoveItemClick(oNode);
                             }
                             if (item.id == 'edit') {
                                 this.fnShowEditWindow(oNode);

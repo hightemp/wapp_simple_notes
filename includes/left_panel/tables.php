@@ -76,16 +76,6 @@
                         id="tables-tags-box"
                         class="easyui-tagbox" 
                         style="width:100%" 
-                        data-options="
-                            url: 'ajax.php?method=list_tags',
-                            method: 'get',
-                            value: '',
-                            valueField: 'text',
-                            textField: 'text',
-                            limitToList: false,
-                            hasDownArrow: true,
-                            prompt: 'Тэги'
-                        "
                     >
                 </div>
                 <div style="margin-bottom:10px">

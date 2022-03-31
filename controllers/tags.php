@@ -36,7 +36,7 @@ if ($sMethod == 'update_tag') {
 
 if ($sMethod == 'delete_tag') {
     R::trashBatch(T_TAGS, [$aRequest['id']]);
-    R::exec("DELETE ".T_TAGS_TO_OBJECTS." WHERE ttags_id='${$aRequest['id']}'");
+    R::exec("DELETE ? WHERE ttags_id='?'", [T_TAGS_TO_OBJECTS, $aRequest['id']]);
     die(json_encode([]));
 }
 

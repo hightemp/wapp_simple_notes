@@ -6,8 +6,8 @@
         style="padding:0px;display: grid;grid-template-rows: 1fr 1fr;"
         data-options="tools:'#todo-tt', fit:true"
     >
-        <ul id="todo-list" class="easyui-datagrid" data-options="fit:true"></ul>
-        <ul id="done-todo-list" class="easyui-datagrid" data-options="fit:true"></ul>
+        <table id="undone-todo-list" class="easyui-datagrid" data-options="fit:true"></table>
+        <table id="done-todo-list" class="easyui-datagrid" data-options="fit:true"></table>
     </div>
     <div id="todo-tt">
         <a href="javascript:void(0)" class="icon-add" id="todo-add-btn"></a>

@@ -7,6 +7,7 @@ export class Tags {
         create: 'ajax.php?method=create_tag',
         update: tpl`ajax.php?method=update_tag&id=${0}`,
         delete: 'ajax.php?method=delete_tag',
+        list_tags: 'ajax.php?method=list_tags',
         list: `ajax.php?method=list_tags`,
     }
     static oWindowTitles = {
@@ -36,6 +37,10 @@ export class Tags {
     }
     static get oContextMenu() {
         return $("#tags-mm");
+    }
+
+    static get oTagsTagBox() {
+        return $('#tags-items-tags-box');
     }
 
     static get oEditDialogSaveBtn() {
@@ -175,6 +180,17 @@ export class Tags {
 
     static fnInitComponent()
     {
+        this.oTagsTagBox.tagbox({
+            url: this.oURLs.list_tags,
+            method: 'get',
+            value: [],
+            valueField: 'text',
+            textField: 'text',
+            limitToList: false,
+            hasDownArrow: true,
+            prompt: 'Тэги'
+        });
+
         this.fnComponent({
             url: this.oURLs.list,
 

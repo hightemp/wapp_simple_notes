@@ -8,6 +8,7 @@ export class Tables {
         update: tpl`ajax.php?method=update_table&id=${0}`,
         delete: 'ajax.php?method=delete_table',
         list: tpl`ajax.php?method=list_tables&category_id=${0}`,
+        list_tags: 'ajax.php?method=list_tags',
     }
     static oWindowTitles = {
         create: 'Новая таблица',
@@ -35,6 +36,7 @@ export class Tables {
     static get oCategoryIDComboTree() {
         return $('#tables-dlg-category_id-combotree');
     }
+
     static get oTagsTagBox() {
         return $('#tables-tags-box');
     }
@@ -178,6 +180,17 @@ export class Tables {
 
     static fnInitComponent(iID)
     {
+        this.oTagsTagBox.tagbox({
+            url: this.oURLs.list_tags,
+            method: 'get',
+            value: [],
+            valueField: 'text',
+            textField: 'text',
+            limitToList: false,
+            hasDownArrow: true,
+            prompt: 'Тэги'
+        });
+
         this.fnComponent({
             url: this.oURLs.list(iID),
 

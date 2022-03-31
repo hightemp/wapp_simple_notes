@@ -10,7 +10,7 @@
     </div>
 
     <div id="fav-notes-tt">
-        <a href="javascript:void(0)" class="icon-add" id="fav-notes-add-btn"></a>
+        <!-- <a href="javascript:void(0)" class="icon-add" id="fav-notes-add-btn"></a> -->
         <a href="javascript:void(0)" class="icon-edit" id="fav-notes-edit-btn"></a>
         <a href="javascript:void(0)" class="icon-remove" id="fav-notes-remove-btn"></a>
         <a href="javascript:void(0)" class="icon-reload" id="fav-notes-reload-btn"></a>

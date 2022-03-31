@@ -18,9 +18,10 @@ export class FavNotes {
     static oEvents = {
         fav_notes_save: "fav_notes:save",
         fav_notes_item_click: "fav_notes:item_click",
-        notes_item_click: "notes:item_click",
+        fav_notes_click_add_note: "fav_notes:click_add_note",
         fav_notes_add_note: "fav_notes:add_note",
         fav_notes_remove_note: "fav_notes:remove_note",
+        notes_item_click: "notes:item_click",
         notes_create_new_click: "notes:create_new_click",
         notes_edit_click: "notes:edit_click",
         notes_save: "notes:save",
@@ -162,10 +163,10 @@ export class FavNotes {
             this.fnReload();
         }).bind(this))
 
-        $(document).on(this.oEvents.fav_notes_add_note, ((oEvent, oRow) => {
+        $(document).on(this.oEvents.fav_notes_click_add_note, ((oEvent, oRow) => {
             this.fnAddNote(oRow);
         }).bind(this))
-        $(document).on(this.oEvents.fav_notes_remove_note, ((oEvent, oRow) => {
+        $(document).on(this.oEvents.fav_notes_click_remove_note, ((oEvent, oRow) => {
             this.fnRemoveNote(oRow);
         }).bind(this))
 
@@ -204,7 +205,6 @@ export class FavNotes {
 
     static fnFireEvent_ItemClick(oRow) {
         $(document).trigger(this.oEvents.fav_notes_item_click, [ oRow ]);
-        // $(document).trigger(this.oEvents.notes_item_click, [oRow]);
     }
 
     static fnInitComponent()

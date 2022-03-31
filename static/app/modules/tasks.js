@@ -37,7 +37,7 @@ export class Tasks {
     }
 
     static get oComponentUndone() {
-        return $("#todo-list");
+        return $("#undone-todo-list");
     }
     static get oComponentDone() {
         return $("#done-todo-list");
@@ -67,14 +67,10 @@ export class Tasks {
     }
 
     static get fnComponentUndone() {
-        return this.oComponentUndone.datagrid.bind(this.oComponent);
+        return this.oComponentUndone.datagrid.bind(this.oComponentUndone);
     }
     static get fnComponentDone() {
-        return this.oComponentDone.datagrid.bind(this.oComponent);
-    }
-
-    static get oSelectedCategory() {
-        return CategoriesNotes.oSelected;
+        return this.oComponentDone.datagrid.bind(this.oComponentDone);
     }
 
     static fnShowDialog(sTitle) {
@@ -100,8 +96,41 @@ export class Tasks {
         }
     }
 
+    static fnCheckTask(row) {
+        $.post(
+            'ajax.php?method=check_task',
+            {id:row.id},
+            (function(result){
+                this.fnReload();
+            }).bind(this),
+            'json'
+        );
+    }
+    static fnUncheckTask(row) {
+        $.post(
+            'ajax.php?method=uncheck_task',
+            {id:row.id},
+            (function(result){
+                this.fnReload();
+            }).bind(this),
+            'json'
+        );
+    }
+    // static fnDeleteTask() {
+    //     var oRow = $('#todo-list').datagrid('getSelected');
+    //     fnDestroyTask(oRow);
+    // }
+
+    static fnGetSelectedUndone() {
+        return this.fnComponentUndone('getSelected');
+    }
+    static fnGetSelectedDone() {
+        return this.fnComponentDone('getSelected');
+    }
+
     static fnReload() {
-        this.fnComponent('reload');
+        this.fnComponentUndone('reload');
+        this.fnComponentDone('reload');
     }
 
     static fnSave() {
@@ -109,6 +138,7 @@ export class Tasks {
             url: this.sURL,
             iframe: false,
             onSubmit: () => {
+                return this.oDialogForm.form('validate');
                 return $(this).form('validate');
             },
             success: ((result) => {
@@ -144,7 +174,6 @@ export class Tasks {
     static fnBindEvents()
     {
         this.oEditDialogSaveBtn.click((() => {
-            console.log('test');
             this.fnSave();
         }).bind(this))
         this.oEditDialogCancelBtn.click((() => {
@@ -155,10 +184,10 @@ export class Tasks {
             this.fnShowCreateWindow();
         }).bind(this))
         this.oPanelEditButton.click((() => {
-            this.fnShowEditWindow(this.fnGetSelected());
+            this.fnShowEditWindow(this.fnGetSelectedUndone());
         }).bind(this))
         this.oPanelRemoveButton.click((() => {
-            this.fnDelete(this.fnGetSelected());
+            this.fnDelete(this.fnGetSelectedUndone());
         }).bind(this))
         this.oPanelReloadButton.click((() => {
             this.fnReload();
@@ -192,23 +221,22 @@ export class Tasks {
             ]],
 
             onRowContextMenu: (function(e, index, node) {
-                console.log(node);
                 e.preventDefault();
                 this.oContextMenu.menu('show', {
                     left: e.pageX,
                     top: e.pageY,
                     onClick: (item) => {
                         if (item.id == 'check') {
-                            fnCheckTask(node);
+                            this.fnCheckTask(node);
                         }
                         if (item.id == 'uncheck') {
-                            fnUncheckTask(node);
+                            this.fnUncheckTask(node);
                         }
                         if (item.id == 'edit') {
-                            fnEditTask(node);
+                            this.fnEditTask(node);
                         }
                         if (item.id == 'delete') {
-                            fnDestroyTask(node);
+                            this.fnDelete(node);
                         }
                     }
                 });
@@ -232,23 +260,22 @@ export class Tasks {
             ]],
 
             onRowContextMenu: (function(e, index, node) {
-                console.log(node);
                 e.preventDefault();
                 this.oContextMenu.menu('show', {
                     left: e.pageX,
                     top: e.pageY,
                     onClick: (item) => {
                         if (item.id == 'check') {
-                            fnCheckTask(node);
+                            this.fnCheckTask(node);
                         }
                         if (item.id == 'uncheck') {
-                            fnUncheckTask(node);
+                            this.fnUncheckTask(node);
                         }
                         if (item.id == 'edit') {
-                            fnEditTask(node);
+                            this.fnEditTask(node);
                         }
                         if (item.id == 'delete') {
-                            fnDestroyTask(node);
+                            this.fnDelete(node);
                         }
                     }
                 });

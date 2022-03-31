@@ -1,7 +1,5 @@
 <?php
 
-// $books = R::findAll( 'book' , ' ORDER BY title DESC LIMIT 10 ' );
-
 if ($sMethod == 'list_last_notes') {
     $aNotes = R::findAll(T_NOTES, "ORDER BY id DESC");
     $aResult = [];
@@ -13,9 +11,9 @@ if ($sMethod == 'list_last_notes') {
             'name' => $oNote->name,
             'description' => $oNote->description,
             'created_at' => $oNote->created_at,
-            'category_id' => $oNote->tcategories->id,
-            'category' => $oNote->tcategories->name,
-            'tags' => fnGetTabsAsStringList($aRequest['id'], T_NOTES)
+            'category_id' => $oNote->tcategories ? $oNote->tcategories->id : 0,
+            'category' => $oNote->tcategories ? $oNote->tcategories->name : "",
+            'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES)
         ];
     }
 
@@ -33,8 +31,8 @@ if ($sMethod == 'list_notes') {
             'name' => $oNote->name,
             'description' => $oNote->description,
             'created_at' => $oNote->created_at,
-            'category_id' => $oNote->tcategories->id,
-            'category' => $oNote->tcategories->name,
+            'category_id' => $oNote->tcategories ? $oNote->tcategories->id : 0,
+            'category' => $oNote->tcategories ? $oNote->tcategories->name : "",
             'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES)
         ];
     }

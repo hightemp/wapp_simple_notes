@@ -69,7 +69,7 @@ if ($sMethod == 'create_task') {
     ]));
 }
 
-if ($sMethod == 'check_task') {    
+if ($sMethod == 'check_task') {
     $oTask = R::findOne(T_TASKS, "id = ?", [$aRequest['id']]);
 
     $oTask->is_ready = 1;

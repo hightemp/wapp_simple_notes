@@ -46,7 +46,7 @@ if ($sMethod == 'get_table') {
     if (!is_file($sFilePath)) {
         file_put_contents($sFilePath, json_encode((Object) []));
     }
-    $oTable["content"] = "".file_get_contents($sFilePath);
+    $oTable["content"] = trim("".file_get_contents($sFilePath)) ?: "{}";
     $oTable["tags"] = fnGetTabsAsStringList($aRequest['id'], T_TABLES);
     die(json_encode($oTable));
 }
