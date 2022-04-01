@@ -2,16 +2,6 @@
 
 error_reporting(E_ERROR | E_PARSE);
 
-$sBA = "/static/app";
-$sB = "/static/app/jquery-easyui-1.10.2";
-$sNP = "/data/notes";
-$sFNP = __DIR__."/data/notes";
-$sTP = "/data/tables";
-$sFTP = __DIR__."/data/tables";
-$sFFP = __DIR__."/data/resources/files";
-$sIP = "/data/resources/images";
-$sFIP = __DIR__."/data/resources/images";
-
 class Config {
     public static $aOptions = [];
 
@@ -29,3 +19,14 @@ class Config {
 Config::fnLoad();
 
 $sBase = Config::$aOptions["base"];
+
+$sBA = $sBase."/static/app";
+$sB = $sBase."/static/app/jquery-easyui-1.10.2";
+
+$sNP = "/data/notes";
+$sFNP = __DIR__."/data/notes";
+$sTP = "/data/tables";
+$sFTP = __DIR__."/data/tables";
+$sFFP = __DIR__."/data/resources/files";
+$sIP = "/data/resources/images";
+$sFIP = __DIR__."/data/resources/images";

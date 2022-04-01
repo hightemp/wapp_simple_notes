@@ -9,11 +9,7 @@ include_once("./database.php");
     <meta charset="UTF-8">
     <title></title>
 
-    <?php if ($sBase) :?>
-    <base href="<?php echo $sBase ?>">
-    <?php endif ?>
-
-    <link rel="shortcut icon" href="/static/app/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="<?php echo $sBase ?>/static/app/favicon.png" type="image/png">
 
     <link rel="stylesheet" type="text/css" href="<?php echo $sB ?>/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="<?php echo $sB ?>/themes/icon.css">
