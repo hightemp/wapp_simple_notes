@@ -7,7 +7,7 @@ include_once("rb.php");
 
 use RedBeanPHP\Logger as Logger;
 
-Config::fnLoad();
+// Config::fnLoad();
 
 define('T_CATEGORIES', 'tcategories');
 define('T_NOTES', 'tnotes');

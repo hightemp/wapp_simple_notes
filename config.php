@@ -27,3 +27,5 @@ class Config {
 }
 
 Config::fnLoad();
+
+$sBase = Config::$aOptions["base"];
