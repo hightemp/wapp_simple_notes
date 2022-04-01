@@ -9,6 +9,7 @@ export class Tags {
         delete: 'ajax.php?method=delete_tag',
         list_tags: 'ajax.php?method=list_tags',
         list: `ajax.php?method=list_tags`,
+        list_tag_items: tpl`ajax.php?method=list_objects_for_tags&id=${0}`,
     }
     static oWindowTitles = {
         create: 'Новая заметка',
@@ -19,11 +20,16 @@ export class Tags {
         tags_item_click: "tags:item_click",
         categories_select: "categories:select",
         notes_create_new_click: "notes:create_new_click",
-        notes_edit_click: "notes:edit_click",
         notes_save: "notes:save",
         notes_item_click: "notes:item_click",
         fav_notes_add_note: "fav_notes:add_note",
         fav_notes_remove_note: "fav_notes:remove_note",
+
+        notes_edit_click: "notes:edit_click",
+        tables_edit_click: "tables:edit_click",
+        
+        notes_item_click: "notes:item_click",
+        tables_item_click: "tables:item_click",
     }
 
     static get oDialog() {
@@ -34,6 +40,9 @@ export class Tags {
     }
     static get oComponent() {
         return $("#tags-list");
+    }
+    static get oComponentItemsList() {
+        return $("#tags-items-list");
     }
     static get oContextMenu() {
         return $("#tags-mm");
@@ -63,8 +72,26 @@ export class Tags {
         return $('#tags-reload-btn');
     }
 
+    static get oPanelItemsAddButton() {
+        return $('#tags-items-add-btn');
+    }
+    static get oPanelItemsEditButton() {
+        return $('#tags-items-edit-btn');
+    }
+    static get oPanelItemsRemoveButton() {
+        return $('#tags-items-remove-btn');
+    }
+    static get oPanelItemsReloadButton() {
+        return $('#tags-items-reload-btn');
+    }
+
+
     static get fnComponent() {
         return this.oComponent.datalist.bind(this.oComponent);
+    }
+
+    static get fnComponentItemsList() {
+        return this.oComponent.datalist.bind(this.oComponentItemsList);
     }
 
     static fnShowDialog(sTitle) {
@@ -100,6 +127,10 @@ export class Tags {
 
     static fnReload() {
         this.fnComponent('reload');
+    }
+
+    static fnReloadItemsList() {
+        this.fnComponentItemsList('reload');
     }
 
     static fnSave() {
@@ -149,6 +180,16 @@ export class Tags {
 
     static fnBindEvents()
     {
+        $(document).on(this.oEvents.tags_item_click, ((oEvent, iID) => {
+            this.oComponentItemsList.datalist({
+                url: this.oURLs.list_tag_items(iID),
+
+                onClickRow: ((index, oRow) => {
+                    this.fnFireEvent_TagItemClick(oRow);
+                }).bind(this),
+            })
+        }).bind(this))
+
         this.oEditDialogSaveBtn.click((() => {
             this.fnSave();
         }).bind(this))
@@ -168,6 +209,20 @@ export class Tags {
         this.oPanelReloadButton.click((() => {
             this.fnReload();
         }).bind(this))
+
+        this.oPanelItemsAddButton.click((() => {
+            
+        }).bind(this))
+        this.oPanelItemsEditButton.click((() => {
+            this.fnFireEvent_ItemEditClick(this.fnGetSelected());
+        }).bind(this))
+        this.oPanelItemsRemoveButton.click((() => {
+            
+        }).bind(this))
+        this.oPanelItemsReloadButton.click((() => {
+            this.fnReloadItemsList();
+        }).bind(this))
+
     }
 
     static fnFireEvent_Save() {
@@ -175,7 +230,25 @@ export class Tags {
     }
 
     static fnFireEvent_ItemClick(oRow) {
-        $(document).trigger(this.oEvents.tags_item_click, [ oRow ]);
+        $(document).trigger(this.oEvents.tags_item_click, [ oRow.id ]);
+    }
+
+    static fnFireEvent_ItemEditClick(oRow) {
+        if (oRow.content_type == 'tnotes') {
+            $(document).trigger(this.oEvents.notes_edit_click, [ oRow.content_id ]);
+        }
+        if (oRow.content_type == 'ttables') {
+            $(document).trigger(this.oEvents.tables_edit_click, [ oRow.content_id ]);
+        }
+    }
+
+    static fnFireEvent_TagItemClick(oRow) {
+        if (oRow.content_type == 'tnotes') {
+            $(document).trigger(this.oEvents.notes_item_click, [ oRow.content_id ]);
+        }
+        if (oRow.content_type == 'ttables') {
+            $(document).trigger(this.oEvents.tables_item_click, [ oRow.content_id ]);
+        }
     }
 
     static fnInitComponent()

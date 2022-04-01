@@ -40,7 +40,7 @@ export function fnCreateSpeadsheet(sID)
             ],
         },
         view: {
-            height: () => (document.documentElement.clientHeight - 60),
+            height: () => oEl[0].clientHeight,
             width: () => oEl[0].clientWidth,
         },
         row: {

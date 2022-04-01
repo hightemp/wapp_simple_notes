@@ -18,6 +18,7 @@ export class Tables {
         tables_save: "tables:save",
         tables_item_click: "tables:item_click",
         tables_category_select: 'tables_category:select',
+        tables_edit_click: "tables:edit_click",
     }
 
     static get oDialog() {
@@ -149,6 +150,17 @@ export class Tables {
             this.fnInitComponent(oItem.id);
         }).bind(this))
 
+        $(document).on(this.oEvents.tables_edit_click, ((oEvent, iID) => {
+            $.post(
+                this.oURLs.get_note,
+                { id: iID },
+                ((oR) => {
+                    this.fnShowEditWindow(oR);
+                }).bind(this),
+                'json'
+            );
+        }).bind(this))
+
         this.oEditDialogSaveBtn.click((() => {
             this.fnSave();
         }).bind(this))
@@ -175,7 +187,7 @@ export class Tables {
     }
 
     static fnFireEvent_ItemClick(oRow) {
-        $(document).trigger(this.oEvents.tables_item_click, [ oRow ]);
+        $(document).trigger(this.oEvents.tables_item_click, [ oRow.id ]);
     }
 
     static fnInitComponent(iID)

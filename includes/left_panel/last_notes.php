@@ -14,4 +14,15 @@
         <a href="javascript:void(0)" class="icon-remove" id="last-notes-remove-btn"></a>
         <a href="javascript:void(0)" class="icon-reload" id="last-notes-reload-btn"></a>
     </div>
+
+    <!-- ######## КОМПОНЕНТЫ ######## -->
+    <div style="position: fixed;">
+        <!-- Меню - Заметки -->
+        <div id="last-note-mm" class="easyui-menu" style="width:auto;">
+            <!-- <div data-options="id:'add_to_fav'">В избранное</div>
+            <div data-options="id:'remove_from_fav'">Убрать из избранного</div> -->
+            <div data-options="id:'edit'">Радактировать</div>
+            <div data-options="id:'delete'">Удалить</div>
+        </div>
+    </div>
 </div>

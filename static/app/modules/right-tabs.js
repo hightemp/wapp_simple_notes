@@ -32,6 +32,10 @@ export class RightTabs {
         update_table_content: `ajax.php?method=update_table_content`,
     }
 
+    static oSelectors = {
+        tabs_title: tpl`.tabs .tabs-title[data-index='${0}']`
+    }
+
     static get oComponent() {
         return $("#notes-tt");
     }
@@ -50,16 +54,16 @@ export class RightTabs {
 
     static fnBindEvents()
     {
-        $(document).on(this.oEvents.notes_item_click, ((oEvent, oRow) => {
-            this.fnActionOpenNote(oRow.id);
+        $(document).on(this.oEvents.notes_item_click, ((oEvent, iID) => {
+            this.fnActionOpenNote(iID);
         }).bind(this));
 
-        $(document).on(this.oEvents.fav_notes_item_click, ((oEvent, oRow) => {
-            this.fnActionOpenNote(oRow.note_id);
+        $(document).on(this.oEvents.fav_notes_item_click, ((oEvent, iID) => {
+            this.fnActionOpenNote(iID);
         }).bind(this));
 
-        $(document).on(this.oEvents.tables_item_click, ((oEvent, oRow) => {
-            this.fnActionOpenTable(oRow.id);
+        $(document).on(this.oEvents.tables_item_click, ((oEvent, iID) => {
+            this.fnActionOpenTable(iID);
         }).bind(this));
 
         $(document).on('keydown', (oEvent => {
@@ -83,13 +87,14 @@ export class RightTabs {
             if (this.oTabsTablesIDs[iI] && document.activeElement==document.body) {
                 event.preventDefault();
 
-                oE.history.add(oE.getData());
-                
                 let paste = (event.clipboardData || window.clipboardData).getData('text');
-                // console.log(['paste', paste]);
+
+                var oE = this.oSpreadsheets[this.oTabsTablesIDs[iI]].editor;
+
+                if (oE.history)
+                    oE.history.add(oE.getData());
 
                 var aLines = paste.split(/\n/);
-                var oE = this.oSpreadsheets[this.oTabsTablesIDs[iI]].editor;
 
                 for (var iR in aLines) {
                     if (!aLines[iR] && iR==aLines.length-1) {
@@ -112,7 +117,8 @@ export class RightTabs {
     static fnInitComponent()
     {
         this.fnComponent({
-            fit:true
+            fit:true,
+            tabPosition: 'left',
         })
     }
 
@@ -137,33 +143,20 @@ export class RightTabs {
     }
 
     static fnGetTabTitle(iIndex) {
-        return $(`.tabs .tabs-title[data-index='${iIndex}']`).text();
+        return $(this.oSelectors.tabs_title(iIndex)).text();
     }
     static fnSetTabTitle(iIndex, sTitle) {
-        // var oTab = this.fnComponent('getTab', iIndex);
-        // var iID = this.oTabsTablesIDs[iIndex]
-        // console.log([iIndex, oTab, this.fnComponent]);
-
-        $(`.tabs .tabs-title[data-index='${iIndex}']`).text(sTitle);
-        
-        // this.fnComponent('update', {
-        //     tab: oTab,
-        //     options: {
-        //         title: sTitle,
-        //         content: `<div id="table-${iID}"></div>`,
-        //         closable: true,
-        //     }
-        // })
+        $(this.oSelectors.tabs_title(iIndex)).text(sTitle);
     }
 
     static fnAddTabTitleStar(iIndex) {
         var sTitle = this.fnGetTabTitle(iIndex);
-        sTitle = `${sTitle} *`;
+        sTitle = `*${sTitle}`;
         this.fnSetTabTitle(iIndex, sTitle);
     }
     static fnRemoveTabTitleStar(iIndex) {
         var sTitle = this.fnGetTabTitle(iIndex);
-        sTitle = sTitle.replace(/ \*$/, '');
+        sTitle = sTitle.replace(/^\*/, '');
         this.fnSetTabTitle(iIndex, sTitle);
     }
 
@@ -262,15 +255,13 @@ export class RightTabs {
             this.fnSelect(this.oTabsTablesIndexes[iID]);
             return;
         }
-        console.log('fnActionOpenTable');
         $.post(
             this.oURLs.get_table,
             { id: iID },
             ((oR) => {
-                console.log('fnAddTab');
                 this.fnAddTab({
                     title: oR.name,
-                    content: `<div id="table-${iID}"></div>`,
+                    content: `<div id="table-${iID}" class="table-tab-content"></div>`,
                     closable: true,
                 });
 

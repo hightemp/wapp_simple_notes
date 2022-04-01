@@ -204,7 +204,7 @@ export class FavNotes {
     }
 
     static fnFireEvent_ItemClick(oRow) {
-        $(document).trigger(this.oEvents.fav_notes_item_click, [ oRow ]);
+        $(document).trigger(this.oEvents.fav_notes_item_click, [ oRow.note_id ]);
     }
 
     static fnInitComponent()

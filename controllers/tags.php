@@ -16,7 +16,20 @@ if ($sMethod == 'list_tags') {
 }
 
 if ($sMethod == 'list_objects_for_tags') {
-    $aResult = R::findAll(T_TAGS_TO_OBJECTS, "ttags_id = ?", [$aRequest['id']]);
+    $aItems = R::findAll(T_TAGS_TO_OBJECTS, "ttags_id = ?", [$aRequest['id']]);
+    $aResult = [];
+
+    foreach ($aItems as $oItem) {
+        $oObject = $oItem->poly('contentType')->content;
+        $aResult[] = [
+            'id' => $oItem->id,
+            'content_id' => $oItem->content_id,
+            'content_type' => $oItem->content_type,
+            'text' => $oObject->name,
+            'name' => $oObject->name,
+        ];
+    }
+
     die(json_encode(array_values($aResult)));
 }
 

@@ -24,7 +24,7 @@ export class LastNotes {
         return $("#last-notes-list");
     }
     static get oContextMenu() {
-        return $("#note-mm");
+        return $("#last-note-mm");
     }
 
     static get oPanelAddButton() {
@@ -82,7 +82,7 @@ export class LastNotes {
     }
 
     static fnFireEvent_ItemClick(oRow) {
-        $(document).trigger(this.oEvents.notes_item_click, [ oRow ]);
+        $(document).trigger(this.oEvents.notes_item_click, [ oRow.id ]);
     }
 
     static fnFireEvent_ItemEditClick(oRow) {
@@ -105,28 +105,28 @@ export class LastNotes {
             ]],
             singleSelect: true,
 
-            // onClickRow: ((index, oRow) => {
-            //     this.fnFireEvent_ItemClick(oRow);
-            // }).bind(this),
+            onClickRow: ((index, oRow) => {
+                this.fnFireEvent_ItemClick(oRow);
+            }).bind(this),
 
-            // onRowContextMenu: ((oEvent, iIndex, oNode) => {
-            //     oEvent.preventDefault();
-            //     this.oContextMenu.menu(
-            //         'show', 
-            //         {
-            //             left: oEvent.pageX,
-            //             top: oEvent.pageY,
-            //             onClick: ((item) => {
-            //                 if (item.id == 'edit') {
-            //                     this.fnShowEditWindow(oNode);
-            //                 }
-            //                 if (item.id == 'delete') {
-            //                     this.fnDelete(oNode);
-            //                 }
-            //             }).bind(this)
-            //         }
-            //     );
-            // }).bind(this),
+            onRowContextMenu: ((oEvent, iIndex, oNode) => {
+                oEvent.preventDefault();
+                this.oContextMenu.menu(
+                    'show', 
+                    {
+                        left: oEvent.pageX,
+                        top: oEvent.pageY,
+                        onClick: ((item) => {
+                            if (item.id == 'edit') {
+                                this.fnFireEvent_ItemEditClick(oNode);
+                            }
+                            if (item.id == 'delete') {
+                                this.fnFireEvent_ItemDeleteClick(oNode);
+                            }
+                        }).bind(this)
+                    }
+                );
+            }).bind(this),
         })
     }
 

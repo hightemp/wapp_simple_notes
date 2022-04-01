@@ -211,7 +211,7 @@ export class Notes {
     }
 
     static fnFireEvent_ItemClick(oRow) {
-        $(document).trigger(this.oEvents.notes_item_click, [ oRow ]);
+        $(document).trigger(this.oEvents.notes_item_click, [ oRow.id ]);
     }
 
     static fnFireEvent_FavAddItemClick(oRow) {

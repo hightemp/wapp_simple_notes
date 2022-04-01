@@ -89,3 +89,16 @@ body {
     word-break: break-all;
     white-space: pre-wrap;
 }
+
+.table-tab-content {
+    height: 100%;
+}
+
+#notes-tt .tabs-inner {
+    height: 25px !important;
+    line-height: 20px !important;
+}
+
+#notes-tt .tabs-title {
+    font-size: 8px !important;
+}
