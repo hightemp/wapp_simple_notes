@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(E_ERROR | E_PARSE);
+
 $sBA = "/static/app";
 $sB = "/static/app/jquery-easyui-1.10.2";
 $sNP = "/data/notes";

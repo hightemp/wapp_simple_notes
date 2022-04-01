@@ -14,5 +14,5 @@
             <div id="delete-diagram-btn" href="#" data-options="iconCls:'icon-remove'">Удалить</div>
         </div>
     </div>
-    <ul id="images-list" class="easyui-datagrid" data-options="fit:true"></ul>
+    <table id="images-list" class="easyui-datagrid" data-options="fit:true"></table>
 </div>

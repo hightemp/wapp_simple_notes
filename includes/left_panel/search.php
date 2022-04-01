@@ -9,5 +9,5 @@
             />
         </div>
     </div>
-    <ul id="search-list" class="easyui-datagrid" data-options="fit:true"></ul>
+    <table id="search-list" class="easyui-datagrid" data-options="fit:true"></table>
 </div>

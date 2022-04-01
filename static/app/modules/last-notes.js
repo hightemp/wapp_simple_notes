@@ -100,8 +100,8 @@ export class LastNotes {
 
             fit: true,
             columns:[[
-                {field:'created_at',title:'Создано'},
-                {field:'text',title:'Название'},
+                {field:'created_at',title:'Создано',width:100},
+                {field:'text',title:'Название',width:400},
             ]],
             singleSelect: true,
 

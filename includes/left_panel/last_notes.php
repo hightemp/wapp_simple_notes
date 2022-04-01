@@ -6,7 +6,7 @@
         style="padding:0px;"
         data-options="tools:'#last-notes-tt', fit:true"
     >
-        <table class="easyui-datagrid" id="last-notes-list"></table>
+        <table class="easyui-datagrid" id="last-notes-list" data-options="fit:true"></table>
     </div>
     <div id="last-notes-tt">
         <!-- <a href="javascript:void(0)" class="icon-add" id="last-notes-add-btn"></a> -->

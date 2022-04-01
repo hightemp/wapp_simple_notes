@@ -8,6 +8,9 @@ include_once("./database.php");
 <head>
     <meta charset="UTF-8">
     <title></title>
+
+    <link rel="shortcut icon" href="/static/app/favicon.png" type="image/png">
+
     <link rel="stylesheet" type="text/css" href="<?php echo $sB ?>/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="<?php echo $sB ?>/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="<?php echo $sBA ?>/styles_index.css">

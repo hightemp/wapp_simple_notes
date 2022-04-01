@@ -203,13 +203,21 @@ export class FavNotes {
         $(document).trigger(this.oEvents.fav_notes_save);
     }
 
+    static fnFireEvent_ItemEditClick(oRow) {
+        $(document).trigger(this.oEvents.notes_edit_click, [ oRow.note_id ]);
+    }
+
+    static fnFireEvent_ItemDeleteClick(oRow) {
+        $(document).trigger(this.oEvents.notes_delete_click, [ oRow.id ]);
+    }
+
     static fnFireEvent_ItemClick(oRow) {
-        $(document).trigger(this.oEvents.fav_notes_item_click, [ oRow.note_id ]);
+        $(document).trigger(this.oEvents.notes_item_click, [ oRow.note_id ]);
     }
 
     static fnInitComponent()
     {
-        this.oComponent.datagrid({
+        this.fnComponent({
             url: this.oURLs.list,
 
             fit: true,
@@ -232,10 +240,10 @@ export class FavNotes {
                         top: oEvent.pageY,
                         onClick: ((item) => {
                             if (item.id == 'edit') {
-                                this.fnShowEditWindow(oNode);
+                                this.fnFireEvent_ItemEditClick(oRow);
                             }
                             if (item.id == 'delete') {
-                                this.fnDelete(oNode);
+                                this.fnFireEvent_ItemDeleteClick(oRow);
                             }
                         }).bind(this)
                     }
