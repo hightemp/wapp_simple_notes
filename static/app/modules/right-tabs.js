@@ -81,28 +81,49 @@ export class RightTabs {
             }
         }).bind(this));
 
-        document.body.addEventListener('paste', ((event) => {
-            // console.log('paste');
+        document.body.addEventListener('paste', (async (event) => {
             var iI = this.fnGetSelectedTabIndex();
             if (this.oTabsTablesIDs[iI] && document.activeElement==document.body) {
                 event.preventDefault();
 
-                let paste = (event.clipboardData || window.clipboardData).getData('text');
+                var items = await navigator.clipboard.read();
+                var sPaste = '';
+
+                for (var oI of items) {
+                    if (~oI.types.indexOf("text/html")) {
+                        const htmlBlob = await oI.getType("text/html");
+                        sPaste = sPaste + await (new Response(htmlBlob)).text();
+                    }
+                }
+
+                // console.log([items, sPaste]);
 
                 var oE = this.oSpreadsheets[this.oTabsTablesIDs[iI]].editor;
 
                 if (oE.history)
                     oE.history.add(oE.getData());
 
-                var aLines = paste.split(/\n/);
-
-                for (var iR in aLines) {
-                    if (!aLines[iR] && iR==aLines.length-1) {
-                        continue;
+                if (sPaste.match(/<table/)) {
+                    var oDiv = document.createElement('div');
+                    oDiv.innerHTML = sPaste;
+                    var aTr = oDiv.querySelectorAll('tr');
+                    for (var [iR, oTr] of Object.entries(aTr)) {
+                        var aTd = oTr.querySelectorAll('td');
+                        for (var [iC, oTd] of Object.entries(aTd)) {
+                            oE.cellText(iR, iC, oTd.innerText);
+                        }
                     }
-                    var aCell = aLines[iR].split(/\t/);
-                    for (var iC in aCell) {
-                        oE.cellText(this.iSelectedRow*1 + iR*1, this.iSelectedColumn*1 + iC*1, aCell[iC]);
+                } else {
+                    var aLines = sPaste.split(/\n/);
+
+                    for (var iR in aLines) {
+                        if (!aLines[iR] && iR==aLines.length-1) {
+                            continue;
+                        }
+                        var aCell = aLines[iR].split(/\t/);
+                        for (var iC in aCell) {
+                            oE.cellText(this.iSelectedRow*1 + iR*1, this.iSelectedColumn*1 + iC*1, aCell[iC]);
+                        }
                     }
                 }
                 oE.reRender();
