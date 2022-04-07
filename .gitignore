@@ -1,0 +1,4 @@
+/data
+/docker/nginx/logs/error.log
+/docker/nginx/logs/front.access.log
+/docker/nginx/logs/front.error.log

@@ -43,7 +43,7 @@ if ($sMethod == 'list_notes') {
 if ($sMethod == 'get_note') {
     $oNote = R::findOne(T_NOTES, "id = ?", [$aRequest['id']]);
     $oNote["category"] = $oNote->tcategories->name;
-    $oNote["category_id"] = $oNote["tcategories_id"];
+    $oNote["category_id"] = $oNote->tcategories_id;
     $oNote["content"] = "".file_get_contents("{$sFNP}/{$oNote->timestamp}.md");
     $oNote["tags"] = fnGetTabsAsStringList($aRequest['id'], T_NOTES);
     die(json_encode($oNote));

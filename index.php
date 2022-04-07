@@ -49,5 +49,6 @@ $(document).ready(() => {
     m.TablesCategories.fnPrepare();
     m.Tags.fnPrepare();
     m.Tasks.fnPrepare();
+    m.Files.fnPrepare();
 })
 </script>

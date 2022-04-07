@@ -10,7 +10,7 @@
             <?php include "left_panel/random_notes.php" ?>
             <?php include "left_panel/tasks.php" ?>
             <?php include "left_panel/search.php" ?>
-            <?php include "left_panel/images.php" ?>
+            <?php include "left_panel/files.php" ?>
         </div>
     </div>
     <div data-options="region:'center',title:'',iconCls:'icon-ok'">

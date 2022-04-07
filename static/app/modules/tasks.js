@@ -272,7 +272,7 @@ export class Tasks {
                             this.fnUncheckTask(node);
                         }
                         if (item.id == 'edit') {
-                            this.fnEditTask(node);
+                            this.fnShowEditWindow(node);
                         }
                         if (item.id == 'delete') {
                             this.fnDelete(node);

@@ -2,6 +2,13 @@
 
 Ведение заметок в форматке markdown
 
+## Перед запуском
+
+```
+php bin.php create_folders
+php bin.php create_database
+```
+
 ## Использовано
 
 - easyui

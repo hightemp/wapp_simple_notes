@@ -74,14 +74,14 @@ body {
     grid-template-columns: 1fr;
 }
 
-#images-left-panel {
+#files-left-panel {
     display: grid;
     grid-template-rows: 30px 1fr;
 }
 
-#images-left-panel-header {
+#files-left-panel-header {
     display: grid;
-    grid-template-columns: 1fr 30px;
+    grid-template-columns: 1fr 120px;
 }
 
 .wrapped-text {
@@ -101,4 +101,10 @@ body {
 
 #notes-tt .tabs-title {
     font-size: 8px !important;
+}
+
+.images-list-panel,
+.files-list-panel {
+    display: grid;
+    grid-template-rows: 30px 1fr;
 }

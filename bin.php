@@ -17,7 +17,16 @@ if ($argv[1] == "list_fields") {
     die(json_encode($fields));
 }
 
-if ($argv[1] == "tmp__create_scheme") {
+if ($argv[1] == "create_folders") {
+    mkdir("data/notes");
+    mkdir("data/resources/files");
+    mkdir("data/resources/images");
+    mkdir("data/tables");
+
+    die('ok');
+}
+
+if ($argv[1] == "create_database") {
     R::nuke();
 
     $oCategory = R::dispense(T_CATEGORIES);

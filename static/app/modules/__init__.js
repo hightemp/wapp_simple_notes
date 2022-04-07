@@ -10,3 +10,4 @@ export * from "./favorietes.js";
 export * from "./tags.js";
 export * from "./tables.js";
 export * from "./tables-categories.js";
+export * from "./files.js";

@@ -173,9 +173,9 @@ export class RandomNotes {
             method: 'get',
 
             columns:[[
-                {field:'created_at',title:'created_at',width:100},
+                {field:'created_at',title:'Создано',width:100},
                 {
-                    field:'text',title:'text',width:400,
+                    field:'text',title:'Описание',width:400,
                     formatter: function(value,row,index){
                         return `<div class="wrapped-text">${value}</style>`
                     }

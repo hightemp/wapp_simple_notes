@@ -27,12 +27,24 @@ export class LeftTabs {
         this.oHelpDialog.dialog('open').dialog('center');
     }
 
+    static fnShowPublishDialog() {
+        
+    }
+
     static fnInitComponent()
     {
         this.oComponent.tabs({
             tools:[
                 {
+                    iconCls:'icon-ok',
+                    title: 'Опубликовать',
+                    handler: (function(){
+                        this.fnShowPublishDialog();
+                    }).bind(this)
+                },
+                {
                     iconCls:'icon-help',
+                    title: 'Помощь',
                     handler: (function(){
                         this.fnShowHelpDialog();
                     }).bind(this)
