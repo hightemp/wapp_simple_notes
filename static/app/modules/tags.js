@@ -1,3 +1,4 @@
+import { T_NOTES, T_TABLES } from "./_constants.js";
 import { tpl, fnAlertMessage } from "./lib.js"
 
 export class Tags {
@@ -234,19 +235,19 @@ export class Tags {
     }
 
     static fnFireEvent_ItemEditClick(oRow) {
-        if (oRow.content_type == 'tnotes') {
+        if (oRow.content_type == T_NOTES) {
             $(document).trigger(this.oEvents.notes_edit_click, [ oRow.content_id ]);
         }
-        if (oRow.content_type == 'ttables') {
+        if (oRow.content_type == T_TABLES) {
             $(document).trigger(this.oEvents.tables_edit_click, [ oRow.content_id ]);
         }
     }
 
     static fnFireEvent_TagItemClick(oRow) {
-        if (oRow.content_type == 'tnotes') {
+        if (oRow.content_type == T_NOTES) {
             $(document).trigger(this.oEvents.notes_item_click, [ oRow.content_id ]);
         }
-        if (oRow.content_type == 'ttables') {
+        if (oRow.content_type == T_TABLES) {
             $(document).trigger(this.oEvents.tables_item_click, [ oRow.content_id ]);
         }
     }

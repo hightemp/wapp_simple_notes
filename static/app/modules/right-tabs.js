@@ -21,7 +21,6 @@ export class RightTabs {
         tabs_save_content: "tabs:save_content",
         notes_item_click: "notes:item_click",
         fav_notes_item_click: "fav_notes:item_click",
-        tags_item_click: "tags:item_click",
         tables_item_click: "tables:item_click",
     }
 

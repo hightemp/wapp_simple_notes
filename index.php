@@ -50,5 +50,6 @@ $(document).ready(() => {
     m.Tags.fnPrepare();
     m.Tasks.fnPrepare();
     m.Files.fnPrepare();
+    m.SearchList.fnPrepare();
 })
 </script>

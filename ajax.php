@@ -17,3 +17,4 @@ include_once("./controllers/tasks.php");
 include_once("./controllers/files.php");
 include_once("./controllers/links.php");
 include_once("./controllers/tags.php");
+include_once("./controllers/search.php");

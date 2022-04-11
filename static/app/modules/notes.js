@@ -20,6 +20,7 @@ export class Notes {
         categories_select: "categories:select",
         notes_create_new_click: "notes:create_new_click",
         notes_edit_click: "notes:edit_click",
+        notes_delete_click: "notes:delete_click",
         notes_save: "notes:save",
         notes_item_click: "notes:item_click",
         fav_notes_click_add_note: "fav_notes:click_add_note",
@@ -134,27 +135,6 @@ export class Notes {
         });
     }
 
-    static fnDelete(oRow) {
-        if (oRow){
-            $.messager.confirm(
-                'Confirm',
-                'Удалить?',
-                (function(r) {
-                    if (r) {
-                        $.post(
-                            this.oURLs.delete,
-                            { id: oRow.id },
-                            (function(result) {
-                                this.fnReload();
-                            }).bind(this),
-                            'json'
-                        );
-                    }
-                }).bind(this)
-            );
-        }
-    }
-
     static fnGetSelected() {
         return this.fnComponent('getSelected');
     }
@@ -180,6 +160,24 @@ export class Notes {
                 'json'
             );
         }).bind(this))
+        $(document).on(this.oEvents.notes_delete_click, ((oEvent, iID) => {
+            $.messager.confirm(
+                'Confirm',
+                'Удалить?',
+                (function(r) {
+                    if (r) {
+                        $.post(
+                            this.oURLs.delete,
+                            { id: iID },
+                            (function(result) {
+                                this.fnReload();
+                            }).bind(this),
+                            'json'
+                        );
+                    }
+                }).bind(this)
+            );
+        }).bind(this))
         $(document).on(this.oEvents.notes_create_new_click, ((oEvent) => {
             this.fnShowCreateWindow();
         }).bind(this))
@@ -199,7 +197,7 @@ export class Notes {
             this.fnShowEditWindow(this.fnGetSelected());
         }).bind(this))
         this.oPanelRemoveButton.click((() => {
-            this.fnDelete(this.fnGetSelected());
+            this.fnFireEvent_ItemDeleteClick(this.fnGetSelected());
         }).bind(this))
         this.oPanelReloadButton.click((() => {
             this.fnReload();
@@ -212,6 +210,10 @@ export class Notes {
 
     static fnFireEvent_ItemClick(oRow) {
         $(document).trigger(this.oEvents.notes_item_click, [ oRow.id ]);
+    }
+
+    static fnFireEvent_ItemDeleteClick(oRow) {
+        $(document).trigger(this.oEvents.notes_delete_click, [ oRow.id ]);
     }
 
     static fnFireEvent_FavAddItemClick(oRow) {
@@ -260,7 +262,7 @@ export class Notes {
                                 this.fnShowEditWindow(oNode);
                             }
                             if (item.id == 'delete') {
-                                this.fnDelete(oNode);
+                                this.fnFireEvent_ItemDeleteClick(oNode);
                             }
                         }).bind(this)
                     }

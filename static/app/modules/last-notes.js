@@ -17,7 +17,7 @@ export class LastNotes {
         notes_save: "notes:save",
         notes_item_click: "notes:item_click",
         notes_edit_click: "notes:edit_click",
-        notes_delete_click: "notes:delete_click"
+        notes_delete_click: "notes:delete_click",
     }
 
     static get oComponent() {
@@ -99,6 +99,7 @@ export class LastNotes {
             url: this.oURLs.list,
 
             fit: true,
+            fitColumns: false,
             columns:[[
                 {field:'created_at',title:'Создано',width:100},
                 {field:'text',title:'Название',width:400},

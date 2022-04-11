@@ -19,6 +19,7 @@ export class Tables {
         tables_item_click: "tables:item_click",
         tables_category_select: 'tables_category:select',
         tables_edit_click: "tables:edit_click",
+        tables_delete_click: "tables:delete_click",
     }
 
     static get oDialog() {
@@ -122,14 +123,7 @@ export class Tables {
                 'Удалить?',
                 (function(r) {
                     if (r) {
-                        $.post(
-                            this.oURLs.delete,
-                            { id: oRow.id },
-                            (function(result) {
-                                this.fnReload();
-                            }).bind(this),
-                            'json'
-                        );
+                        this.fnFireEvent_ItemDeleteClick(oRow);
                     }
                 }).bind(this)
             );
@@ -160,6 +154,24 @@ export class Tables {
                 'json'
             );
         }).bind(this))
+        $(document).on(this.oEvents.tables_delete_click, ((oEvent, iID) => {
+            $.messager.confirm(
+                'Confirm',
+                'Удалить?',
+                (function(r) {
+                    if (r) {
+                        $.post(
+                            this.oURLs.delete,
+                            { id: iID },
+                            (function(result) {
+                                this.fnReload();
+                            }).bind(this),
+                            'json'
+                        );
+                    }
+                }).bind(this)
+            );
+        }).bind(this))
 
         this.oEditDialogSaveBtn.click((() => {
             this.fnSave();
@@ -175,7 +187,7 @@ export class Tables {
             this.fnShowEditWindow(this.fnGetSelected());
         }).bind(this))
         this.oPanelRemoveButton.click((() => {
-            this.fnDelete(this.fnGetSelected());
+            this.fnFireEvent_ItemDeleteClick(this.fnGetSelected());
         }).bind(this))
         this.oPanelReloadButton.click((() => {
             this.fnReload();
@@ -188,6 +200,10 @@ export class Tables {
 
     static fnFireEvent_ItemClick(oRow) {
         $(document).trigger(this.oEvents.tables_item_click, [ oRow.id ]);
+    }
+
+    static fnFireEvent_ItemDeleteClick(oRow) {
+        $(document).trigger(this.oEvents.tables_delete_click, [ oRow.id ]);
     }
 
     static fnInitComponent(iID)
@@ -225,7 +241,7 @@ export class Tables {
                                 this.fnShowEditWindow(oNode);
                             }
                             if (item.id == 'delete') {
-                                this.fnDelete(oNode);
+                                this.fnFireEvent_ItemDeleteClick(oNode);
                             }
                         }).bind(this)
                     }

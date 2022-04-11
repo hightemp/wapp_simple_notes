@@ -2,6 +2,8 @@
 
 include_once("./database.php");
 
+use RedBeanPHP\Logger as Logger;
+
 if ($argv[1] == "nuke") {
     R::nuke();
     die();
@@ -27,6 +29,29 @@ if ($argv[1] == "create_folders") {
 }
 
 if ($argv[1] == "create_database") {
+    class MigrationLogger implements Logger {
+
+        private $file;
+    
+        public function __construct( $file ) {
+            $this->file = $file;
+        }
+    
+        public function log() {
+            $query = func_get_arg(0);
+            if (preg_match( '/^(CREATE|ALTER)/', $query )) {
+                file_put_contents( $this->file, "{$query};\n",  FILE_APPEND );
+            }
+        }
+    }
+    
+    $ml = new MigrationLogger( sprintf( __DIR__.'/sql/migration_%s.sql', date('Y_m_d__H_i_s') ) );
+    
+    R::getDatabaseAdapter()
+        ->getDatabase()
+        ->setLogger($ml)
+        ->setEnableLogging(TRUE);
+
     R::nuke();
 
     $oCategory = R::dispense(T_CATEGORIES);
@@ -70,7 +95,7 @@ if ($argv[1] == "create_database") {
 
     $oTagToObjects->ttags = $oTag;
     $oTagToObjects->content_id = $oNote->id;
-    $oTagToObjects->content_type = 'tnotes';
+    $oTagToObjects->content_type = T_NOTES;
     $oTagToObjects->poly('contentType');
 
     R::store($oTagToObjects);

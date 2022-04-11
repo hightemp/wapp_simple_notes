@@ -6,6 +6,7 @@ networks:
 services:
   nginx:
     restart: always
+    container_name: wapp_notes_nginx
     hostname: wapp_notes.local
     build:
       context: ./nginx
@@ -26,6 +27,7 @@ services:
 
   php_fpm:
     restart: always
+    container_name: wapp_notes_php_fpm
     hostname: php_fpm
     build:
       context: ./php-workspace
