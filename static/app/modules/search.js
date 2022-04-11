@@ -117,6 +117,7 @@ export class SearchList {
     }
 
     static fnFireEvent_ItemClick(oRow) {
+        console.log(['fnFireEvent_ItemClick', oRow]);
         if (oRow.content_type == T_NOTES) {
             $(document).trigger(this.oEvents.notes_item_click, [ oRow.content_id ]);
         }
@@ -147,7 +148,6 @@ export class SearchList {
             onClick: (() => {
                 this._sSearchQuery = this.oSearchTextbox.textbox('getValue');
                 this.fnComponent('reload', this.oURLs.list(this._sSearchQuery));
-                console.log('test');
             }).bind(this)
         });
     }
@@ -174,10 +174,13 @@ export class SearchList {
                 {field:'content_type',title:'Тип'},
             ]],
 
-            onSelect: ((oNode) => {
+            onSelect: ((iIndex, oNode) => {
                 this._oSelected = oNode;
-                this.fnFireEvent_ItemClick(oNode);
+                if (!oNode.is_broken) {
+                    this.fnFireEvent_ItemClick(oNode);
+                }
             }).bind(this),
+
             onRowContextMenu: (function(oEvent, node) {
                 oEvent.preventDefault();
                 // this.fnSelect(node.target);

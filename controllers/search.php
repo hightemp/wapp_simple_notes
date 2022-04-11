@@ -14,7 +14,8 @@ if ($sMethod == 'search') {
         foreach ($aFiles as $sFilePath) {
             $sContent = file_get_contents($sFilePath);
 
-            if (preg_match("/".preg_quote($sQ)."/ui", $sContent, $aM)) {
+            $sRE = "/".preg_quote($sQ)."/ui";
+            if (preg_match($sRE, $sContent, $aM)) {
                 $sRelPath = str_replace(PROJECT_PATH, "", $sFilePath);
                 $sTimestamp = basename($sFilePath, $aObject[2]);
                 $sType = $aObject[0];
@@ -38,7 +39,8 @@ if ($sMethod == 'search') {
                         "text" => "[ОШИБКА - УДАЛЕН]", 
                         "created_at" => "", 
                         "content_type" => $sType, 
-                        "match" => $aM 
+                        "match" => $aM,
+                        "is_broken" => 1,
                     ];
                 }
             }
