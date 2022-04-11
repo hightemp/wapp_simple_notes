@@ -17,6 +17,8 @@ function fnGetTabsAsStringList($iContentID, $sContentType) {
 function fnSetTags($iContentID, $sContentType, $aTags) {
     $aTagsIDs = [];
     foreach ($aTags as $sTag) {
+        if (!trim($sTag)) continue;
+
         $oTag = R::findOrCreate(T_TAGS, [
             'name' => $sTag, 
         ]);
