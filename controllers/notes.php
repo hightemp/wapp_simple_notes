@@ -13,7 +13,7 @@ if ($sMethod == 'list_last_notes') {
             'created_at' => $oNote->created_at,
             'category_id' => $oNote->tcategories ? $oNote->tcategories->id : 0,
             'category' => $oNote->tcategories ? $oNote->tcategories->name : "",
-            'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES)
+            'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES) ?: null
         ];
     }
 
@@ -33,7 +33,7 @@ if ($sMethod == 'list_notes') {
             'created_at' => $oNote->created_at,
             'category_id' => $oNote->tcategories ? $oNote->tcategories->id : 0,
             'category' => $oNote->tcategories ? $oNote->tcategories->name : "",
-            'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES)
+            'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES) ?: null
         ];
     }
 
@@ -45,7 +45,7 @@ if ($sMethod == 'get_note') {
     $oNote["category"] = $oNote->tcategories->name;
     $oNote["category_id"] = $oNote->tcategories_id;
     $oNote["content"] = "".file_get_contents("{$sFNP}/{$oNote->timestamp}.md");
-    $oNote["tags"] = fnGetTabsAsStringList($aRequest['id'], T_NOTES);
+    $oNote["tags"] = fnGetTabsAsStringList($aRequest['id'], T_NOTES) ?: null;
     die(json_encode($oNote));
 }
 
@@ -78,7 +78,9 @@ if ($sMethod == 'update_note') {
         $oNote->tcategories = R::findOne(T_CATEGORIES, "id = ?", [$aRequest['category_id']]);
     }
 
-    fnSetTags($aRequest['id'], T_NOTES, explode(",", $aRequest['tags_list']));
+    if ($aRequest['tags_list']) {
+        fnSetTags($aRequest['id'], T_NOTES, explode(",", $aRequest['tags_list']));
+    }
 
     R::store($oNote);
 
@@ -101,7 +103,9 @@ if ($sMethod == 'create_note') {
         $oNote->tcategories = R::findOne(T_CATEGORIES, "id = ?", [$aRequest['category_id']]);
     }
 
-    fnSetTags($oNote->id, T_NOTES, explode(",", $aRequest['tags_list']));
+    if ($aRequest['tags_list']) {
+        fnSetTags($oNote->id, T_NOTES, explode(",", $aRequest['tags_list']));
+    }
 
     file_put_contents("{$sFNP}/{$oNote->timestamp}.md", "");
 
