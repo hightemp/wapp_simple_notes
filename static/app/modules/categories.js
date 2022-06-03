@@ -82,8 +82,8 @@ export class Categories {
     static fnShowCreateWindow() {
         this.sURL = this.oURLs.create;
         var oData = {
-            category_id: this._oSelected.id,
-            category: this._oSelected.text
+            category_id: this._oSelected ? this._oSelected.id : null,
+            category: this._oSelected ? this._oSelected.text : null
         }
         this.fnShowDialog(this.oWindowTitles.create);
         this.fnDialogFormLoad(oData);

@@ -94,8 +94,8 @@ export class Notes {
 
         if (this._oSelectedCategory && this._oSelectedCategory.id) {
             oData = {
-                category_id: this._oSelectedCategory.id,
-                category: this._oSelectedCategory.text
+                category_id: this._oSelectedCategory ? this._oSelectedCategory.id : null,
+                category: this._oSelectedCategory ? this._oSelectedCategory.text : ""
             }
         }
 
