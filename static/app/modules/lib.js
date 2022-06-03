@@ -135,6 +135,7 @@ export function fnCreateEditor(oElement, sContent)
         element: oElement,
         minHeight: "100%",
         initialValue: sContent,
+        spellChecker: false,
         // insertTexts: {
         //     horizontalRule: ["", "\n\n-----\n\n"],
         //     image: ["![](http://", ")"],
