@@ -2,50 +2,23 @@
 
 if ($sMethod == 'search') {
     $sQ = $aRequest['query'];
-    $aResult = [];
+    $aNotes = [];
+    if ($sQ) {
+        $aNotes = R::findAll(T_NOTES, "content LIKE ? ORDER BY id DESC", ['%'.$sQ.'%']);
 
-    $aObjects = [
-        [T_NOTES, $sFNP, ".md"], 
-        [T_TABLES, $sFTP, ".json"]
-    ];
-
-    foreach ($aObjects as $aObject) {
-        $aFiles = glob($aObject[1]."/*".$aObject[2]);
-        foreach ($aFiles as $sFilePath) {
-            $sContent = file_get_contents($sFilePath);
-
-            $sRE = "/".preg_quote($sQ)."/ui";
-            if (preg_match($sRE, $sContent, $aM)) {
-                $sRelPath = str_replace(PROJECT_PATH, "", $sFilePath);
-                $sTimestamp = basename($sFilePath, $aObject[2]);
-                $sType = $aObject[0];
-                
-                $oObject = R::findOne($sType, "timestamp = ?", [$sTimestamp]);
-                if ($oObject) {
-                    $aResult[] = [ 
-                        "fullpath" => $sFilePath, 
-                        "relpath" => $sRelPath, 
-                        "content_id" => $oObject->id, 
-                        "text" => $oObject->name, 
-                        "created_at" => $oObject->created_at, 
-                        "content_type" => $sType, 
-                        "match" => $aM 
-                    ];
-                } else {
-                    $aResult[] = [ 
-                        "fullpath" => $sFilePath, 
-                        "relpath" => $sRelPath, 
-                        "content_id" => 0, 
-                        "text" => "[ОШИБКА - УДАЛЕН]", 
-                        "created_at" => "", 
-                        "content_type" => $sType, 
-                        "match" => $aM,
-                        "is_broken" => 1,
-                    ];
-                }
-            }
+        foreach ($aNotes as $oNote) {
+            $aResult[] = [
+                'id' => $oNote->id,
+                'text' => $oNote->name,
+                'name' => $oNote->name,
+                'description' => $oNote->description,
+                'created_at' => $oNote->created_at,
+                'category_id' => $oNote->tcategories ? $oNote->tcategories->id : 0,
+                'category' => $oNote->tcategories ? $oNote->tcategories->name : "",
+                // 'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES) ?: null
+            ];
         }
     }
 
-    die(json_encode(array_values($aResult)));
+    die(json_encode(array_values($aNotes)));
 }

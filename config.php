@@ -25,7 +25,6 @@ $sB = $sBase."/static/app/jquery-easyui-1.10.2";
 
 define('DATA_PATH', __DIR__."/data/");
 define('DATA_NOTES_RPATH', "notes");
-define('DATA_TABLES_RPATH', "tables");
 define('DATA_FILES_RPATH', "resources/files");
 define('DATA_IMAGES_RPATH', "resources/images");
 

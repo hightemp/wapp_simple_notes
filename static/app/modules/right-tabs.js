@@ -18,10 +18,9 @@ export class RightTabs {
     static iSelectedColumn = 0;
 
     static oEvents = {
+        right_tabs_init: "right_tabs:init",
         tabs_save_content: "tabs:save_content",
         notes_item_click: "notes:item_click",
-        fav_notes_item_click: "fav_notes:item_click",
-        tables_item_click: "tables:item_click",
     }
 
     static oURLs = {
@@ -56,14 +55,6 @@ export class RightTabs {
         $(document).on(this.oEvents.notes_item_click, ((oEvent, iID) => {
             console.log('notes_item_click');
             this.fnActionOpenNote(iID);
-        }).bind(this));
-
-        $(document).on(this.oEvents.fav_notes_item_click, ((oEvent, iID) => {
-            this.fnActionOpenNote(iID);
-        }).bind(this));
-
-        $(document).on(this.oEvents.tables_item_click, ((oEvent, iID) => {
-            this.fnActionOpenTable(iID);
         }).bind(this));
 
         $(document).on('keydown', (oEvent => {
@@ -311,9 +302,13 @@ export class RightTabs {
         );
     }
 
-    static fnPrepare()
+    static fnInit()
     {
         this.fnBindEvents();
         this.fnInitComponent();
+
+        $(document).trigger(this.oEvents.right_tabs_init);
     }
 }
+
+RightTabs.fnInit();

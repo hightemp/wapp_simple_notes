@@ -13,7 +13,7 @@ if ($sMethod == 'list_last_notes') {
             'created_at' => $oNote->created_at,
             'category_id' => $oNote->tcategories ? $oNote->tcategories->id : 0,
             'category' => $oNote->tcategories ? $oNote->tcategories->name : "",
-            'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES) ?: null
+            // 'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES) ?: null
         ];
     }
 
@@ -33,7 +33,7 @@ if ($sMethod == 'list_notes') {
             'created_at' => $oNote->created_at,
             'category_id' => $oNote->tcategories ? $oNote->tcategories->id : 0,
             'category' => $oNote->tcategories ? $oNote->tcategories->name : "",
-            'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES) ?: null
+            // 'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES) ?: null
         ];
     }
 
@@ -42,10 +42,10 @@ if ($sMethod == 'list_notes') {
 
 if ($sMethod == 'get_note') {
     $oNote = R::findOne(T_NOTES, "id = ?", [$aRequest['id']]);
-    $oNote["category"] = $oNote->tcategories->name;
-    $oNote["category_id"] = $oNote->tcategories_id;
-    $oNote["content"] = "".file_get_contents("{$sFNP}/{$oNote->timestamp}.md");
-    $oNote["tags"] = fnGetTabsAsStringList($aRequest['id'], T_NOTES) ?: null;
+    $oNote->category = $oNote->tcategories->name;
+    $oNote->category_id = $oNote->tcategories_id;
+    // $oNote["content"] = "".file_get_contents("{$sFNP}/{$oNote->timestamp}.md");
+    // $oNote["tags"] = fnGetTabsAsStringList($aRequest['id'], T_NOTES) ?: null;
     die(json_encode($oNote));
 }
 
@@ -57,13 +57,15 @@ if ($sMethod == 'delete_note') {
 if ($sMethod == 'update_note_content') {
     $oNote = R::findOne(T_NOTES, "id = ?", [$aRequest['id']]);
     $oNote->updated_at = date("Y-m-d H:i:s");
+    $oNote->content = $aRequest['content'];
 
     if (!$oNote->timestamp) {
         $oNote->timestamp = time();
-        R::store($oNote);
     }
+
+    R::store($oNote);
     
-    file_put_contents("{$sFNP}/{$oNote->timestamp}.md", $aRequest['content']);
+    // file_put_contents("{$sFNP}/{$oNote->timestamp}.md", $aRequest['content']);
     die();
 }
 

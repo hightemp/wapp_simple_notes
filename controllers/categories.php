@@ -18,7 +18,7 @@ function fnBuildRecursiveCategoriesTree(&$aResult, $aCategories)
             'description' => $oCategory->name,
             'category_id' => $oCategory->tcategories_id,
             'children' => $aTreeChildren,
-            'notes_count' => $oCategory->countOwn(T_NOTES)
+            'count' => $oCategory->countOwn(T_NOTES)
         ];
     }
 }

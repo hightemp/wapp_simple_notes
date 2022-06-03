@@ -2,20 +2,20 @@
 <div title="<i class='fa fa-sticky-note' aria-hidden='true'></i>" style="padding:0px" id="notes-tab">
     <div class="easyui-layout" data-options="fit:true">
         
-        <div data-options="region:'west',split:true" title="" style="width:150px;">
+        <div data-options="region:'west',split:true" title="" style="width:300px;">
             <div 
                 class="easyui-panel" 
                 title="  " 
                 style="padding:0px;"
-                data-options="tools:'#notes-categories-tt', fit:true"
+                data-options="tools:'#categories-tt', fit:true"
             >
-                <ul id="categories-tree" class="easyui-tree" data-options="fit:true"></ul>
+                <ul id="categories-tree" class="easyui-treegrid" data-options="fit:true"></ul>
             </div>
-            <div id="notes-categories-tt">
-                <a href="javascript:void(0)" class="icon-add" id="notes-add-category-btn"></a>
-                <a href="javascript:void(0)" class="icon-edit" id="notes-edit-category-btn"></a>
-                <a href="javascript:void(0)" class="icon-remove" id="notes-remove-category-btn"></a>
-                <a href="javascript:void(0)" class="icon-reload" id="notes-reload-category-btn"></a>
+            <div id="categories-tt">
+                <a href="javascript:void(0)" class="icon-add" id="category-add-btn"></a>
+                <a href="javascript:void(0)" class="icon-edit" id="category-edit-btn"></a>
+                <a href="javascript:void(0)" class="icon-remove" id="category-remove-btn"></a>
+                <a href="javascript:void(0)" class="icon-reload" id="category-reload-btn"></a>
             </div>
         </div>
         <div data-options="region:'center',title:'',iconCls:'icon-ok'">
@@ -25,13 +25,13 @@
                 style="padding:0px;"
                 data-options="tools:'#notes-list-tt', fit:true"
             >
-                <ul id="notes-list" class="easyui-datalist" title="" lines="true" data-options="fit:true"></ul>
+                <ul id="notes-list" class="easyui-datagrid" title="" lines="true" data-options="fit:true"></ul>
             </div>
             <div id="notes-list-tt">
-                <a href="javascript:void(0)" class="icon-add" id="notes-add-note-btn"></a>
-                <a href="javascript:void(0)" class="icon-edit" id="notes-edit-note-btn"></a>
-                <a href="javascript:void(0)" class="icon-remove" id="notes-remove-note-btn"></a>
-                <a href="javascript:void(0)" class="icon-reload" id="notes-reload-note-btn"></a>
+                <a href="javascript:void(0)" class="icon-add" id="note-add-btn"></a>
+                <a href="javascript:void(0)" class="icon-edit" id="note-edit-btn"></a>
+                <a href="javascript:void(0)" class="icon-remove" id="note-remove-btn"></a>
+                <a href="javascript:void(0)" class="icon-reload" id="note-reload-btn"></a>
             </div>
         </div>
 

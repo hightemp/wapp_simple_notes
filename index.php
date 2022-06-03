@@ -22,6 +22,9 @@ include_once("./database.php");
     <script type="text/javascript" src="<?php echo $sBA ?>/all.js"></script>
     <script type="text/javascript" src="<?php echo $sBA ?>/speadsheet.js"></script>
 
+    <script type="text/javascript" src="<?php echo $sBA ?>/datagrid-filter.js"></script>
+    <script type="text/javascript" src="<?php echo $sBA ?>/datagrid-cellediting.js"></script>
+
     <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css">
 </head>
@@ -35,21 +38,4 @@ include_once("./database.php");
 
 <script type="module">
 import * as m from "./static/app/modules/__init__.js";
-
-$(document).ready(() => {
-    m.LeftTabs.fnPrepare();
-    m.RightTabs.fnPrepare();
-    m.Notes.fnPrepare();
-    m.CategoriesNotes.fnPrepare();
-    m.LastNotes.fnPrepare();
-    m.FavNotes.fnPrepare();
-    m.Links.fnPrepare();
-    m.RandomNotes.fnPrepare();
-    m.Tables.fnPrepare();
-    m.TablesCategories.fnPrepare();
-    m.Tags.fnPrepare();
-    m.Tasks.fnPrepare();
-    m.Files.fnPrepare();
-    m.SearchList.fnPrepare();
-})
 </script>

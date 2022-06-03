@@ -1,5 +1,4 @@
 import { tpl, fnAlertMessage } from "./lib.js"
-import { CategoriesNotes } from "./notes-categories.js"
 
 export class Notes {
     static sURL = ``
@@ -23,6 +22,7 @@ export class Notes {
         notes_delete_click: "notes:delete_click",
         notes_save: "notes:save",
         notes_item_click: "notes:item_click",
+        notes_init: "notes:init",
         fav_notes_click_add_note: "fav_notes:click_add_note",
         fav_notes_click_remove_note: "fav_notes:click_remove_note",
     }
@@ -58,20 +58,20 @@ export class Notes {
     }
 
     static get oPanelAddButton() {
-        return $('#notes-add-note-btn');
+        return $('#note-add-btn');
     }
     static get oPanelEditButton() {
-        return $('#notes-edit-note-btn');
+        return $('#note-edit-btn');
     }
     static get oPanelRemoveButton() {
-        return $('#notes-remove-note-btn');
+        return $('#note-remove-btn');
     }
     static get oPanelReloadButton() {
-        return $('#notes-reload-note-btn');
+        return $('#note-reload-btn');
     }
 
     static get fnComponent() {
-        return this.oComponent.datalist.bind(this.oComponent);
+        return this.oComponent.datagrid.bind(this.oComponent);
     }
 
     static get oSelectedCategory() {
@@ -240,6 +240,16 @@ export class Notes {
         this.fnComponent({
             url: this.oURLs.list(iCategoryID),
 
+            singleSelect:true,
+
+            idField:'id',
+            treeField:'name',
+            columns:[[
+                {
+                    title:'Название',field:'name',width:375
+                },
+            ]],
+
             onClickRow: ((index, oRow) => {
                 this.fnFireEvent_ItemClick(oRow);
             }).bind(this),
@@ -269,10 +279,17 @@ export class Notes {
                 );
             }).bind(this),
         })
+
+        this.fnComponent('enableFilter', []);
     }
 
-    static fnPrepare()
+    static fnInit()
     {
         this.fnBindEvents();
+        // this.fnInitComponent();
+
+        $(document).trigger(this.oEvents.notes_init);
     }
 }
+
+Notes.fnInit();

@@ -1,7 +1,7 @@
 import { T_NOTES, T_TABLES } from "./_constants.js";
 import { tpl, fnAlertMessage } from "./lib.js"
 
-export class SearchList {
+export class Search {
     static sURL = ``
     static _sSearchQuery = ``
 
@@ -16,6 +16,7 @@ export class SearchList {
         search_save: "search:save",
         search_item_click: "search:item_click",
         search_select: "search:select",
+        search_init: "search:init",
 
         notes_edit_click: "notes:edit_click",
         tables_edit_click: "tables:edit_click",
@@ -108,31 +109,16 @@ export class SearchList {
     }
 
     static fnFireEvent_ItemEditClick(oRow) {
-        if (oRow.content_type == T_NOTES) {
-            $(document).trigger(this.oEvents.notes_edit_click, [ oRow.content_id ]);
-        }
-        if (oRow.content_type == T_TABLES) {
-            $(document).trigger(this.oEvents.tables_edit_click, [ oRow.content_id ]);
-        }
+        $(document).trigger(this.oEvents.notes_edit_click, [ oRow.id ]);
     }
 
     static fnFireEvent_ItemClick(oRow) {
         console.log(['fnFireEvent_ItemClick', oRow]);
-        if (oRow.content_type == T_NOTES) {
-            $(document).trigger(this.oEvents.notes_item_click, [ oRow.content_id ]);
-        }
-        if (oRow.content_type == T_TABLES) {
-            $(document).trigger(this.oEvents.tables_item_click, [ oRow.content_id ]);
-        }
+        $(document).trigger(this.oEvents.notes_item_click, [ oRow.id ]);
     }
 
     static fnFireEvent_ItemDeleteClick(oRow) {
-        if (oRow.content_type == T_NOTES) {
-            $(document).trigger(this.oEvents.notes_delete_click, [ oRow.content_id ]);
-        }
-        if (oRow.content_type == T_TABLES) {
-            $(document).trigger(this.oEvents.tables_delete_click, [ oRow.content_id ]);
-        }
+        $(document).trigger(this.oEvents.notes_delete_click, [ oRow.id ]);
     }
 
     static fnInitButtons()
@@ -170,8 +156,7 @@ export class SearchList {
 
             columns:[[
                 {field:'created_at',title:'Создано',width:100},
-                {field:'text',title:'Название',width:300},
-                {field:'content_type',title:'Тип'},
+                {field:'name',title:'Название',width:300}
             ]],
 
             onSelect: ((iIndex, oNode) => {
@@ -207,10 +192,14 @@ export class SearchList {
         })
     }
 
-    static fnPrepare()
+    static fnInit()
     {
         this.fnBindEvents();
         this.fnInitButtons();
         this.fnInitComponent();
+
+        $(document).trigger(this.oEvents.search_init);
     }
 }
+
+Search.fnInit();

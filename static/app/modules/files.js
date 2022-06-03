@@ -23,6 +23,7 @@ export class Files {
         images_item_click: "images:item_click",
         files_save: "files:save",
         files_item_click: "files:item_click",
+        files_init: "files:init",
     }
 
     static get oImagesDialog() {
@@ -313,13 +314,13 @@ export class Files {
 
             columns:[[
                 {field:'created_at',title:'Создано',width:100},
-                {field:'name',title:'Название',width:150},
+                {field:'name',title:'Название',width:400},
                 {field:'filename',title:'Файл',width:150},
             ]],
 
             onRowContextMenu: (function(e, index, node) {
                 e.preventDefault();
-                this.oContextMenu.menu('show', {
+                this.oContextImagesMenu.menu('show', {
                     left: e.pageX,
                     top: e.pageY,
                     onClick: (item) => {
@@ -327,7 +328,7 @@ export class Files {
                             this.fnShowImagesEditWindow(node);
                         }
                         if (item.id == 'delete') {
-                            this.fnDelete(node);
+                            this.fnImagesDelete(node);
                         }
                     }
                 });
@@ -342,13 +343,13 @@ export class Files {
 
             columns:[[
                 {field:'created_at',title:'Создано',width:100},
-                {field:'name',title:'Название',width:150},
+                {field:'name',title:'Название',width:400},
                 {field:'filename',title:'Файл',width:150},
             ]],
 
             onRowContextMenu: (function(e, index, node) {
                 e.preventDefault();
-                this.oContextMenu.menu('show', {
+                this.oContextFilesMenu.menu('show', {
                     left: e.pageX,
                     top: e.pageY,
                     onClick: (item) => {
@@ -356,7 +357,7 @@ export class Files {
                             this.fnShowEditWindow(node);
                         }
                         if (item.id == 'delete') {
-                            this.fnDelete(node);
+                            this.fnFilesDelete(node);
                         }
                     }
                 });
@@ -364,9 +365,13 @@ export class Files {
         });
     }
 
-    static fnPrepare()
+    static fnInit()
     {
         this.fnBindEvents();
         this.fnInitComponent();
+
+        $(document).trigger(this.oEvents.files_init);
     }
 }
+
+Files.fnInit();
