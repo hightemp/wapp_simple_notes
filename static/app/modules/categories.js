@@ -185,7 +185,7 @@ export class Categories {
             treeField:'name',
             columns:[[
                 {
-                    title:'Название',field:'name',width:290,
+                    title:'Название',field:'name',width:280,
                     formatter: function(value,row,index) {
                         var s = row.text;
                         if (!row.count) {
