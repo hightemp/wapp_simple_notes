@@ -71,17 +71,20 @@ export class Categories {
         this.oDialog.dialog('open').dialog('center').dialog('setTitle', sTitle);
     }
     static fnDialogFormLoad(oRows={}) {
+        // if (this._oSelected) {
+        //     this.oCategoryIDComboTree.combotree('setValue', this._oSelected);
+        // }
         this.oCategoryIDComboTree.combotree('reload');
-        if (this._oSelected) {
-            this.oCategoryIDComboTree.combotree('setValue', this._oSelected.id);
-        }
         this.oDialogForm.form('clear');
         this.oDialogForm.form('load', oRows);
     }
 
     static fnShowCreateWindow() {
         this.sURL = this.oURLs.create;
-        var oData = {}
+        var oData = {
+            category_id: this._oSelected.id,
+            category: this._oSelected.text
+        }
         this.fnShowDialog(this.oWindowTitles.create);
         this.fnDialogFormLoad(oData);
     }

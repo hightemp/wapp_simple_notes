@@ -73,18 +73,14 @@ export class Notes {
         return this.oComponent.datagrid.bind(this.oComponent);
     }
 
-    static get oSelectedCategory() {
-        return this._oSelectedCategory;
-    }
-
     static fnShowDialog(sTitle) {
         this.oDialog.dialog('open').dialog('center').dialog('setTitle', sTitle);
     }
     static fnDialogFormLoad(oRows={}) {
         this.oNoteCategoryIDComboTree.combotree('reload');
-        if (this._oSelectedCategory) {
-            this.oNoteCategoryIDComboTree.combotree('setValue', this._oSelectedCategory.id);
-        }
+        // if (this._oSelectedCategory) {
+        //     this.oNoteCategoryIDComboTree.combotree('setValue', this._oSelectedCategory.id);
+        // }
         this.oTagsTagBox.tagbox('reload');
         this.oDialogForm.form('clear');
         this.oDialogForm.form('load', oRows);
@@ -92,12 +88,14 @@ export class Notes {
 
     static fnShowCreateWindow() {
         this.sURL = this.oURLs.create;
-        var oData = {}
+        var oData = {
+            category_id: this._oSelectedCategory.id
+        }
 
-        if (this.oSelectedCategory && this.oSelectedCategory.id) {
+        if (this._oSelectedCategory && this._oSelectedCategory.id) {
             oData = {
-                category_id: this.oSelectedCategory.id,
-                category: this.oSelectedCategory.text
+                category_id: this._oSelectedCategory.id,
+                category: this._oSelectedCategory.text
             }
         }
 
