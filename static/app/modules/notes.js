@@ -146,7 +146,6 @@ export class Notes {
     static fnBindEvents()
     {
         $(document).on(this.oEvents.categories_select, ((oEvent, oItem) => {
-            console.log([oItem]);
             this.fnInitComponent(oItem.id);
         }).bind(this))
 

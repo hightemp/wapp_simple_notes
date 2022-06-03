@@ -21,10 +21,9 @@ export function fnCreateSpeadsheet(sID)
                     tip: 'Paste CSV',
                     icon: saveIcon,
                     onClick: (data, sheet) => {
-                        console.log('>>>');
                         navigator.clipboard.readText().then(() => {
                             // Papa.parse(csvString)
-                            console.log('click save button：', data, sheet)
+                            // console.log('click save button：', data, sheet)
                         })
                     }
                 }
@@ -34,7 +33,7 @@ export function fnCreateSpeadsheet(sID)
                     tip: 'Preview',
                     el: previewEl,
                     onClick: (data, sheet) => {
-                        console.log('click preview button：', data)
+                        // console.log('click preview button：', data)
                     }
                 }
             ],

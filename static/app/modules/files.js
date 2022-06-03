@@ -115,7 +115,6 @@ export class Files {
         var oData = {}
         this.fnShowImagesDialog(this.oWindowTitles.create);
         this.fnImagesDialogFormLoad(oData);
-        console.log(this.sURL);
     }
 
     static fnShowImagesEditWindow(oRow) {
@@ -177,7 +176,6 @@ export class Files {
         var oData = {}
         this.fnShowFilesDialog(this.oWindowTitles.create);
         this.fnFilesDialogFormLoad(oData);
-        console.log(this.sURL);
     }
 
     static fnShowFilesEditWindow(oRow) {
@@ -272,7 +270,6 @@ export class Files {
         }).bind(this))
 
         this.oPanelFilesAddButton.click((() => {
-            console.log(this);
             this.fnShowFilesCreateWindow();
         }).bind(this))
         this.oPanelFilesEditButton.click((() => {

@@ -4,7 +4,17 @@ if ($sMethod == 'search') {
     $sQ = $aRequest['query'];
     $aNotes = [];
     if ($sQ) {
-        $aNotes = R::findAll(T_NOTES, "content LIKE ? ORDER BY id DESC", ['%'.$sQ.'%']);
+        if ($aRequest['type']=="all") {
+            $aNotes = R::findAll(T_NOTES, "name LIKE ? OR content LIKE ? ORDER BY id DESC", ['%'.$sQ.'%', '%'.$sQ.'%']);
+        }
+        
+        if ($aRequest['type']=="title") {
+            $aNotes = R::findAll(T_NOTES, "name LIKE ? ORDER BY id DESC", ['%'.$sQ.'%']);
+        }
+
+        if ($aRequest['type']=="content") {
+            $aNotes = R::findAll(T_NOTES, "content LIKE ? ORDER BY id DESC", ['%'.$sQ.'%']);
+        }
 
         foreach ($aNotes as $oNote) {
             $aResult[] = [
@@ -20,5 +30,5 @@ if ($sMethod == 'search') {
         }
     }
 
-    die(json_encode(array_values($aNotes)));
+    die(json_encode(array_values($aResult)));
 }

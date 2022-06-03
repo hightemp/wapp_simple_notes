@@ -4,9 +4,10 @@ import { tpl, fnAlertMessage } from "./lib.js"
 export class Search {
     static sURL = ``
     static _sSearchQuery = ``
+    static _sSearchType = ``
 
     static oURLs = {
-        list: tpl`ajax.php?method=search&query=${0}`,
+        list: tpl`ajax.php?method=search&query=${0}&type=${1}`,
     }
     static oWindowTitles = {
         create: 'Новый поиск',
@@ -49,6 +50,9 @@ export class Search {
     }
     static get oSearchBtn() {
         return $("#search-btn");
+    }
+    static get oSearchTypeCombo() {
+        return $("#search-fitler-type");
     }
 
     static get oEditDialogSaveBtn() {
@@ -113,7 +117,6 @@ export class Search {
     }
 
     static fnFireEvent_ItemClick(oRow) {
-        console.log(['fnFireEvent_ItemClick', oRow]);
         $(document).trigger(this.oEvents.notes_item_click, [ oRow.id ]);
     }
 
@@ -133,7 +136,8 @@ export class Search {
             iconCls: 'icon-search',
             onClick: (() => {
                 this._sSearchQuery = this.oSearchTextbox.textbox('getValue');
-                this.fnComponent('reload', this.oURLs.list(this._sSearchQuery));
+                this._sSearchType = this.oSearchTypeCombo.combobox('getValue');
+                this.fnComponent('reload', this.oURLs.list(this._sSearchQuery, this._sSearchType));
             }).bind(this)
         });
     }
@@ -156,6 +160,7 @@ export class Search {
 
             columns:[[
                 {field:'created_at',title:'Создано',width:100},
+                {field:'category',title:'Категория',width:100},
                 {field:'name',title:'Название',width:300}
             ]],
 

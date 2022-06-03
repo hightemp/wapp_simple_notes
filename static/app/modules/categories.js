@@ -116,7 +116,6 @@ export class Categories {
                             this.oURLs.delete,
                             { id: oRow.id },
                             (function(result) {
-                                console.log('test');
                                 this.fnReload();
                             }).bind(this),
                             'json'

@@ -53,7 +53,6 @@ export class RightTabs {
     static fnBindEvents()
     {
         $(document).on(this.oEvents.notes_item_click, ((oEvent, iID) => {
-            console.log('notes_item_click');
             this.fnActionOpenNote(iID);
         }).bind(this));
 
@@ -86,8 +85,6 @@ export class RightTabs {
                         sPaste = sPaste + await (new Response(htmlBlob)).text();
                     }
                 }
-
-                // console.log([items, sPaste]);
 
                 var oE = this.oSpreadsheets[this.oTabsTablesIDs[iI]].editor;
 
