@@ -8,14 +8,14 @@ function fnBuildRecursiveCategoriesTree(&$aResult, $aCategories)
     foreach ($aCategories as $oCategory) {
         $aTreeChildren = [];
 
-        $aChildren = R::children($oCategory, " id != {$oCategory->id}");
+        $aChildren = R::children($oCategory, " tcategories_id = {$oCategory->id}");
         fnBuildRecursiveCategoriesTree($aTreeChildren, $aChildren);
 
         $aResult[] = [
             'id' => $oCategory->id,
             'text' => $oCategory->name,
             'name' => $oCategory->name,
-            'description' => $oCategory->name,
+            'description' => $oCategory->description,
             'category_id' => $oCategory->tcategories_id,
             'children' => $aTreeChildren,
             'count' => $oCategory->countOwn(T_NOTES)

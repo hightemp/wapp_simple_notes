@@ -62,7 +62,7 @@
                 <form id="category-dlg-fm" method="post" novalidate style="margin:0;padding:5px">
                     <div style="margin-bottom:10px">
                         <label>Категория:</label>
-                        <input name="category_id" id="category-dlg-category_id-combotree" class="easyui-combotree" data-options="url:'ajax.php?method=list_tree_categories',method:'get',labelPosition:'top'" style="width:100%">
+                        <input name="category_id" id="category-dlg-category_id-combotree" class="easyui-combotree" style="width:100%">
                     </div>
                     <div style="margin-bottom:10px">
                         <label>Заголовок:</label>
@@ -84,7 +84,7 @@
                 <form id="note-dlg-fm" method="post" novalidate style="margin:0;padding:5px">
                     <div style="margin-bottom:10px">
                         <label>Категория:</label>
-                        <input name="category_id" id="note-dlg-category_id-combotree" class="easyui-combotree" data-options="url:'ajax.php?method=list_tree_categories',method:'get',labelPosition:'top'" style="width:100%" required="true">
+                        <input name="category_id" id="note-dlg-category_id-combotree" class="easyui-combotree" style="width:100%" required="true">
                     </div>
                     <div style="margin-bottom:10px">
                         <label>Заголовок:</label>

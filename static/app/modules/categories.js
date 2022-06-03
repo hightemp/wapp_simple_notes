@@ -19,6 +19,7 @@ export class Categories {
         categories_save: "categories:save",
         categories_select: "categories:select",
         categories_init: "categories:init",
+        notes_save: "notes:save",
     }
 
     static get oDialog() {
@@ -32,6 +33,10 @@ export class Categories {
     }
     static get oContextMenu() {
         return $("#category-select-mm");
+    }
+
+    static get oCategoryIDComboTree() {
+        return $('#category-dlg-category_id-combotree');
     }
 
     static get oEditDialogSaveBtn() {
@@ -66,6 +71,10 @@ export class Categories {
         this.oDialog.dialog('open').dialog('center').dialog('setTitle', sTitle);
     }
     static fnDialogFormLoad(oRows={}) {
+        this.oCategoryIDComboTree.combotree('reload');
+        if (this._oSelected) {
+            this.oCategoryIDComboTree.combotree('setValue', this._oSelected.id);
+        }
         this.oDialogForm.form('clear');
         this.oDialogForm.form('load', oRows);
     }
@@ -136,6 +145,10 @@ export class Categories {
 
     static fnBindEvents()
     {
+        $(document).on(this.oEvents.notes_save, ((oEvent, oItem) => {
+            this.fnReload();
+        }).bind(this))
+
         this.oEditDialogSaveBtn.click((() => {
             this.fnSave();
         }).bind(this))
@@ -163,6 +176,15 @@ export class Categories {
 
     static fnFireEvent_Select(oNode) {
         $(document).trigger(this.oEvents.categories_select, [oNode])
+    }
+
+    static fnInitCombo(iCategoryID)
+    {
+        this.oCategoryIDComboTree.combotree({
+            url: `ajax.php?method=list_tree_categories`,
+            idField:'id',
+            treeField:'name',
+        })
     }
 
     static fnInitComponent()
@@ -232,6 +254,7 @@ export class Categories {
     static fnInit()
     {
         this.fnBindEvents();
+        this.fnInitCombo();
         this.fnInitComponent();
 
         $(document).trigger(this.oEvents.categories_init);

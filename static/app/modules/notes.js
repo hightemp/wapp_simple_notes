@@ -42,9 +42,6 @@ export class Notes {
         return $("#note-mm");
     }
 
-    static get oCategoryIDComboTree() {
-        return $('#category-dlg-category_id-combotree');
-    }
     static get oNoteCategoryIDComboTree() {
         return $('#note-dlg-category_id-combotree');
     }
@@ -84,8 +81,10 @@ export class Notes {
         this.oDialog.dialog('open').dialog('center').dialog('setTitle', sTitle);
     }
     static fnDialogFormLoad(oRows={}) {
-        this.oCategoryIDComboTree.combotree('reload');
         this.oNoteCategoryIDComboTree.combotree('reload');
+        if (this._oSelectedCategory) {
+            this.oNoteCategoryIDComboTree.combotree('setValue', this._oSelectedCategory.id);
+        }
         this.oTagsTagBox.tagbox('reload');
         this.oDialogForm.form('clear');
         this.oDialogForm.form('load', oRows);
@@ -226,6 +225,15 @@ export class Notes {
         $(document).trigger(this.oEvents.fav_notes_click_remove_note, [ oRow ]);
     }
 
+    static fnInitCombo(iCategoryID)
+    {
+        this.oNoteCategoryIDComboTree.combotree({
+            url: `ajax.php?method=list_tree_categories`,
+            idField:'id',
+            treeField:'name',
+        })
+    }
+
     static fnInitComponent(iCategoryID)
     {
         this.oTagsTagBox.tagbox({
@@ -288,6 +296,7 @@ export class Notes {
     static fnInit()
     {
         this.fnBindEvents();
+        this.fnInitCombo();
         // this.fnInitComponent();
 
         $(document).trigger(this.oEvents.notes_init);

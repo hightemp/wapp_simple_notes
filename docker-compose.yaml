@@ -32,7 +32,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy_net"
-      - "traefik.http.routers.wapp_simple_notes_nginx.rule=Host(`${PREFIX}wapp_simple_notes_nginx.local`) || Host(`${PREFIX}wapp_simple_notes_nginx.localhost`)"
+      - "traefik.http.routers.wapp_simple_notes.rule=Host(`${PREFIX}wapp_simple_notes.local`) || Host(`${PREFIX}wapp_simple_notes.localhost`)"
 
   php_fpm:
     restart: always
