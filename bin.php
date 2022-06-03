@@ -25,10 +25,13 @@ if ($argv[1] == "list_fields") {
 }
 
 if ($argv[1] == "create_folders") {
-    mkdir("data/notes");
-    mkdir("data/resources/files");
-    mkdir("data/resources/images");
-    mkdir("data/tables");
+    mkdir("data/default/notes");
+    mkdir("data/default/resources/files");
+    mkdir("data/default/resources/images");
+
+    mkdir("public/images");
+    mkdir("public/files");
+    mkdir("public/pages");
 
     die('ok');
 }

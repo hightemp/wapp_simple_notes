@@ -4,9 +4,11 @@ export class LeftTabs {
     static sURL = ``
 
     static oEvents = {
+        left_tabs_init: "left_tabs:init"
     }
 
     static oURLs = {
+        publish:"ajax.php?method=publish"
     }
 
     static get oComponent() {
@@ -27,8 +29,15 @@ export class LeftTabs {
         this.oHelpDialog.dialog('open').dialog('center');
     }
 
-    static fnShowPublishDialog() {
-        
+    static fnPublish() {
+        $.post(
+            this.oURLs.publish,
+            { },
+            (function(result) {
+                // window.open('/public/');
+            }).bind(this),
+            'json'
+        );
     }
 
     static fnInitComponent()
@@ -39,7 +48,7 @@ export class LeftTabs {
                     iconCls:'icon-ok',
                     title: 'Опубликовать',
                     handler: (function(){
-                        this.fnShowPublishDialog();
+                        this.fnPublish();
                     }).bind(this)
                 },
                 {
@@ -73,9 +82,13 @@ export class LeftTabs {
         this.fnComponent('add', oOptions);
     }
 
-    static fnPrepare()
+    static fnInit()
     {
         this.fnBindEvents();
         this.fnInitComponent();
+
+        $(document).trigger(this.oEvents.left_tabs_init);
     }
 }
+
+LeftTabs.fnInit();

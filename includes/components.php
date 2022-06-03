@@ -11,6 +11,11 @@
             </thead>
             <tbody>
             <tr>
+            <td align="left"><em>Ctrl-S</em></td>
+            <td align="left"><em>Cmd-S</em></td>
+            <td align="left">"save"</td>
+            </tr>
+            <tr>
             <td align="left"><em>Ctrl-'</em></td>
             <td align="left"><em>Cmd-'</em></td>
             <td align="left">"toggleBlockquote"</td>

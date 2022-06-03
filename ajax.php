@@ -7,6 +7,7 @@ $sMethod = $_REQUEST['method'];
 
 include_once("./models/tags.php");
 
+include_once("./controllers/publisher.php");
 include_once("./controllers/categories.php");
 include_once("./controllers/notes.php");
 include_once("./controllers/files.php");

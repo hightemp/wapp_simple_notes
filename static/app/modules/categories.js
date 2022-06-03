@@ -170,16 +170,16 @@ export class Categories {
         this.fnComponent({
             url: this.oURLs.list,
             method:'get',
-            animate:true,
+            // animate:true,
             lines:true,
-            dnd:true,
+            // dnd:true,
 
-            fit: true,
-            border: false,
+            // fit: true,
+            // border: false,
 
-            nowrap: false,
+            // nowrap: false,
 
-            clientPaging: false,
+            // clientPaging: false,
             
             idField:'id',
             treeField:'name',
@@ -226,7 +226,7 @@ export class Categories {
             }).bind(this),
         })
 
-        this.fnComponent('enableFilter', []);
+        // this.fnComponent('enableFilter', []);
     }
 
     static fnInit()

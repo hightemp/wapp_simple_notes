@@ -2,6 +2,27 @@
 
 include_once("./config.php");
 
+function fnBuildRecursiveCategoriesList(&$aResult, $aCategories) 
+{
+    $aResult = [];
+
+    foreach ($aCategories as $oCategory) {
+        $aTreeChildren = [];
+
+        $aChildren = R::findAll(T_CATEGORIES, " tcategories_id = {$oCategory->id}");
+        fnBuildRecursiveCategoriesList($aTreeChildren, $aChildren);
+
+        $aNotes = R::findAll(T_NOTES, " tcategories_id = {$oCategory->id}");
+
+        $aResult[] = [
+            'id' => $oCategory->id,
+            'name' => $oCategory->name,
+            'children' => $aTreeChildren,
+            'children_notes' => $aNotes,
+        ];
+    }
+}
+
 function fnGetSelectedProjectPath()
 {
     $sDir = fnGetSelectedDatabase();

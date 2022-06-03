@@ -23,6 +23,7 @@ $sBase = Config::$aOptions["base"];
 $sBA = $sBase."/static/app";
 $sB = $sBase."/static/app/jquery-easyui-1.10.2";
 
+define('PUBLIC_PATH', __DIR__."/public/");
 define('DATA_PATH', __DIR__."/data/");
 define('DATA_NOTES_RPATH', "notes");
 define('DATA_FILES_RPATH', "resources/files");

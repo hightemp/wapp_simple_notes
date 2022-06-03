@@ -3,6 +3,8 @@ import { tpl, fnAlertMessage } from "./lib.js"
 export class Notes {
     static sURL = ``
 
+    static _oSelectedCategory = null;
+
     static oURLs = {
         create: 'ajax.php?method=create_note',
         update: tpl`ajax.php?method=update_note&id=${0}`,
@@ -75,7 +77,7 @@ export class Notes {
     }
 
     static get oSelectedCategory() {
-        return CategoriesNotes.oSelected;
+        return this._oSelectedCategory;
     }
 
     static fnShowDialog(sTitle) {
@@ -146,6 +148,7 @@ export class Notes {
     static fnBindEvents()
     {
         $(document).on(this.oEvents.categories_select, ((oEvent, oItem) => {
+            this._oSelectedCategory = oItem;
             this.fnInitComponent(oItem.id);
         }).bind(this))
 
