@@ -50,6 +50,23 @@ export class RightTabs {
         return $(`#table-${iID}`);
     }
 
+    static fnGenerateHashForNote()
+    {
+        window.location.hash = Object.values(this.oTabsNotesIDs)+''
+    }
+
+    static fnOpenNoteFromHash()
+    {
+        var sHash = window.location.hash.replace(/^#/, '');
+
+        if (sHash) {
+            var aIDs = sHash.split(',');
+            for (var iID of aIDs) {
+                this.fnActionOpenNote(iID);
+            }
+        }
+    }
+
     static fnBindEvents()
     {
         $(document).on(this.oEvents.notes_item_click, ((oEvent, iID) => {
@@ -249,6 +266,8 @@ export class RightTabs {
 
                 var oEd = this.oEditors[iID].editor = fnCreateEditor(oE[0], sC);
 
+                this.fnGenerateHashForNote();
+
                 oEd.codemirror.on("change", (() => {
                     this.fnSetDirtyTable(this.oTabsNotesIDs[iI]);
                 }).bind(this));
@@ -303,6 +322,8 @@ export class RightTabs {
     {
         this.fnBindEvents();
         this.fnInitComponent();
+
+        this.fnOpenNoteFromHash();
 
         $(document).trigger(this.oEvents.right_tabs_init);
     }
