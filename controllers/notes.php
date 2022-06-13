@@ -13,7 +13,7 @@ if ($sMethod == 'list_last_notes') {
             'created_at' => $oNote->created_at,
             'category_id' => $oNote->tcategories ? $oNote->tcategories->id : 0,
             'category' => $oNote->tcategories ? $oNote->tcategories->name : "",
-            // 'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES) ?: null
+            'tags' => fnGetTagsAsStringList($oNote->id, T_NOTES) ?: ''
         ];
     }
 
@@ -33,11 +33,17 @@ if ($sMethod == 'list_notes') {
             'created_at' => $oNote->created_at,
             'category_id' => $oNote->tcategories ? $oNote->tcategories->id : 0,
             'category' => $oNote->tcategories ? $oNote->tcategories->name : "",
-            // 'tags' => fnGetTabsAsStringList($oNote->id, T_NOTES) ?: null
+            'tags' => fnGetTagsAsStringList($oNote->id, T_NOTES) ?: ''
         ];
     }
 
     die(json_encode(array_values($aResult)));
+}
+
+if ($sMethod == 'list_tags') {
+    $aResult = R::findAll(T_TAGS);
+
+    die(json_encode($aResult));
 }
 
 if ($sMethod == 'get_note') {

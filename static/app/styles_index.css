@@ -6,7 +6,7 @@ body, html {
     position: fixed;
 
     font-family:verdana,helvetica,arial,sans-serif;
-    font-size:8px;
+    /* font-size:8px; */
 }
 
 body {
@@ -48,11 +48,11 @@ body {
 }
 
 .tree-title {
-    font-size: 8px;
+    /* font-size: 8px; */
 }
 
 .datagrid-cell {
-    font-size: 8px;
+    /* font-size: 8px; */
     word-break: break-all;
 }
 
@@ -107,4 +107,17 @@ body {
 .files-list-panel {
     display: grid;
     grid-template-rows: 30px 1fr;
+}
+
+
+.input-with-btn {
+    display: grid;
+    grid-template-columns: 460px 30px;
+}
+
+.tabs-title {
+    text-overflow: ellipsis;
+    /* width: 100px; */
+    display: block;
+    overflow: hidden;
 }

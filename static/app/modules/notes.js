@@ -19,12 +19,15 @@ export class Notes {
     }
     static oEvents = {
         categories_select: "categories:select",
+
         notes_create_new_click: "notes:create_new_click",
         notes_edit_click: "notes:edit_click",
         notes_delete_click: "notes:delete_click",
         notes_save: "notes:save",
+        notes_create: "notes:create",
         notes_item_click: "notes:item_click",
         notes_init: "notes:init",
+
         fav_notes_click_add_note: "fav_notes:click_add_note",
         fav_notes_click_remove_note: "fav_notes:click_remove_note",
     }
@@ -49,6 +52,9 @@ export class Notes {
         return $('#note-tags-box');
     }
 
+    static get oEditDialogCategoryCleanBtn() {
+        return $('#note-category-clean-btn');
+    }
     static get oEditDialogSaveBtn() {
         return $('#note-dlg-save-btn');
     }
@@ -101,13 +107,15 @@ export class Notes {
 
         this.fnShowDialog(this.oWindowTitles.create);
         this.fnDialogFormLoad(oData);
+        this.oTagsTagBox.tagbox('setValues', []);
     }
 
     static fnShowEditWindow(oRow) {
-        if (oRow) {
-            this.sURL = this.oURLs.update(oRow.id);
-            this.fnShowDialog(this.oWindowTitles.update);
-            this.fnDialogFormLoad(oRow);
+        this.sURL = this.oURLs.update(oRow.id);
+        this.fnShowDialog(this.oWindowTitles.update);
+        this.fnDialogFormLoad(oRow);
+        if (!oRow.tags) {
+            this.oTagsTagBox.tagbox('setValues', []);
         }
     }
 
@@ -182,6 +190,9 @@ export class Notes {
         }).bind(this))
 
 
+        this.oEditDialogCategoryCleanBtn.click((() => {
+            this.oNoteCategoryIDComboTree.combotree('clear');
+        }).bind(this))
         this.oEditDialogSaveBtn.click((() => {
             this.fnSave();
         }).bind(this))
@@ -248,6 +259,7 @@ export class Notes {
         this.fnComponent({
             url: this.oURLs.list(iCategoryID),
 
+            border: false,
             singleSelect:true,
 
             idField:'id',

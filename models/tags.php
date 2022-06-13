@@ -1,17 +1,17 @@
 <?php
 
-function fnGetTabsIDs($iContentID, $sContentType) {
+function fnGetTagsIDs($iContentID, $sContentType) {
     $aTags = R::findAll(T_TAGS_TO_OBJECTS, 'content_id = ? AND content_type = ?', [$iContentID, $sContentType]);
     return array_map(function($oI) { return $oI->id; }, $aTags);
 }
 
-function fnGetTabs($iContentID, $sContentType) {
+function fnGetTags($iContentID, $sContentType) {
     $aTags = R::findAll(T_TAGS_TO_OBJECTS, 'content_id = ? AND content_type = ?', [$iContentID, $sContentType]);
     return array_map(function($oI) { return $oI->ttags->name; }, $aTags);
 }
 
-function fnGetTabsAsStringList($iContentID, $sContentType) {
-    return join(",", fnGetTabs($iContentID, $sContentType));
+function fnGetTagsAsStringList($iContentID, $sContentType) {
+    return join(",", fnGetTags($iContentID, $sContentType));
 }
 
 function fnSetTags($iContentID, $sContentType, $aTags) {

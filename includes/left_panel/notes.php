@@ -1,13 +1,13 @@
 <!-- Заметки -->
 <div title="<i class='fa fa-sticky-note' aria-hidden='true'></i>" style="padding:0px" id="notes-tab">
-    <div class="easyui-layout" data-options="fit:true">
+    <div class="easyui-layout" data-options="fit:true,border:false">
         
-        <div data-options="region:'west',split:true" title="" style="width:300px;">
+        <div data-options="region:'west',split:true,border:false" title="" style="width:300px;">
             <div 
                 class="easyui-panel" 
                 title="  " 
                 style="padding:0px;"
-                data-options="tools:'#categories-tt', fit:true"
+                data-options="tools:'#categories-tt', fit:true,border:false"
             >
                 <ul id="categories-tree" class="easyui-treegrid" data-options="fit:true"></ul>
             </div>
@@ -18,12 +18,12 @@
                 <a href="javascript:void(0)" class="icon-reload" id="category-reload-btn"></a>
             </div>
         </div>
-        <div data-options="region:'center',title:'',iconCls:'icon-ok'">
+        <div data-options="region:'center',title:'',iconCls:'icon-ok',border:false">
             <div 
                 class="easyui-panel" 
                 title="  " 
                 style="padding:0px;"
-                data-options="tools:'#notes-list-tt', fit:true"
+                data-options="tools:'#notes-list-tt', fit:true,border:false"
             >
                 <ul id="notes-list" class="easyui-datagrid" title="" lines="true" data-options="fit:true"></ul>
             </div>
@@ -60,9 +60,12 @@
             <!-- Категории -->
             <div id="category-dlg" class="easyui-dialog" style="width:500px" data-options="closed:true,modal:true,border:'thin',buttons:'#category-dlg-buttons'">
                 <form id="category-dlg-fm" method="post" novalidate style="margin:0;padding:5px">
-                    <div style="margin-bottom:10px">
+                    <div>
                         <label>Категория:</label>
-                        <input name="category_id" id="category-dlg-category_id-combotree" class="easyui-combotree" style="width:100%">
+                        <div class="input-with-btn">
+                            <input name="category_id" id="category-dlg-category_id-combotree" class="easyui-combotree" style="width:460px">
+                            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-remove" id="categories-category-clean-btn" style="width:auto"></a>
+                        </div>
                     </div>
                     <div style="margin-bottom:10px">
                         <label>Заголовок:</label>
@@ -82,9 +85,12 @@
             <!-- Заметки -->
             <div id="note-dlg" class="easyui-dialog" style="width:500px" data-options="closed:true,modal:true,border:'thin',buttons:'#note-dlg-buttons'">
                 <form id="note-dlg-fm" method="post" novalidate style="margin:0;padding:5px">
-                    <div style="margin-bottom:10px">
+                    <div>
                         <label>Категория:</label>
-                        <input name="category_id" id="note-dlg-category_id-combotree" class="easyui-combotree" style="width:100%" required="true">
+                        <div class="input-with-btn">
+                            <input name="category_id" id="note-dlg-category_id-combotree" class="easyui-combotree" style="width:460px" required="true">
+                            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-remove" id="note-category-clean-btn" style="width:auto"></a>
+                        </div>
                     </div>
                     <div style="margin-bottom:10px">
                         <label>Заголовок:</label>

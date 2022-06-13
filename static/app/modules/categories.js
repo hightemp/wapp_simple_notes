@@ -19,6 +19,8 @@ export class Categories {
         categories_save: "categories:save",
         categories_select: "categories:select",
         categories_init: "categories:init",
+
+        notes_create_new_click: "notes:create_new_click",
         notes_save: "notes:save",
     }
 
@@ -39,6 +41,9 @@ export class Categories {
         return $('#category-dlg-category_id-combotree');
     }
 
+    static get oEditDialogCategoryCleanBtn() {
+        return $('#categories-category-clean-btn');
+    }
     static get oEditDialogSaveBtn() {
         return $('#category-dlg-save-btn');
     }
@@ -77,6 +82,10 @@ export class Categories {
         this.oCategoryIDComboTree.combotree('reload');
         this.oDialogForm.form('clear');
         this.oDialogForm.form('load', oRows);
+    }
+
+    static fnCreateNote() {
+        $(document).trigger(this.oEvents.notes_create_new_click, [])
     }
 
     static fnShowCreateWindow() {
@@ -152,6 +161,9 @@ export class Categories {
             this.fnReload();
         }).bind(this))
 
+        this.oEditDialogCategoryCleanBtn.click((() => {
+            this.oCategoryIDComboTree.combotree('clear');
+        }).bind(this))
         this.oEditDialogSaveBtn.click((() => {
             this.fnSave();
         }).bind(this))
@@ -195,6 +207,8 @@ export class Categories {
         this.fnComponent({
             url: this.oURLs.list,
             method:'get',
+
+            border: false,
             // animate:true,
             lines:true,
             // dnd:true,
@@ -229,7 +243,8 @@ export class Categories {
 
             onContextMenu: (function(oEvent, node) {
                 oEvent.preventDefault();
-                this.fnSelect(node.target);
+                this._oSelected = node;
+                this.fnSelect(node.id);
                 this.oContextMenu.menu('show', {
                     left: oEvent.pageX,
                     top: oEvent.pageY,
