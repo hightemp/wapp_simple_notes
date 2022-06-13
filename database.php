@@ -24,6 +24,7 @@ define('PROJECT', fnGetSelectedDatabase());
 
 $sNP = "/data/".PROJECT."/notes";
 $sFNP = PROJECT_PATH."notes";
+$sFP = "/data/".PROJECT."resources/files";
 $sFFP = PROJECT_PATH."resources/files";
 $sIP = "/data/".PROJECT."/resources/images";
 $sFIP = PROJECT_PATH."resources/images";
