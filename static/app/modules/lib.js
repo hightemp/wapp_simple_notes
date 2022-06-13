@@ -147,7 +147,7 @@ export function fnCreateEditor(oElement, sContent)
         uploadImage(
             file, 
             (imageUrl) => {
-                imageUrl = imageUrl.replace(window.location.origin, '');
+                imageUrl = imageUrl.replace(window.location.origin, window.BASE_PATH);
                 imageUrl = imageUrl.replace(/\/+/, '/');
 
                 onSuccess = onSuccess || function onSuccess(imageUrl) {

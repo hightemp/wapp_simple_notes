@@ -310,10 +310,15 @@ export class Files {
             method: 'get',
 
             columns:[[
-                {field:'created_at',title:'Создано',width:100},
-                {field:'name',title:'Название',width:400},
+                {field:'created_at',title:'Создано',width:200},
+                {field:'name',title:'Название',width:300},
                 {field:'filename',title:'Файл',width:150},
             ]],
+
+            onDblClickRow: ((index, row) => {
+                var sRelPath = window.IMAGES_PATH+'/'+row.filename;
+                window.open(sRelPath);
+            }).bind(this),
 
             onRowContextMenu: (function(e, index, node) {
                 e.preventDefault();
@@ -339,10 +344,15 @@ export class Files {
             method: 'get',
 
             columns:[[
-                {field:'created_at',title:'Создано',width:100},
-                {field:'name',title:'Название',width:400},
+                {field:'created_at',title:'Создано',width:200},
+                {field:'name',title:'Название',width:300},
                 {field:'filename',title:'Файл',width:150},
             ]],
+
+            onDblClickRow: ((index, row) => {
+                var sRelPath = window.FILES_PATH+'/'+row.filename;
+                window.open(sRelPath);
+            }).bind(this),
 
             onRowContextMenu: (function(e, index, node) {
                 e.preventDefault();

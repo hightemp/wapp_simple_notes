@@ -36,6 +36,12 @@ include_once("./database.php");
 </body>
 </html>
 
+<script>
+window.BASE_PATH = '<?php echo $sBase ?>';
+window.IMAGES_PATH = '<?php echo $sIP ?>';
+window.FILES_PATH = '<?php echo $sFP ?>';
+</script>
+
 <script type="module">
 import * as m from "./static/app/modules/__init__.js";
 </script>
