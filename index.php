@@ -38,8 +38,8 @@ include_once("./database.php");
 
 <script>
 window.BASE_PATH = '<?php echo $sBase ?>';
-window.IMAGES_PATH = '<?php echo $sIP ?>';
-window.FILES_PATH = '<?php echo $sFP ?>';
+window.IMAGES_PATH = '<?php echo $sBIP ?>';
+window.FILES_PATH = '<?php echo $sBFP ?>';
 </script>
 
 <script type="module">
