@@ -155,9 +155,11 @@ export class Notes {
         $(document).on(this.oEvents.categories_select, ((oEvent, oItem) => {
             this._oSelectedCategory = oItem;
             this.fnInitComponent(oItem.id);
+            // this.oTagsTagBox.tagbox('loadData');
         }).bind(this))
 
         $(document).on(this.oEvents.notes_edit_click, ((oEvent, iID) => {
+            // this.oTagsTagBox.tagbox('reload');
             $.post(
                 this.oURLs.get_note,
                 { id: iID },
@@ -243,7 +245,7 @@ export class Notes {
         })
     }
 
-    static fnInitComponent(iCategoryID)
+    static fnInitComponentTagBox(iCategoryID)
     {
         this.oTagsTagBox.tagbox({
             url: this.oURLs.list_tags,
@@ -255,7 +257,10 @@ export class Notes {
             hasDownArrow: true,
             prompt: 'Тэги'
         });
+    }
 
+    static fnInitComponent(iCategoryID)
+    {
         this.fnComponent({
             url: this.oURLs.list(iCategoryID),
 
@@ -307,6 +312,7 @@ export class Notes {
     {
         this.fnBindEvents();
         this.fnInitCombo();
+        this.fnInitComponentTagBox();
         // this.fnInitComponent();
 
         $(document).trigger(this.oEvents.notes_init);
