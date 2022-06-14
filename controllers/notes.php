@@ -43,7 +43,7 @@ if ($sMethod == 'list_notes') {
 if ($sMethod == 'list_tags') {
     $aResult = R::findAll(T_TAGS);
 
-    die(json_encode($aResult));
+    die(json_encode(array_values($aResult)));
 }
 
 if ($sMethod == 'get_note') {
