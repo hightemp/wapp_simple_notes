@@ -249,8 +249,8 @@ export class Notes {
             url: this.oURLs.list_tags,
             method: 'get',
             value: [],
-            valueField: 'text',
-            textField: 'text',
+            valueField: 'name',
+            textField: 'name',
             limitToList: false,
             hasDownArrow: true,
             prompt: 'Тэги'
