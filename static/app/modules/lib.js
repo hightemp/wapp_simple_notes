@@ -131,6 +131,7 @@ export function fnCreateEditor(oElement, sContent)
             codeSyntaxHighlighting: true,
         },
         uploadImage: true,
+        imageMaxSize: 500 * 1024 * 1024,
         imageUploadEndpoint: 'ajax.php?method=upload_image',
         element: oElement,
         minHeight: "100%",
@@ -147,11 +148,13 @@ export function fnCreateEditor(oElement, sContent)
         uploadImage(
             file, 
             (imageUrl) => {
-                imageUrl = imageUrl.replace(window.location.origin, window.BASE_PATH);
+                imageUrl = imageUrl.replace(window.location.origin, window.BASE_PATH+'/');
                 imageUrl = imageUrl.replace(/\/+/, '/');
 
                 onSuccess = onSuccess || function onSuccess(imageUrl) {
                     afterImageUploaded(oEditor, imageUrl);
+
+                    $(document).trigger("files:upload", [ imageUrl ]);
                 }
                 
                 onSuccess(imageUrl);

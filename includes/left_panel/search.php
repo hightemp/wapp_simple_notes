@@ -11,9 +11,11 @@
         </div>
         <div>
             <select id="search-fitler-type" class="easyui-combobox" name="search_type" data-options="fit:true">
-                <option value="all">Заголовок и контент</option>
+                <option value="all">Везде</option>
                 <option value="title">Заголовок</option>
                 <option value="content">Контент</option>
+                <option value="tags">Тэги</option>
+                <option value="categories">Категория</option>
             </select>
         </div>
         <a href="#" class="easyui-linkbutton" id="clear-btn">Очистить</a>

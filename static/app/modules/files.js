@@ -21,6 +21,9 @@ export class Files {
     static oEvents = {
         images_save: "images:save",
         images_item_click: "images:item_click",
+
+        files_upload: "files:upload",
+
         files_save: "files:save",
         files_item_click: "files:item_click",
         files_init: "files:init",
@@ -241,6 +244,10 @@ export class Files {
 
     static fnBindEvents()
     {
+        $(document).on(this.oEvents.files_upload, ((oEvent, sURL) => {
+            this.fnReload();
+        }).bind(this))
+
         this.oEditImagesDialogSaveBtn.click((() => {
             this.fnImagesSave();
         }).bind(this))
@@ -306,12 +313,15 @@ export class Files {
         this.fnComponentImagesList({
             singleSelect: true,
 
+            nowrap: false,
+
             url: this.oURLs.list_images,
             method: 'get',
 
             columns:[[
-                {field:'created_at',title:'Создано',width:200},
-                {field:'name',title:'Название',width:300},
+                {field:'created_at',title:'Создано',width:180},
+                {field:'name',title:'Название',width:270},
+                {field:'tags',title:'Тэги',width:100},
                 {field:'filename',title:'Файл',width:150},
             ]],
 
@@ -340,12 +350,15 @@ export class Files {
         this.fnComponentFilesList({
             singleSelect: true,
 
+            nowrap: false,
+
             url: this.oURLs.list_files,
             method: 'get',
 
             columns:[[
-                {field:'created_at',title:'Создано',width:200},
-                {field:'name',title:'Название',width:300},
+                {field:'created_at',title:'Создано',width:180},
+                {field:'name',title:'Название',width:270},
+                {field:'tags',title:'Тэги',width:100},
                 {field:'filename',title:'Файл',width:150},
             ]],
 
@@ -361,7 +374,7 @@ export class Files {
                     top: e.pageY,
                     onClick: (item) => {
                         if (item.id == 'edit') {
-                            this.fnShowEditWindow(node);
+                            this.fnShowFilesEditWindow(node);
                         }
                         if (item.id == 'delete') {
                             this.fnFilesDelete(node);

@@ -161,7 +161,8 @@ export class Search {
             columns:[[
                 {field:'created_at',title:'Создано',width:100},
                 {field:'category',title:'Категория',width:100},
-                {field:'name',title:'Название',width:300}
+                {field:'name',title:'Название',width:200},
+                {field:'tags',title:'Тэги',width:100}
             ]],
 
             onSelect: ((iIndex, oNode) => {
