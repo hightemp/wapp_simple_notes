@@ -130,10 +130,12 @@ table * {
     position: relative;
 }
 
-.image-preview:hover img {
+.datagrid-row-selected img {
     display: block !important;
-    position: fixed;
-    z-index: 999;
-    width:200px;
+    /* position: fixed; */
+    /* z-index: 999; */
+    width: 200px;
+    height: 200px;
+    object-fit: scale-down;
     border: 1px solid rgba(0,0,0,0.5);
 }
