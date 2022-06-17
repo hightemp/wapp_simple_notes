@@ -320,7 +320,16 @@ export class Files {
 
             columns:[[
                 {field:'created_at',title:'Создано',width:180},
-                {field:'name',title:'Название',width:270},
+                {field:'name',title:'Название',width:270,
+                    formatter: function(value,row,index) {
+                        return `
+                            <div id="name-${row.id}" class="image-preview">
+                            ${value}
+                                <img src=\'${window.IMAGES_PATH+'/'+row.filename}\' style="display:none;"/>
+                            </div>
+                        `;
+                    }
+                },
                 {field:'tags',title:'Тэги',width:100},
                 {field:'filename',title:'Файл',width:150},
             ]],
@@ -345,7 +354,14 @@ export class Files {
                     }
                 });
             }).bind(this),
+
+            onLoadSuccess: (() => {
+                console.log(this.fnComponentImagesList('getRows'));
+
+            }).bind(this)
         });
+
+        
 
         this.fnComponentFilesList({
             singleSelect: true,

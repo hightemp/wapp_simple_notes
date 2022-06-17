@@ -125,3 +125,10 @@ body {
 table * { 
     font-size: 8px !important; 
 }
+
+.image-preview:hover img {
+    display: block !important;
+    position:absolute;
+    width:200px;
+    border: 1px solid rgba(0,0,0,0.5);
+}
