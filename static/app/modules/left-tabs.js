@@ -57,6 +57,13 @@ export class LeftTabs {
                     handler: (function(){
                         this.fnShowHelpDialog();
                     }).bind(this)
+                },
+                {
+                    iconCls:'icon-sum',
+                    title: 'Упаковать данные в архив',
+                    handler: (function(){
+                        window.open(`ajax.php?method=get_archived_data`);
+                    }).bind(this)
                 }
             ]
         })

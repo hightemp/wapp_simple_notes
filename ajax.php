@@ -12,3 +12,4 @@ include_once("./controllers/categories.php");
 include_once("./controllers/notes.php");
 include_once("./controllers/files.php");
 include_once("./controllers/search.php");
+include_once("./controllers/utils.php");
