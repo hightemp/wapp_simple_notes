@@ -111,13 +111,13 @@ if ($sMethod == 'create_note') {
         $oNote->tcategories = R::findOne(T_CATEGORIES, "id = ?", [$aRequest['category_id']]);
     }
 
+    R::store($oNote);
+
     if ($aRequest['tags_list']) {
         fnSetTags($oNote->id, T_NOTES, explode(",", $aRequest['tags_list']));
     }
 
-    file_put_contents("{$sFNP}/{$oNote->timestamp}.md", "");
-
-    R::store($oNote);
+    // file_put_contents("{$sFNP}/{$oNote->timestamp}.md", "");
 
     die(json_encode([
         "id" => $oNote->id, 
