@@ -145,7 +145,7 @@ export class Search {
     static fnInitComponent()
     {
         this.fnComponent({
-            url: this.oURLs.list(this._sSearchQuery),
+            url: 'ajax.php', // this.oURLs.list(this._sSearchQuery),
 
             fit: true,
             fitColumns:true,
@@ -153,6 +153,7 @@ export class Search {
             animate:true,
             lines:true,
             dnd:true,
+            nowrap:false,
 
             singleSelect: true,
 
@@ -172,7 +173,7 @@ export class Search {
                 }
             }).bind(this),
 
-            onRowContextMenu: (function(oEvent, node) {
+            onRowContextMenu: (function(oEvent, index, node) {
                 oEvent.preventDefault();
                 // this.fnSelect(node.target);
                 this.oContextMenu.menu('show', {
