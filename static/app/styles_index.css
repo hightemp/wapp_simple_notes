@@ -139,3 +139,27 @@ table * {
     object-fit: scale-down;
     border: 1px solid rgba(0,0,0,0.5);
 }
+
+.input-with-btn-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 30px;
+}
+
+#html-note-html-paste {
+    height: 800px;
+    border: 1px solid rgba(0,0,0,0.5);
+    overflow-y: scroll;
+    padding: 5px;
+}
+
+#html-note-html-preview {
+    height: 800px;
+    border: 1px solid rgba(0,0,0,0.5);
+    overflow-y: scroll;
+    white-space: pre-wrap;
+}
+
+#html-note-editor-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}

@@ -28,6 +28,7 @@
                 <ul id="notes-list" class="easyui-datagrid" title="" lines="true" data-options="fit:true"></ul>
             </div>
             <div id="notes-list-tt">
+                <a href="javascript:void(0)" class="icon-add" id="html-note-add-btn"></a>
                 <a href="javascript:void(0)" class="icon-add" id="note-add-btn"></a>
                 <a href="javascript:void(0)" class="icon-edit" id="note-edit-btn"></a>
                 <a href="javascript:void(0)" class="icon-remove" id="note-remove-btn"></a>
@@ -87,8 +88,10 @@
                 <form id="note-dlg-fm" method="post" novalidate style="margin:0;padding:5px">
                     <div>
                         <label>Категория:</label>
-                        <div class="input-with-btn">
-                            <input name="category_id" id="note-dlg-category_id-combotree" class="easyui-combotree" style="width:460px" required="true">
+                        <div class="input-with-btn-wrapper">
+                            <div class="input-with-btn">
+                                <input name="category_id" id="note-dlg-category_id-combotree" class="easyui-combotree" style="width:460px" required="true">
+                            </div>
                             <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-remove" id="note-category-clean-btn" style="width:auto"></a>
                         </div>
                     </div>
@@ -114,6 +117,48 @@
             <div id="note-dlg-buttons">
                 <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" id="note-dlg-save-btn" style="width:auto">Сохранить</a>
                 <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" id="note-dlg-cancel-btn" style="width:auto">Отмена</a>
+            </div>
+
+
+            <!-- Заметка из html контента -->
+            <div id="html-note-dlg" class="easyui-dialog" style="width:1400px" data-options="closed:true,modal:true,border:'thin',buttons:'#html-note-dlg-buttons'">
+                <form id="html-note-dlg-fm" method="post" novalidate style="margin:0;padding:5px">
+                    <div>
+                        <label>Категория:</label>
+                        <div class="input-with-btn-wrapper">
+                            <div class="input-with-btn">
+                                <input name="category_id" id="html-note-dlg-category_id-combotree" class="easyui-combotree" style="width:460px" required="true">
+                            </div>
+                            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-remove" id="html-note-category-clean-btn" style="width:auto"></a>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:10px">
+                        <label>Заголовок:</label>
+                        <input name="name" class="easyui-textbox" required="true" style="width:100%" id="html-note-title">
+                    </div>
+                    <div style="margin-bottom:10px">
+                        <label>Тэги:</label>
+                        <input 
+                            name="tags"
+                            id="html-note-tags-box"
+                            class="easyui-tagbox" 
+                            style="width:100%" 
+                        >
+                    </div>
+                    <div style="margin-bottom:10px">
+                        <a href="#" class="easyui-linkbutton" id="html-note-clean-html">Очистить HTML</a>
+                        <a href="#" class="easyui-linkbutton" id="html-note-convert-to-markdown">В markdown</a>
+                        <a href="#" class="easyui-linkbutton" id="html-note-images">Изображения</a>
+                    </div>
+                    <div style="margin-bottom:10px" id="html-note-editor-wrapper">
+                        <div id="html-note-html-paste" contenteditable="true"></div>
+                        <div id="html-note-html-preview"></div>
+                    </div>
+                </form>
+            </div>
+            <div id="html-note-dlg-buttons">
+                <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" id="html-note-dlg-save-btn" style="width:auto">Сохранить</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" id="html-note-dlg-cancel-btn" style="width:auto">Отмена</a>
             </div>
         </div>
     </div>

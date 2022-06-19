@@ -45,11 +45,28 @@ export class Notes {
         return $("#note-mm");
     }
 
+    static get oHTMLNoteDialog() {
+        return $('#html-note-dlg');
+    }
+    static get oHTMLNoteDialogForm() {
+        return $('#html-note-dlg-fm');
+    }
+
     static get oNoteCategoryIDComboTree() {
         return $('#note-dlg-category_id-combotree');
     }
     static get oTagsTagBox() {
         return $('#note-tags-box');
+    }
+
+    static get oHTMLNoteNoteCategoryIDComboTree() {
+        return $('#html-note-dlg-category_id-combotree');
+    }
+    static get oHTMLNoteTagsTagBox() {
+        return $('#html-note-tags-box');
+    }
+    static get oHTMLNoteTitleInput() {
+        return $('#html-note-title');
     }
 
     static get oEditDialogCategoryCleanBtn() {
@@ -62,6 +79,19 @@ export class Notes {
         return $('#note-dlg-cancel-btn');
     }
 
+    static get oEditHTMLNoteDialogCategoryCleanBtn() {
+        return $('#html-note-category-clean-btn');
+    }
+    static get oEditHTMLNoteDialogSaveBtn() {
+        return $('#html-note-dlg-save-btn');
+    }
+    static get oEditHTMLNoteDialogCancelBtn() {
+        return $('#html-note-dlg-cancel-btn');
+    }
+
+    static get oPanelAddHTMLNoteButton() {
+        return $('#html-note-add-btn');
+    }
     static get oPanelAddButton() {
         return $('#note-add-btn');
     }
@@ -75,10 +105,36 @@ export class Notes {
         return $('#note-reload-btn');
     }
 
+    static get oCleanHTMLButton() {
+        return $('#html-note-clean-html');
+    }
+    static get oConvertHTMLToMarkdownButton() {
+        return $('#html-note-convert-to-markdown');
+    }
+
+    static get oHTMLPaste() {
+        return $('#html-note-html-paste');
+    }
+    static get oHTMLPreview() {
+        return $('#html-note-html-preview');
+    }
+
     static get fnComponent() {
         return this.oComponent.datagrid.bind(this.oComponent);
     }
 
+    static fnShowHTMLNoteDialog(sTitle) {
+        this.oHTMLNoteDialog.dialog('open').dialog('center').dialog('setTitle', sTitle);
+    }
+    static fnDialogHTMLNoteFormLoad(oRows={}) {
+        this.oHTMLNoteNoteCategoryIDComboTree.combotree('reload');
+        // if (this._oSelectedCategory) {
+        //     this.oNoteCategoryIDComboTree.combotree('setValue', this._oSelectedCategory.id);
+        // }
+        this.oHTMLNoteTagsTagBox.tagbox('reload');
+        this.oHTMLNoteDialogForm.form('clear');
+        this.oHTMLNoteDialogForm.form('load', oRows);
+    }
     static fnShowDialog(sTitle) {
         this.oDialog.dialog('open').dialog('center').dialog('setTitle', sTitle);
     }
@@ -92,11 +148,26 @@ export class Notes {
         this.oDialogForm.form('load', oRows);
     }
 
+    static fnShowHTMLNoteCreateWindow()
+    {
+        this.sURL = this.oURLs.create;
+        var oData = {}
+
+        if (this._oSelectedCategory && this._oSelectedCategory.id) {
+            oData = {
+                category_id: this._oSelectedCategory ? this._oSelectedCategory.id : null,
+                category: this._oSelectedCategory ? this._oSelectedCategory.text : ""
+            }
+        }
+
+        this.fnShowHTMLNoteDialog(this.oWindowTitles.create);
+        this.fnDialogHTMLNoteFormLoad(oData);
+        this.oHTMLNoteTagsTagBox.tagbox('setValues', []);     
+    }
+
     static fnShowCreateWindow() {
         this.sURL = this.oURLs.create;
-        var oData = {
-            category_id: this._oSelectedCategory.id
-        }
+        var oData = {}
 
         if (this._oSelectedCategory && this._oSelectedCategory.id) {
             oData = {
@@ -121,6 +192,26 @@ export class Notes {
 
     static fnReload() {
         this.fnComponent('reload');
+    }
+
+    static fnHTMLNoteSave() {
+        this.oHTMLNoteDialogForm.form('submit', {
+            url: this.sURL,
+            queryParams: {
+                'tags_list': this.oHTMLNoteTagsTagBox.tagbox('getValues').join(','),
+                'content': this.oHTMLPreview.html()
+            },
+            iframe: false,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: (function(result){
+                this.oHTMLNoteDialog.dialog('close');
+                this.fnReload();
+
+                this.fnFireEvent_Save();
+            }).bind(this)
+        });
     }
 
     static fnSave() {
@@ -191,9 +282,14 @@ export class Notes {
             this.fnShowCreateWindow();
         }).bind(this))
 
+        this.oHTMLPaste.on('input', (function (e) {
+            this.oHTMLPreview.text(e.target.innerHTML);
+            var sTitle = $($(e.target).find("h1,h2,h3,h4,h5,h6")[0]).text();
+            this.oHTMLNoteTitleInput.val(sTitle);
+        }).bind(this))
 
         this.oEditDialogCategoryCleanBtn.click((() => {
-            this.oNoteCategoryIDComboTree.combotree('clear');
+            this.oHTMLNoteNoteCategoryIDComboTree.combotree('clear');
         }).bind(this))
         this.oEditDialogSaveBtn.click((() => {
             this.fnSave();
@@ -202,6 +298,19 @@ export class Notes {
             this.oDialog.dialog('close');
         }).bind(this))
 
+        this.oEditHTMLNoteDialogCategoryCleanBtn.click((() => {
+            this.oNoteCategoryIDComboTree.combotree('clear');
+        }).bind(this))
+        this.oEditHTMLNoteDialogSaveBtn.click((() => {
+            this.fnHTMLNoteSave();
+        }).bind(this))
+        this.oEditHTMLNoteDialogCancelBtn.click((() => {
+            this.oHTMLNoteDialog.dialog('close');
+        }).bind(this))
+
+        this.oPanelAddHTMLNoteButton.click((() => {
+            this.fnShowHTMLNoteCreateWindow();
+        }).bind(this))
         this.oPanelAddButton.click((() => {
             this.fnShowCreateWindow();
         }).bind(this))
@@ -213,6 +322,22 @@ export class Notes {
         }).bind(this))
         this.oPanelReloadButton.click((() => {
             this.fnReload();
+        }).bind(this))
+
+        this.oCleanHTMLButton.click((() => {
+            var sHTML = this.oHTMLPaste.html();
+            window.libclient.clean.clean(sHTML, {}, (function(sCleanedHTML) {
+                this.oHTMLPaste.html(sCleanedHTML);
+                this.oHTMLPreview.text(sCleanedHTML);
+            }).bind(this))
+        }).bind(this))
+        this.oConvertHTMLToMarkdownButton.click((() => {
+            var sHTML = this.oHTMLPaste.html();
+            console.log(window.libclient.turndown);
+            var oTurndownService = new window.libclient.turndown.default();
+            var sNewHTML = oTurndownService.turndown(sHTML);
+            // this.oHTMLPaste.html(sNewHTML);
+            this.oHTMLPreview.text(sNewHTML);
         }).bind(this))
     }
 
@@ -239,6 +364,16 @@ export class Notes {
     static fnInitCombo(iCategoryID)
     {
         this.oNoteCategoryIDComboTree.combotree({
+            fit: true,
+
+            url: `ajax.php?method=list_tree_categories`,
+            idField:'id',
+            treeField:'name',
+        })
+
+        this.oHTMLNoteNoteCategoryIDComboTree.combotree({
+            fit: true,
+
             url: `ajax.php?method=list_tree_categories`,
             idField:'id',
             treeField:'name',

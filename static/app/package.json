@@ -4,12 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "jspanel3": "^3.11.3"
+    "clean-html": "^1.5.0",
+    "css-loader": "^6.7.1",
+    "file-loader": "^6.2.0",
+    "jspanel3": "^3.11.3",
+    "style-loader": "^3.3.1",
+    "turndown": "^7.1.1"
   }
 }

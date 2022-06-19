@@ -2,6 +2,62 @@
 
 include_once("./config.php");
 
+function fnFindImagesURLs($sContent)
+{
+    $aResult = [];
+    
+    if (preg_match_all("@<img[^>]*?src=[\"']([^>]*?)[\"'][^>]*?>@", $sContent, $aM)) {
+        $aResult = array_merge($aResult, $aM[1]);
+    }
+
+    if (preg_match_all("@!\\[[^\\]]*?\\]\\(([^\\)]*?)\\)@", $sContent, $aM)) {
+        $aResult = array_merge($aResult, $aM[1]);
+    }
+
+    return $aResult;
+}
+
+function fnUploadImages($aImages)
+{
+    $aResult = [];
+
+    foreach ($aImages as $sURL) {
+        $sFileName = basename($sURL);
+        preg_match("/\\.(\w+)$/", $sFileName, $aM);
+        $sExt = $aM[1];
+
+        $oFile = R::dispense(T_FILES);
+
+        $oFile->created_at = date("Y-m-d H:i:s");
+        $oFile->updated_at = date("Y-m-d H:i:s");
+        $oFile->timestamp = time();
+        $oFile->name = $sFileName;
+        $oFile->type = $sExt;
+        $oFile->filename = $oFile->timestamp.".".$sExt;
+    
+        R::store($oFile);
+
+        $sFilePath = P_FIP."/".$oFile->filename;
+        $sRelFilePath = P_IP."/".$oFile->filename;
+
+        $aResult[$sURL] = $sRelFilePath;
+
+        copy($sURL, $sFilePath);
+    }
+
+    return $aResult ;
+}
+
+function fnUploadFromContent(&$sContent)
+{
+    $aImages = fnFindImagesURLs($sContent);
+    $aImages = fnUploadImages($aImages);
+    
+    foreach ($aImages as $sURL => $sPath) {
+        $sContent = str_replace($sURL, $sPath, $sContent);
+    }
+}
+
 function fnZipDataFolder()
 {
     $sFilePath = "/tmp/{$_SERVER['SERVER_NAME']}_".PROJECT."_".time().".zip";

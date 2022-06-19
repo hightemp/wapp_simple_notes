@@ -107,6 +107,11 @@ if ($sMethod == 'create_note') {
     $oNote->name = $aRequest['name'];
     $oNote->description = $aRequest['description'];
 
+    if (isset($aRequest['content'])) {
+        fnUploadFromContent($aRequest['content']);
+        $oNote->content = $aRequest['content'];
+    }
+
     if (isset($aRequest['category_id']) && !empty($aRequest['category_id'])) {
         $oNote->tcategories = R::findOne(T_CATEGORIES, "id = ?", [$aRequest['category_id']]);
     }

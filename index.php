@@ -27,6 +27,8 @@ include_once("./database.php");
 
     <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css">
+
+    <link rel="stylesheet" href="<?php echo $sBA ?>/icons.css">
 </head>
 <body>
     <div id="main-panel">
@@ -43,5 +45,6 @@ window.FILES_PATH = '<?php echo $sBFP ?>';
 </script>
 
 <script type="module">
+import "./static/app/dist/lib.client.js";
 import * as m from "./static/app/modules/__init__.js";
 </script>
