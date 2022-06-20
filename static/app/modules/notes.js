@@ -131,6 +131,8 @@ export class Notes {
         // if (this._oSelectedCategory) {
         //     this.oNoteCategoryIDComboTree.combotree('setValue', this._oSelectedCategory.id);
         // }
+        this.oHTMLPaste.html('');
+        this.oHTMLPreview.html('');
         this.oHTMLNoteTagsTagBox.tagbox('reload');
         this.oHTMLNoteDialogForm.form('clear');
         this.oHTMLNoteDialogForm.form('load', oRows);
