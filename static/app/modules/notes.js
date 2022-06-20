@@ -201,7 +201,7 @@ export class Notes {
             url: this.sURL,
             queryParams: {
                 'tags_list': this.oHTMLNoteTagsTagBox.tagbox('getValues').join(','),
-                'content': this.oHTMLPreview.html()
+                'content': this.oHTMLPaste.html()
             },
             iframe: false,
             onSubmit: function(){
@@ -340,6 +340,7 @@ export class Notes {
             var sNewHTML = oTurndownService.turndown(sHTML);
             // this.oHTMLPaste.html(sNewHTML);
             this.oHTMLPreview.text(sNewHTML);
+            this.oHTMLPaste.html(sNewHTML);
         }).bind(this))
     }
 

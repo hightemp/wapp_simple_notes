@@ -121,7 +121,7 @@
 
 
             <!-- Заметка из html контента -->
-            <div id="html-note-dlg" class="easyui-dialog" style="width:1400px" data-options="closed:true,modal:true,border:'thin',buttons:'#html-note-dlg-buttons'">
+            <div id="html-note-dlg" class="easyui-dialog" style="width:100%" data-options="closed:true,modal:true,border:'thin',buttons:'#html-note-dlg-buttons'">
                 <form id="html-note-dlg-fm" method="post" novalidate style="margin:0;padding:5px">
                     <div>
                         <label>Категория:</label>
