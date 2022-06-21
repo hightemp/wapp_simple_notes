@@ -105,6 +105,9 @@ export class Notes {
         return $('#note-reload-btn');
     }
 
+    static get oOptionUploadImagesCheckbox() {
+        return $('#html-note-option-upload-images');
+    }
     static get oCleanHTMLButton() {
         return $('#html-note-clean-html');
     }
@@ -201,7 +204,8 @@ export class Notes {
             url: this.sURL,
             queryParams: {
                 'tags_list': this.oHTMLNoteTagsTagBox.tagbox('getValues').join(','),
-                'content': this.oHTMLPaste.html()
+                'content': this.oHTMLPaste.html(),
+                // 'option_upload_images': this.oOptionUploadImagesCheckbox.checkbox('getValue')
             },
             iframe: false,
             onSubmit: function(){

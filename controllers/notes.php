@@ -108,7 +108,9 @@ if ($sMethod == 'create_note') {
     $oNote->description = $aRequest['description'];
 
     if (isset($aRequest['content'])) {
-        fnUploadFromContent($aRequest['content']);
+        if (isset($aRequest['option_upload_images'])) {
+            fnUploadFromContent($aRequest['content']);
+        }
         $oNote->content = $aRequest['content'];
     }
 

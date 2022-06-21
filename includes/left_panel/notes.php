@@ -145,10 +145,21 @@
                             style="width:100%" 
                         >
                     </div>
-                    <div style="margin-bottom:10px">
+                    <div style="margin-bottom:10px; display: flex">
                         <a href="#" class="easyui-linkbutton" id="html-note-clean-html">Очистить HTML</a>
                         <a href="#" class="easyui-linkbutton" id="html-note-convert-to-markdown">В markdown</a>
                         <a href="#" class="easyui-linkbutton" id="html-note-images">Изображения</a>
+                        <div style="width: 280px;display: flex;align-items: center;">
+                            <input 
+                                class="easyui-checkbox" 
+                                id="html-note-option-upload-images"
+                                name="option_upload_images" 
+                                value="1" 
+                                label="Загрузить изображения"
+                                data-options="checked: true, labelWidth:180"
+                            />
+                        </div>
+                        
                     </div>
                     <div style="margin-bottom:10px" id="html-note-editor-wrapper">
                         <div id="html-note-html-paste" contenteditable="true"></div>
