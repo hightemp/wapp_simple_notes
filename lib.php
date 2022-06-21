@@ -17,6 +17,28 @@ function fnFindImagesURLs($sContent)
     return $aResult;
 }
 
+function fnDownloadFileFromURL($sURL, $sFilePath)
+{
+    if (ini_get('allow_url_fopen')) {
+        copy($sURL, $sFilePath);
+    } else {
+        //This is the file where we save the    information
+        $fp = fopen ($sFilePath, 'w+');
+        //Here is the file we are downloading, replace spaces with %20
+        $ch = curl_init(str_replace(" ","%20",$url));
+        // make sure to set timeout to a high enough value
+        // if this is too low the download will be interrupted
+        curl_setopt($ch, CURLOPT_TIMEOUT, 600);
+        // write curl response to file
+        curl_setopt($ch, CURLOPT_FILE, $fp); 
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        // get curl response
+        curl_exec($ch); 
+        curl_close($ch);
+        fclose($fp);
+    }
+}
+
 function fnUploadImages($aImages)
 {
     $aResult = [];
@@ -42,7 +64,7 @@ function fnUploadImages($aImages)
 
         $aResult[$sURL] = $sRelFilePath;
 
-        copy($sURL, $sFilePath);
+        fnDownloadFileFromURL($sURL, $sFilePath);
     }
 
     return $aResult ;
