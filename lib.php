@@ -6,7 +6,7 @@ function fnFindImagesURLs($sContent)
 {
     $aResult = [];
     
-    if (preg_match_all("@<img[^>]*?src=[\"']([^>]*?)[\"'][^>]*?>@", $sContent, $aM)) {
+    if (preg_match_all("@<img[^>]*?src\s*=\s*[\"']([^>]*?)[\"'][^>]*?>@", $sContent, $aM)) {
         $aResult = array_merge($aResult, $aM[1]);
     }
 
@@ -26,7 +26,7 @@ function fnUploadImages($aImages)
         preg_match("/\\.(\w+)$/", $sFileName, $aM);
         $sExt = $aM[1];
 
-        $oFile = R::dispense(T_FILES);
+        $oFile = R::dispense(T_IMAGES);
 
         $oFile->created_at = date("Y-m-d H:i:s");
         $oFile->updated_at = date("Y-m-d H:i:s");
@@ -38,7 +38,7 @@ function fnUploadImages($aImages)
         R::store($oFile);
 
         $sFilePath = P_FIP."/".$oFile->filename;
-        $sRelFilePath = P_IP."/".$oFile->filename;
+        $sRelFilePath = P_BIP."/".$oFile->filename;
 
         $aResult[$sURL] = $sRelFilePath;
 

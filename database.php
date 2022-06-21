@@ -32,4 +32,5 @@ $sBIP = $sBase."/data/".PROJECT."/resources/images";
 $sFIP = PROJECT_PATH."/resources/images";
 
 define('P_IP', $sIP);
+define('P_BIP', $sBIP);
 define('P_FIP', $sFIP);
