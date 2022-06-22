@@ -20,7 +20,13 @@ export class RightTabs {
     static oEvents = {
         right_tabs_init: "right_tabs:init",
         tabs_save_content: "tabs:save_content",
+        
         notes_item_click: "notes:item_click",
+        notes_edit_click: "notes:edit_click",
+        notes_delete_click: "notes:delete_click",
+        notes_reload_click: "notes:reload_click",
+
+        notes_to_save_click: "notes:to_save_click",
     }
 
     static oURLs = {
@@ -72,6 +78,10 @@ export class RightTabs {
         $(document).on(this.oEvents.notes_item_click, ((oEvent, iID) => {
             this.fnActionOpenNote(iID);
         }).bind(this));
+
+        // $(document).on(this.oEvents.notes_to_save_click, ((oEvent, iID) => {
+        //     this.fnActionSaveNoteContent();
+        // }).bind(this));
 
         $(document).on('keydown', (oEvent => {
             if (oEvent.ctrlKey && oEvent.key === 's') {
@@ -145,6 +155,32 @@ export class RightTabs {
         this.fnComponent({
             fit:true,
             tabPosition: 'left',
+
+            // tools:[{
+            //     iconCls:'icon-add',
+            //     handler:function(){
+            //         alert('add')
+            //     }
+            // },{
+            //     iconCls:'icon-save',
+            //     handler:function(){
+            //         alert('save')
+            //     }
+            // }],
+
+            onClose: ((title,index) => {
+                console.log([title,index]);
+
+                var iID = this.oTabsNotesIDs[index];
+                delete this.oTabsNotesIndexes[iID];
+                delete this.oTabsNotesIDs[index];
+
+                this.fnGenerateHashForNote();
+            }).bind(this),
+
+            onAdd: ((title,index) => {
+                this.fnGenerateHashForNote();
+            }).bind(this)
         })
     }
 
@@ -188,12 +224,14 @@ export class RightTabs {
 
     static fnSetDirtyNote(iID) {
         if (this.oTabsNotesNotSavedIDs[iID]) return;
-        this.fnAddTabTitleStar(this.oTabsNotesIndexes[iID]);
+        // this.fnAddTabTitleStar(this.oTabsNotesIndexes[iID]);
+        $(`#tab-dirty-${iID}`).show();
         this.oTabsNotesNotSavedIDs[iID] = true;
     }
     static fnUnsetDirtyNote(iID) {
         if (!this.oTabsNotesNotSavedIDs[iID]) return;
-        this.fnRemoveTabTitleStar(this.oTabsNotesIndexes[iID]);
+        // this.fnRemoveTabTitleStar(this.oTabsNotesIndexes[iID]);
+        $(`#tab-dirty-${iID}`).hide();
         this.oTabsNotesNotSavedIDs[iID] = false;
     }
     static fnSetDirtyTable(iID) {
@@ -237,6 +275,23 @@ export class RightTabs {
         }).bind(this))
     }
 
+    static fnBindButtons(iID)
+    {
+        $(`#note-edit-btn-${iID}`).click((() => {
+            $(document).trigger(this.oEvents.notes_edit_click, [ iID ]);
+        }).bind(this))
+        $(`#note-remove-btn-${iID}`).click((() => {
+            $(document).trigger(this.oEvents.notes_delete_click, [ iID ]);
+        }).bind(this))
+        $(`#note-reload-btn-${iID}`).click((() => {
+            $(document).trigger(this.oEvents.notes_reload_click, [ ]);
+        }).bind(this))
+        $(`#note-save-btn-${iID}`).click((() => {
+            this.fnFireEvent_TabSaveContent();
+            this.fnActionSaveNoteContent();
+        }).bind(this))
+    }
+
     static fnActionOpenNote(iID)
     {
         if (this.fnGetNote(iID).length) {
@@ -248,10 +303,27 @@ export class RightTabs {
             { id: iID },
             ((oR) => {
                 this.fnAddTab({
-                    title: oR.name,
-                    content: `<textarea id="note-${iID}" style="width:100%;height:100%"></textarea>`,
+                    title: `<span id="tab-dirty-${iID}" style="display:none">*</span> `+oR.name,
+                    content: `
+                    <div 
+                        class="easyui-panel" 
+                        title="  " 
+                        style="padding:0px;"
+                        data-options="tools:'#tab-note-tt-${iID}', fit:true,border:false"
+                    >
+                        <textarea id="note-${iID}" style="width:100%;height:100%"></textarea>
+                    </div>
+                    <div id="tab-note-tt-${iID}">
+                        <a href="javascript:void(0)" class="icon-edit" id="note-edit-btn-${iID}"></a>
+                        <a href="javascript:void(0)" class="icon-delete" id="note-remove-btn-${iID}"></a>
+                        <!-- <a href="javascript:void(0)" class="icon-reload" id="note-reload-btn-${iID}"></a> -->
+                        <a href="javascript:void(0)" class="icon-save" id="note-save-btn-${iID}"></a>
+                    </div>
+                    `,
                     closable: true,
                 });
+
+                this.fnBindButtons(iID);
 
                 var iI = this.fnGetSelectedTabIndex();
 
@@ -269,7 +341,7 @@ export class RightTabs {
                 this.fnGenerateHashForNote();
 
                 oEd.codemirror.on("change", (() => {
-                    this.fnSetDirtyTable(this.oTabsNotesIDs[iI]);
+                    this.fnSetDirtyNote(this.oTabsNotesIDs[iI]);
                 }).bind(this));
                 
             }).bind(this),

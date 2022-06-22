@@ -1,7 +1,7 @@
 <!-- Изображения -->
 <div title="<i class='fa fa-image' aria-hidden='true'></i>" style="padding:0px" id="files-left-panel">
     <div class="easyui-layout" data-options="fit:true">
-        <div data-options="region:'north',split:true" title="" style="height:400px;">
+        <div data-options="region:'north',split:true,border:false" title="" style="height:400px;">
             <div 
                 class="easyui-panel images-list-panel" 
                 title="Изображения" 
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div data-options="region:'center',title:'',iconCls:'icon-ok'">
+        <div data-options="region:'center',title:'',iconCls:'icon-ok',border:false">
             <div 
                 class="easyui-panel files-list-panel" 
                 title="Файлы" 
@@ -76,7 +76,7 @@
         </div>
         <div id="images-dlg-buttons">
             <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" id="images-dlg-save-btn" style="width:auto">Сохранить</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" id="v-dlg-cancel-btn" style="width:auto">Отмена</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" id="images-dlg-cancel-btn" style="width:auto">Отмена</a>
         </div>
 
         <div id="files-dlg" class="easyui-dialog" style="width:500px" data-options="closed:true,modal:true,border:'thin',buttons:'#files-dlg-buttons'">
@@ -97,7 +97,7 @@
         </div>
         <div id="files-dlg-buttons">
             <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" id="files-dlg-save-btn" style="width:auto">Сохранить</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" id="v-dlg-cancel-btn" style="width:auto">Отмена</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" id="files-dlg-cancel-btn" style="width:auto">Отмена</a>
         </div>
 
         <div id="images-mm" class="easyui-menu" style="width:auto;">

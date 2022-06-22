@@ -1,2 +1,2 @@
 export * as clean from 'clean-html'
-export * as turndown from 'turndown'
+export * as html2markdown from 'node-html-markdown'

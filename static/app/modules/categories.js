@@ -51,6 +51,12 @@ export class Categories {
         return $('#category-dlg-cancel-btn');
     }
 
+    static get oPanelCollapseButton() {
+        return $('#category-collapse-btn');
+    }
+    static get oPanelExpandButton() {
+        return $('#category-expand-btn');
+    }
     static get oPanelAddButton() {
         return $('#category-add-btn');
     }
@@ -182,6 +188,13 @@ export class Categories {
         }).bind(this))
         this.oPanelReloadButton.click((() => {
             this.fnReload();
+        }).bind(this))
+
+        this.oPanelCollapseButton.click((() => {
+            this.fnComponent('collapseAll');
+        }).bind(this))
+        this.oPanelExpandButton.click((() => {
+            this.fnComponent('expandAll');
         }).bind(this))
     }
 

@@ -150,16 +150,22 @@ table * {
     border: 1px solid rgba(0,0,0,0.5);
     overflow-y: scroll;
     padding: 5px;
+    white-space: pre-wrap;
 }
 
 #html-note-html-preview {
     height: 800px;
     border: 1px solid rgba(0,0,0,0.5);
     overflow-y: scroll;
+    padding: 5px;
     white-space: pre-wrap;
 }
 
 #html-note-editor-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
+}
+
+#category-expand-btn {
+    margin-right: 10px;
 }

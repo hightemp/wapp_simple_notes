@@ -12,9 +12,11 @@
                 <ul id="categories-tree" class="easyui-treegrid" data-options="fit:true"></ul>
             </div>
             <div id="categories-tt">
+                <a href="javascript:void(0)" class="icon-folder" id="category-collapse-btn"></a>
+                <a href="javascript:void(0)" class="icon-folder_page" id="category-expand-btn"></a>
                 <a href="javascript:void(0)" class="icon-add" id="category-add-btn"></a>
                 <a href="javascript:void(0)" class="icon-edit" id="category-edit-btn"></a>
-                <a href="javascript:void(0)" class="icon-remove" id="category-remove-btn"></a>
+                <a href="javascript:void(0)" class="icon-delete" id="category-remove-btn"></a>
                 <a href="javascript:void(0)" class="icon-reload" id="category-reload-btn"></a>
             </div>
         </div>
@@ -31,7 +33,7 @@
                 <a href="javascript:void(0)" class="icon-add" id="html-note-add-btn"></a>
                 <a href="javascript:void(0)" class="icon-add" id="note-add-btn"></a>
                 <a href="javascript:void(0)" class="icon-edit" id="note-edit-btn"></a>
-                <a href="javascript:void(0)" class="icon-remove" id="note-remove-btn"></a>
+                <a href="javascript:void(0)" class="icon-delete" id="note-remove-btn"></a>
                 <a href="javascript:void(0)" class="icon-reload" id="note-reload-btn"></a>
             </div>
         </div>
@@ -148,7 +150,7 @@
                     <div style="margin-bottom:10px; display: flex">
                         <a href="#" class="easyui-linkbutton" id="html-note-clean-html">Очистить HTML</a>
                         <a href="#" class="easyui-linkbutton" id="html-note-convert-to-markdown">В markdown</a>
-                        <a href="#" class="easyui-linkbutton" id="html-note-images">Изображения</a>
+                        <!-- <a href="#" class="easyui-linkbutton" id="html-note-images">Изображения</a> -->
                         <div style="width: 280px;display: flex;align-items: center;">
                             <input 
                                 class="easyui-checkbox" 
@@ -163,7 +165,7 @@
                     </div>
                     <div style="margin-bottom:10px" id="html-note-editor-wrapper">
                         <div id="html-note-html-paste" contenteditable="true"></div>
-                        <div id="html-note-html-preview"></div>
+                        <div id="html-note-html-preview" contenteditable="true"></div>
                     </div>
                 </form>
             </div>

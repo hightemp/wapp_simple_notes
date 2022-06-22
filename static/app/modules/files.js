@@ -231,7 +231,7 @@ export class Files {
         return this.fnComponentImagesList('getSelected');
     }
     static fnGetSelectedFilesList() {
-        return this.fnComponenFilesList('getSelected');
+        return this.fnComponentFilesList('getSelected');
     }
     
 
@@ -311,7 +311,10 @@ export class Files {
     static fnInitComponent()
     {
         this.fnComponentImagesList({
-            singleSelect: true,
+            border: false,
+            singleSelect: false,
+            striped: true,
+            ctrlSelect: true,
 
             nowrap: false,
 
@@ -364,7 +367,10 @@ export class Files {
         
 
         this.fnComponentFilesList({
-            singleSelect: true,
+            border: false,
+            singleSelect: false,
+            striped: true,
+            ctrlSelect: true,
 
             nowrap: false,
 

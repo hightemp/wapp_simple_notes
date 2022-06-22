@@ -23,6 +23,7 @@ export class Notes {
         notes_create_new_click: "notes:create_new_click",
         notes_edit_click: "notes:edit_click",
         notes_delete_click: "notes:delete_click",
+        notes_reload_click: "notes:reload_click",
         notes_save: "notes:save",
         notes_create: "notes:create",
         notes_item_click: "notes:item_click",
@@ -291,7 +292,12 @@ export class Notes {
         this.oHTMLPaste.on('input', (function (e) {
             this.oHTMLPreview.text(e.target.innerHTML);
             var sTitle = $($(e.target).find("h1,h2,h3,h4,h5,h6")[0]).text();
-            this.oHTMLNoteTitleInput.val(sTitle);
+            this.oHTMLNoteTitleInput.textbox('setValue', sTitle);
+        }).bind(this))
+        this.oHTMLPreview.on('input', (function (e) {
+            this.oHTMLPaste.html(e.target.innerText);
+            var sTitle = $(this.oHTMLPaste.find("h1,h2,h3,h4,h5,h6")[0]).text();
+            this.oHTMLNoteTitleInput.textbox('setValue', sTitle);
         }).bind(this))
 
         this.oEditDialogCategoryCleanBtn.click((() => {
@@ -339,9 +345,8 @@ export class Notes {
         }).bind(this))
         this.oConvertHTMLToMarkdownButton.click((() => {
             var sHTML = this.oHTMLPaste.html();
-            console.log(window.libclient.turndown);
-            var oTurndownService = new window.libclient.turndown.default();
-            var sNewHTML = oTurndownService.turndown(sHTML);
+            console.log(window.libclient.html2markdown.NodeHtmlMarkdown);
+            var sNewHTML = window.libclient.html2markdown.NodeHtmlMarkdown.translate(sHTML);
             // this.oHTMLPaste.html(sNewHTML);
             this.oHTMLPreview.text(sNewHTML);
             this.oHTMLPaste.html(sNewHTML);
