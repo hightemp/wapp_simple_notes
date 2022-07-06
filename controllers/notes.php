@@ -1,7 +1,7 @@
 <?php
 
 if ($sMethod == 'list_last_notes') {
-    $aNotes = R::findAll(T_NOTES, "ORDER BY id DESC");
+    $aNotes = R::findAll(T_NOTES, "ORDER BY name ASC, id DESC");
     $aResult = [];
 
     foreach ($aNotes as $oNote) {
@@ -21,7 +21,7 @@ if ($sMethod == 'list_last_notes') {
 }
 
 if ($sMethod == 'list_notes') {
-    $aNotes = R::findAll(T_NOTES, "tcategories_id = ?", [$aRequest['category_id']]);
+    $aNotes = R::findAll(T_NOTES, "tcategories_id = ? ORDER BY name ASC, id DESC", [$aRequest['category_id']]);
     $aResult = [];
 
     foreach ($aNotes as $oNote) {

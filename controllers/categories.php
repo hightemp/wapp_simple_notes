@@ -8,7 +8,7 @@ function fnBuildRecursiveCategoriesTree(&$aResult, $aCategories)
     foreach ($aCategories as $oCategory) {
         $aTreeChildren = [];
 
-        $aChildren = R::children($oCategory, " tcategories_id = {$oCategory->id}");
+        $aChildren = R::children($oCategory, " tcategories_id = {$oCategory->id} ORDER BY name ASC, id DESC");
         fnBuildRecursiveCategoriesTree($aTreeChildren, $aChildren);
 
         $aResult[] = [
@@ -24,7 +24,7 @@ function fnBuildRecursiveCategoriesTree(&$aResult, $aCategories)
 }
 
 if ($sMethod == 'list_tree_categories') {
-    $aCategories = R::findAll(T_CATEGORIES, 'tcategories_id IS NULL');
+    $aCategories = R::findAll(T_CATEGORIES, 'tcategories_id IS NULL ORDER BY name ASC, id DESC');
     $aResult = [];
 
     fnBuildRecursiveCategoriesTree($aResult, $aCategories);
@@ -55,6 +55,8 @@ if ($sMethod == 'update_category') {
 
     if (isset($aRequest['category_id']) && !empty($aRequest['category_id'])) {
         $oCategory->tcategories = R::findOne(T_CATEGORIES, "id = ?", [$aRequest['category_id']]);
+    } else {
+        $oCategory->tcategories = null;
     }
 
     R::store($oCategory);
@@ -73,6 +75,8 @@ if ($sMethod == 'create_category') {
 
     if (isset($aRequest['category_id']) && !empty($aRequest['category_id'])) {
         $oCategory->tcategories = R::findOne(T_CATEGORIES, "id = ?", [$aRequest['category_id']]);
+    } else {
+        $oCategory->tcategories = null;
     }
 
     R::store($oCategory);

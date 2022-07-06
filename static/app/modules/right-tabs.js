@@ -84,17 +84,18 @@ export class RightTabs {
         // }).bind(this));
 
         $(document).on('keydown', (oEvent => {
-            if (oEvent.ctrlKey && oEvent.key === 's') {
+            if (oEvent.ctrlKey && (oEvent.key === 's' || oEvent.key === 'ы')) {
                 oEvent.preventDefault();
-                var iI = this.fnGetSelectedTabIndex();
-                if (this.oTabsNotesIDs[iI]) {
-                    this.fnFireEvent_TabSaveContent();
-                    this.fnActionSaveNoteContent();
-                }
-                if (this.oTabsTablesIDs[iI]) {
-                    this.fnFireEvent_TabSaveContent();
-                    this.fnActionSaveTableContent();
-                }
+                // var iI = this.fnGetSelectedTabIndex();
+                // if (this.oTabsNotesIDs[iI]) {
+                //     this.fnFireEvent_TabSaveContent();
+                //     this.fnActionSaveNoteContent();
+                // }
+                // if (this.oTabsTablesIDs[iI]) {
+                //     this.fnFireEvent_TabSaveContent();
+                //     this.fnActionSaveTableContent();
+                // }
+                $(".icon-save:visible").click();
             }
         }).bind(this));
 
@@ -146,8 +147,8 @@ export class RightTabs {
         }).bind(this));
     }
 
-    static fnFireEvent_TabSaveContent() {
-        $(document).trigger(this.oEvents.tabs_save_content);
+    static fnFireEvent_TabSaveContent(iID) {
+        $(document).trigger(this.oEvents.tabs_save_content, [iID]);
     }
 
     static fnInitComponent()
@@ -169,8 +170,6 @@ export class RightTabs {
             // }],
 
             onClose: ((title,index) => {
-                console.log([title,index]);
-
                 var iID = this.oTabsNotesIDs[index];
                 delete this.oTabsNotesIndexes[iID];
                 delete this.oTabsNotesIDs[index];
@@ -245,18 +244,16 @@ export class RightTabs {
         this.oTabsTablesNotSavedIDs[iID] = false;
     }
 
-    static fnActionSaveNoteContent()
+    static fnActionSaveNoteContent(iID)
     {
-        var iI = this.fnGetSelectedTabIndex();
-
         $.post(
             this.oURLs.update_note_content,
             {
-                id: this.oTabsNotesIDs[iI],
-                content: this.oEditors[this.oTabsNotesIDs[iI]].editor.value()
+                id: iID,
+                content: this.oEditors[iID].editor.value()
             }
         ).done((() => {
-            this.fnUnsetDirtyNote(this.oTabsNotesIDs[iI]);
+            this.fnUnsetDirtyNote(iID);
         }).bind(this))
     }
 
@@ -287,8 +284,8 @@ export class RightTabs {
             $(document).trigger(this.oEvents.notes_reload_click, [ ]);
         }).bind(this))
         $(`#note-save-btn-${iID}`).click((() => {
-            this.fnFireEvent_TabSaveContent();
-            this.fnActionSaveNoteContent();
+            this.fnFireEvent_TabSaveContent(iID);
+            this.fnActionSaveNoteContent(iID);
         }).bind(this))
     }
 
@@ -314,6 +311,7 @@ export class RightTabs {
                         <textarea id="note-${iID}" style="width:100%;height:100%"></textarea>
                     </div>
                     <div id="tab-note-tt-${iID}">
+                        <span class="tab-note-title" id="tab-note-title-${iID}">${iID} - ${oR.name}</span>
                         <a href="javascript:void(0)" class="icon-edit" id="note-edit-btn-${iID}"></a>
                         <a href="javascript:void(0)" class="icon-delete" id="note-remove-btn-${iID}"></a>
                         <!-- <a href="javascript:void(0)" class="icon-reload" id="note-reload-btn-${iID}"></a> -->

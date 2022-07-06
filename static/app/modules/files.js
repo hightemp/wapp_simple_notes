@@ -322,7 +322,7 @@ export class Files {
             method: 'get',
 
             columns:[[
-                {field:'created_at',title:'Создано',width:180},
+                {field:'created_at',title:'Создано',width:95},
                 {field:'name',title:'Название',width:270,
                     formatter: function(value,row,index) {
                         return `
@@ -378,7 +378,7 @@ export class Files {
             method: 'get',
 
             columns:[[
-                {field:'created_at',title:'Создано',width:180},
+                {field:'created_at',title:'Создано',width:95},
                 {field:'name',title:'Название',width:270},
                 {field:'tags',title:'Тэги',width:100},
                 {field:'filename',title:'Файл',width:150},
