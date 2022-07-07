@@ -176,9 +176,38 @@ table * {
 }
 
 /*Container, container body, iframe*/
-.tox-tinymce {
-    height: 100% !important;
+.tox-tinymce, .tox-editor-container {
     min-height: 100% !important;
+}
+
+.tox-sidebar-wrap {
+    margin-top: 40px !important;
+}
+
+/*Container body*/
+.tox-sidebar-wrap {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/*Editing area*/
+.tox-edit-area {
+    position: absolute;
+}
+
+/*Footer*/
+.tox-tinymce .tox-statusbar {
+    position: static !important;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+.tox-editor-header {
+    position: fixed !important;
+    width: 780px !important;
 }
 
 .files-list {

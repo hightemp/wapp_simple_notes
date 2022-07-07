@@ -312,7 +312,7 @@ export class RightTabs {
             return;
         }
 
-        var sPageLink = `/#${iID}`;
+        var sPageLink = `#${iID}`;
 
         $.post(
             this.oURLs.get_note,
