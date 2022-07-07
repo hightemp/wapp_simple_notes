@@ -367,7 +367,6 @@ export class RightTabs {
                     {
                     },
                     (() => {
-                        console.log('test');
                         this.fnSetDirtyNote(this.oTabsNotesIDs[iI]);
                     }).bind(this)
                 );

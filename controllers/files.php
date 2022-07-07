@@ -163,7 +163,7 @@ if ($sMethod == 'upload_image') {
     $sHash = md5_file($_FILES['file']['tmp_name']);
     $sFileName = $sHash.".".$sExt;
 
-    $oFile = R::findOne("filename = ?", [$sFileName]);
+    $oFile = R::findOne($sTable, "filename = ?", [$sFileName]);
 
     if (!$oFile) {
         $oFile = R::dispense($sTable);

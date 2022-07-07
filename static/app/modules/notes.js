@@ -433,6 +433,8 @@ export class Notes {
             border: false,
             singleSelect:true,
 
+            nowrap: false,
+
             idField:'id',
             treeField:'name',
             columns:[[

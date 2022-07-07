@@ -83,13 +83,13 @@
         </div>
 
         <div id="images-mm" class="easyui-menu" style="width:auto;">
-            <div data-options="id:'copy'">Копировать URL</div>
+            <div data-options="id:'copy_link'">Копировать URL</div>
             <div data-options="id:'edit'">Радактировать</div>
             <div data-options="id:'delete'">Удалить</div>
         </div>
 
         <div id="files-mm" class="easyui-menu" style="width:auto;">
-            <div data-options="id:'copy'">Копировать URL</div>
+            <div data-options="id:'copy_link'">Копировать URL</div>
             <div data-options="id:'edit'">Радактировать</div>
             <div data-options="id:'delete'">Удалить</div>
         </div>

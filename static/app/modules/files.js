@@ -252,10 +252,10 @@ export class Files {
     }
 
     static fnPrepareImageURL(oNode) {
-        return window.IMAGES_PATH+'/'+oNode.filename
+        return (new URL(window.IMAGES_PATH+'/'+oNode.filename, window.location.href))+''
     }
     static fnPrepareFileURL(oNode) {
-        return window.FILES_PATH+'/'+oNode.filename
+        return (new URL(window.FILES_PATH+'/'+oNode.filename, window.location.href))+''
     }
 
     static fnReload() {
@@ -344,6 +344,9 @@ export class Files {
             remoteFilter: true,
             nowrap: false,
 
+            pageSize: 6,
+            pageList: [6, 10, 24, 25, 30, 40, 50, 60, 70, 80, 90, 100],
+
             url: this.oURLs.list_images,
             method: 'get',
 
@@ -392,7 +395,7 @@ export class Files {
             }).bind(this)
         });
 
-        this.fnComponentImagesList('enableFilter', []);
+        // this.fnComponentImagesList('enableFilter', []);
 
         this.fnComponentFilesList({
             border: false,
@@ -404,6 +407,9 @@ export class Files {
             pagination: true,
             remoteFilter: true,
             nowrap: false,
+
+            pageSize: 6,
+            pageList: [6, 10, 24, 25, 30, 40, 50, 60, 70, 80, 90, 100],
 
             url: this.oURLs.list_files,
             method: 'get',
@@ -439,7 +445,7 @@ export class Files {
             }).bind(this),
         });
 
-        this.fnComponentFilesList('enableFilter', []);
+        // this.fnComponentFilesList('enableFilter', []);
     }
 
     static fnInit()
