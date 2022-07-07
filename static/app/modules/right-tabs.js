@@ -250,7 +250,7 @@ export class RightTabs {
             this.oURLs.update_note_content,
             {
                 id: iID,
-                content: this.oEditors[iID].editor.value()
+                content: this.oEditors[iID].editor.getContent()
             }
         ).done((() => {
             this.fnUnsetDirtyNote(iID);
@@ -265,7 +265,7 @@ export class RightTabs {
             this.oURLs.update_table_content,
             {
                 id: this.oTabsTablesIDs[iI],
-                content: JSON.stringify(this.oSpreadsheets[this.oTabsTablesIDs[iI]].editor.getData())
+                content: JSON.stringify(this.oSpreadsheets[this.oTabsTablesIDs[iI]].editor.getContent())
             }
         ).done((() => {
             this.fnUnsetDirtyTable(this.oTabsTablesIDs[iI]);
@@ -295,6 +295,9 @@ export class RightTabs {
             this.fnSelect(this.oTabsNotesIndexes[iID]);
             return;
         }
+
+        var sPageLink = `/#${iID}`;
+
         $.post(
             this.oURLs.get_note,
             { id: iID },
@@ -311,7 +314,7 @@ export class RightTabs {
                         <textarea id="note-${iID}" style="width:100%;height:100%"></textarea>
                     </div>
                     <div id="tab-note-tt-${iID}">
-                        <span class="tab-note-title" id="tab-note-title-${iID}">${iID} - ${oR.name}</span>
+                        <a target="_blank" href="${sPageLink}" class="tab-note-title" id="tab-note-title-${iID}">${iID} - ${oR.name}</a>
                         <a href="javascript:void(0)" class="icon-edit" id="note-edit-btn-${iID}"></a>
                         <a href="javascript:void(0)" class="icon-delete" id="note-remove-btn-${iID}"></a>
                         <!-- <a href="javascript:void(0)" class="icon-reload" id="note-reload-btn-${iID}"></a> -->
@@ -334,14 +337,22 @@ export class RightTabs {
                 var oE = this.fnGetNote(iID);
                 var sC = oR.content;
 
-                var oEd = this.oEditors[iID].editor = fnCreateEditor(oE[0], sC);
+                var oEd = this.oEditors[iID].editor = fnCreateEditor(
+                    oE[0], 
+                    sC,
+                    {
+                        onchange_callback: (() => {
+                            console.log('test');
+                            this.fnSetDirtyNote(this.oTabsNotesIDs[iI]);
+                        }).bind(this)
+                    }
+                );
 
                 this.fnGenerateHashForNote();
 
-                oEd.codemirror.on("change", (() => {
-                    this.fnSetDirtyNote(this.oTabsNotesIDs[iI]);
-                }).bind(this));
-                
+                // oEd.codemirror.on("change", (() => {
+                //     this.fnSetDirtyNote(this.oTabsNotesIDs[iI]);
+                // }).bind(this));
             }).bind(this),
             'json'
         );

@@ -241,7 +241,7 @@ export class Categories {
                     formatter: function(value,row,index) {
                         var s = row.text;
                         if (!row.count) {
-                            s = `<b>${s}</b>`;
+                            s = `<i>${s}</i>`;
                         }
                         s += '&nbsp;<span style=\'color:blue\'>(' + row.count + ')</span>';
                         return s;

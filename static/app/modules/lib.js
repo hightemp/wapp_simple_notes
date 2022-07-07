@@ -117,8 +117,9 @@ function afterImageUploaded(editor, url) {
 }
 
 
-export function fnCreateEditor(oElement, sContent)
+export function fnCreateEditor(oElement, sContent, oOptions={})
 {
+    /*
     var oEditor = new EasyMDE({
         autoDownloadFontAwesome: false,
         shortcuts: {
@@ -164,5 +165,77 @@ export function fnCreateEditor(oElement, sContent)
     }
 
     oEditor.togglePreview();
+    return oEditor;
+    */
+    var oEditor = tinymce.init({
+        selector: `#${oElement.id}`,
+        height: '100%',
+        menubar: false,
+        plugins: "textpatterns advlist autoresize code emoticons image link nonbreaking quickbars table visualchars anchor autosave codesample fullscreen importcss lists save template wordcount autolink charmap directionality help insertdatetime media preview searchreplace visualblocks",
+        textpattern_patterns: [
+            {start: '*', end: '*', format: 'italic'},
+            {start: '**', end: '**', format: 'bold'},
+            {start: '---', replacement: '<hr/>'},
+            {start: '#', format: 'h1'},
+            {start: '##', format: 'h2'},
+            {start: '###', format: 'h3'},
+            {start: '####', format: 'h4'},
+            {start: '#####', format: 'h5'},
+            {start: '######', format: 'h6'},
+            {start: '1. ', cmd: 'InsertOrderedList'},
+            {start: '* ', cmd: 'InsertUnorderedList'},
+            {start: '- ', cmd: 'InsertUnorderedList'},
+            {start: '1. ', cmd: 'InsertOrderedList', value: { 'list-style-type': 'decimal' }},
+            {start: '1) ', cmd: 'InsertOrderedList', value: { 'list-style-type': 'decimal' }},
+            {start: 'a. ', cmd: 'InsertOrderedList', value: { 'list-style-type': 'lower-alpha' }},
+            {start: 'a) ', cmd: 'InsertOrderedList', value: { 'list-style-type': 'lower-alpha' }},
+            {start: 'i. ', cmd: 'InsertOrderedList', value: { 'list-style-type': 'lower-roman' }},
+            {start: 'i) ', cmd: 'InsertOrderedList', value: { 'list-style-type': 'lower-roman' }}
+        ],
+        codesample_languages: [
+            {text: 'HTML/XML', value: 'markup'},
+            {text: 'JavaScript', value: 'javascript'},
+            {text: 'CSS', value: 'css'},
+            {text: 'PHP', value: 'php'},
+            {text: 'Bash', value: 'bash'},
+            {text: 'Python', value: 'python'},
+            {text: 'Java', value: 'java'},
+            {text: 'Rust', value: 'rust'},
+            {text: 'C', value: 'c'},
+            {text: 'C#', value: 'csharp'},
+            {text: 'C++', value: 'cpp'}
+        ],
+        toolbar: 'undo redo | h1 h2 h3 h4 h5 h6 bold italic | table | link image | bullist numlist outdent indent lists | print preview media | alignleft aligncenter alignright alignjustify | forecolor backcolor emoticons | codesample code | emoticons nonbreaking quickbars visualchars anchor fullscreen importcss template wordcount autolink charmap directionality insertdatetime media preview searchreplace visualblocks | help',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+        setup: function (editor) {
+            editor.on('init', function () {
+                editor.setContent(sContent);
+            });
+        },
+
+        paste_data_images: true,
+
+        /* without images_upload_url set, Upload tab won't show up*/
+        images_upload_url: 'ajax.php?method=upload_image',
+
+        /* we override default upload handler to simulate successful upload*/
+        // images_upload_handler: function (blobInfo, success, failure) {
+        //     /* no matter what you upload, we will turn it into TinyMCE logo :)*/
+        //     imageUrl = imageUrl.replace(window.location.origin, window.BASE_PATH+'/');
+        //     imageUrl = imageUrl.replace(/\/+/, '/');
+
+        //     // onSuccess = onSuccess || function onSuccess(imageUrl) {
+        //     //     afterImageUploaded(oEditor, imageUrl);
+
+        //     //     $(document).trigger("files:upload", [ imageUrl ]);
+        //     // }
+            
+        //     success(imageUrl);
+        // },
+        ...oOptions
+    });
+
+    oEditor = tinymce.get(oElement.id);
+
     return oEditor;
 }

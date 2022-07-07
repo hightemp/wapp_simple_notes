@@ -1,7 +1,7 @@
 <?php
 
 if ($sMethod == 'list_files') {
-    $aResult = R::findAll(T_FILES);
+    $aResult = R::findAll(T_FILES, "ORDER BY id DESC");
 
     foreach ($aResult as $oItem) {
         $oItem->tags = fnGetTagsAsStringList($oItem->id, T_FILES) ?: '';
@@ -63,7 +63,7 @@ if ($sMethod == 'update_file') {
 
 
 if ($sMethod == 'list_images') {
-    $aResult = R::findAll(T_IMAGES);
+    $aResult = R::findAll(T_IMAGES, "ORDER BY id DESC");
 
     foreach ($aResult as $oItem) {
         $oItem->tags = fnGetTagsAsStringList($oItem->id, T_IMAGES) ?: '';
@@ -106,7 +106,7 @@ if ($sMethod == 'update_image') {
 }
 
 if ($sMethod == 'upload_image') {
-    preg_match("/(\w+)$/", $_FILES['image']['type'], $aM);
+    preg_match("/(\w+)$/", $_FILES['file']['type'], $aM);
     $sExt = @$aM[1];
 
     $sTable = T_FILES;
@@ -124,15 +124,16 @@ if ($sMethod == 'upload_image') {
     $oFile->created_at = date("Y-m-d H:i:s");
     $oFile->updated_at = date("Y-m-d H:i:s");
     $oFile->timestamp = time();
-    $oFile->name = $_FILES['image']['name'];
-    $oFile->type = $_FILES['image']['type'];
+    $oFile->name = $_FILES['file']['name'];
+    $oFile->type = $_FILES['file']['type'];
     $oFile->filename = $oFile->timestamp.".".$sExt;
 
     R::store($oFile);
 
     $sFilePath = $sF."/".$oFile->filename;
     $sRelFilePath = $sR."/".$oFile->filename;
-    copy($_FILES['image']['tmp_name'], $sFilePath);
+    copy($_FILES['file']['tmp_name'], $sFilePath);
     
-    die(json_encode(["data" => [ "filePath" => $sRelFilePath ]]));
+    die(json_encode(["location" => $sRelFilePath]));
+    // die(json_encode(["data" => [ "filePath" => $sRelFilePath ]]));
 }

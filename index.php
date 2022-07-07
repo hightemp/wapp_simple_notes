@@ -18,12 +18,14 @@ include_once("./database.php");
     <script type="text/javascript" src="<?php echo $sB ?>/jquery.easyui.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="<?php echo $sBA ?>/easymde.min.css">
-    <script type="text/javascript" src="<?php echo $sBA ?>/easymde.min.js"></script>
+    <!-- <script type="text/javascript" src="<?php echo $sBA ?>/easymde.min.js"></script> -->
     <script type="text/javascript" src="<?php echo $sBA ?>/all.js"></script>
     <script type="text/javascript" src="<?php echo $sBA ?>/speadsheet.js"></script>
 
     <script type="text/javascript" src="<?php echo $sBA ?>/datagrid-filter.js"></script>
     <script type="text/javascript" src="<?php echo $sBA ?>/datagrid-cellediting.js"></script>
+
+    <script type="text/javascript" src="<?php echo $sBA ?>/tinymce/js/tinymce/tinymce.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css">
