@@ -105,8 +105,7 @@ body {
 
 .images-list-panel,
 .files-list-panel {
-    display: grid;
-    grid-template-rows: 30px 1fr;
+    
 }
 
 
@@ -146,7 +145,7 @@ table * {
 }
 
 #html-note-html-paste {
-    height: 800px;
+    height: 500px;
     border: 1px solid rgba(0,0,0,0.5);
     overflow-y: scroll;
     padding: 5px;
@@ -154,7 +153,7 @@ table * {
 }
 
 #html-note-html-preview {
-    height: 800px;
+    height: 500px;
     border: 1px solid rgba(0,0,0,0.5);
     overflow-y: scroll;
     padding: 5px;

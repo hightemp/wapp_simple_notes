@@ -32,6 +32,7 @@
             <div id="notes-list-tt">
                 <a href="javascript:void(0)" class="icon-add" id="html-note-add-btn"></a>
                 <a href="javascript:void(0)" class="icon-add" id="note-add-btn"></a>
+                <a href="javascript:void(0)" class="icon-page_add" id="note-page-add-btn"></a>
                 <a href="javascript:void(0)" class="icon-edit" id="note-edit-btn"></a>
                 <a href="javascript:void(0)" class="icon-delete" id="note-remove-btn"></a>
                 <a href="javascript:void(0)" class="icon-reload" id="note-reload-btn"></a>

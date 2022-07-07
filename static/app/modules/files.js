@@ -233,7 +233,30 @@ export class Files {
     static fnGetSelectedFilesList() {
         return this.fnComponentFilesList('getSelected');
     }
-    
+
+    static fnCopyImageLink(oNode) {
+        navigator.clipboard.writeText(this.fnPrepareImageURL(oNode)).then(function() {
+            
+            }, function() {
+                alert('Ошибка. Clipboard не доступен');
+            }
+        );
+    }
+    static fnCopyFileLink(oNode) {
+        navigator.clipboard.writeText(this.fnPrepareFileURL(oNode)).then(function() {
+
+            }, function() {
+                alert('Ошибка. Clipboard не доступен');
+            }
+        );
+    }
+
+    static fnPrepareImageURL(oNode) {
+        return window.IMAGES_PATH+'/'+oNode.filename
+    }
+    static fnPrepareFileURL(oNode) {
+        return window.FILES_PATH+'/'+oNode.filename
+    }
 
     static fnReload() {
         this.fnComponentImagesList('reload');
@@ -315,7 +338,10 @@ export class Files {
             singleSelect: false,
             striped: true,
             ctrlSelect: true,
+            fit: true,
 
+            pagination: true,
+            remoteFilter: true,
             nowrap: false,
 
             url: this.oURLs.list_images,
@@ -338,8 +364,7 @@ export class Files {
             ]],
 
             onDblClickRow: ((index, row) => {
-                var sRelPath = window.IMAGES_PATH+'/'+row.filename;
-                window.open(sRelPath);
+                window.open(this.fnPrepareImageURL(row));
             }).bind(this),
 
             onRowContextMenu: (function(e, index, node) {
@@ -348,6 +373,9 @@ export class Files {
                     left: e.pageX,
                     top: e.pageY,
                     onClick: (item) => {
+                        if (item.id == 'copy_link') {
+                            this.fnCopyImageLink(node);
+                        }
                         if (item.id == 'edit') {
                             this.fnShowImagesEditWindow(node);
                         }
@@ -364,14 +392,17 @@ export class Files {
             }).bind(this)
         });
 
-        
+        this.fnComponentImagesList('enableFilter', []);
 
         this.fnComponentFilesList({
             border: false,
             singleSelect: false,
             striped: true,
             ctrlSelect: true,
+            fit: true,
 
+            pagination: true,
+            remoteFilter: true,
             nowrap: false,
 
             url: this.oURLs.list_files,
@@ -385,8 +416,7 @@ export class Files {
             ]],
 
             onDblClickRow: ((index, row) => {
-                var sRelPath = window.FILES_PATH+'/'+row.filename;
-                window.open(sRelPath);
+                window.open(this.fnPrepareFileURL(row));
             }).bind(this),
 
             onRowContextMenu: (function(e, index, node) {
@@ -395,6 +425,9 @@ export class Files {
                     left: e.pageX,
                     top: e.pageY,
                     onClick: (item) => {
+                        if (item.id == 'copy_link') {
+                            this.fnCopyFileLink(node);
+                        }
                         if (item.id == 'edit') {
                             this.fnShowFilesEditWindow(node);
                         }
@@ -405,6 +438,8 @@ export class Files {
                 });
             }).bind(this),
         });
+
+        this.fnComponentFilesList('enableFilter', []);
     }
 
     static fnInit()

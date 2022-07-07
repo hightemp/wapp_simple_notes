@@ -117,7 +117,7 @@ function afterImageUploaded(editor, url) {
 }
 
 
-export function fnCreateEditor(oElement, sContent, oOptions={})
+export function fnCreateEditor(oElement, sContent, oOptions={}, fnOnChange=()=>{})
 {
     /*
     var oEditor = new EasyMDE({
@@ -219,6 +219,7 @@ export function fnCreateEditor(oElement, sContent, oOptions={})
             editor.on('init', function () {
                 editor.setContent(sContent);
             });
+            editor.on('Change', fnOnChange);
         },
 
         paste_data_images: true,

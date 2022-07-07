@@ -12,6 +12,8 @@ export class Notes {
         list: tpl`ajax.php?method=list_notes&category_id=${0}`,
         list_tags: 'ajax.php?method=list_tags',
         get_note: 'ajax.php?method=get_note',
+
+        upload_html_file: 'ajax.php?method=upload_html_file',
     }
     static oWindowTitles = {
         create: 'Новая заметка',
@@ -95,6 +97,9 @@ export class Notes {
     }
     static get oPanelAddButton() {
         return $('#note-add-btn');
+    }
+    static get oPanelPageAddButton() {
+        return $('#note-page-add-btn');
     }
     static get oPanelEditButton() {
         return $('#note-edit-btn');
@@ -248,6 +253,17 @@ export class Notes {
         this.fnComponent('select', oTarget);
     }
 
+    static fnUploadHTMLFile() {
+        $.post(
+            this.oURLs.upload_html_file,
+            { id: iID },
+            ((oR) => {
+                
+            }).bind(this),
+            'json'
+        );
+    }
+
     static fnBindEvents()
     {
         $(document).on(this.oEvents.categories_select, ((oEvent, oItem) => {
@@ -325,6 +341,9 @@ export class Notes {
         }).bind(this))
         this.oPanelAddButton.click((() => {
             this.fnShowCreateWindow();
+        }).bind(this))
+        this.oPanelPageAddButton.click((() => {
+            
         }).bind(this))
         this.oPanelEditButton.click((() => {
             this.fnShowEditWindow(this.fnGetSelected());

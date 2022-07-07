@@ -1,22 +1,13 @@
 <!-- Изображения -->
 <div title="<i class='fa fa-image' aria-hidden='true'></i>" style="padding:0px" id="files-left-panel">
     <div class="easyui-layout" data-options="fit:true">
-        <div data-options="region:'north',split:true,border:false" title="" style="height:400px;">
+        <div data-options="region:'north',split:true,border:false" title="" style="height:50%;">
             <div 
                 class="easyui-panel images-list-panel" 
                 title="Изображения" 
                 style="padding:0px;"
                 data-options="tools:'#images-tt', fit:true"
             >
-                <div>
-                    <input 
-                        id="images-filter-textbox" 
-                        class="easyui-textbox" 
-                        type="text" 
-                        value=""
-                        data-options="fit:true"
-                    />
-                </div>
                 <table id="images-list" class="easyui-datagrid" data-options="fit:true"></table>
             </div>
             <div style="position:fixed">
@@ -35,15 +26,6 @@
                 style="padding:0px;"
                 data-options="tools:'#files-tt', fit:true"
             >
-                <div>
-                    <input 
-                        id="files-filter-textbox" 
-                        class="easyui-textbox" 
-                        type="text" 
-                        value=""
-                        data-options="fit:true"
-                    />
-                </div>
                 <table id="files-list" class="easyui-datagrid" data-options="fit:true"></table>
             </div>
             <div style="position:fixed">
@@ -101,11 +83,13 @@
         </div>
 
         <div id="images-mm" class="easyui-menu" style="width:auto;">
+            <div data-options="id:'copy'">Копировать URL</div>
             <div data-options="id:'edit'">Радактировать</div>
             <div data-options="id:'delete'">Удалить</div>
         </div>
 
         <div id="files-mm" class="easyui-menu" style="width:auto;">
+            <div data-options="id:'copy'">Копировать URL</div>
             <div data-options="id:'edit'">Радактировать</div>
             <div data-options="id:'delete'">Удалить</div>
         </div>

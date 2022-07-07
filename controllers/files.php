@@ -1,13 +1,34 @@
 <?php
 
 if ($sMethod == 'list_files') {
-    $aResult = R::findAll(T_FILES, "ORDER BY id DESC");
+    $sFilterRules = " 1 = 1";
+    if (isset($aRequest['filterRules'])) {
+        $aRequest['filterRules'] = json_decode($aRequest['filterRules']);
+        $sFilterRules = fnGenerateFilterRules($aRequest['filterRules']);
+    }
 
-    foreach ($aResult as $oItem) {
+    $sOffset = fnPagination($aRequest['page'], $aRequest['rows']);
+    $aResult = [];
+
+
+    $aLinks = R::findAll(T_FILES, "{$sFilterRules} ORDER BY id DESC {$sOffset}", []);
+    $aResult['total'] = R::count(T_FILES, "{$sFilterRules}");
+
+    foreach ($aItems as $oItem) {
         $oItem->tags = fnGetTagsAsStringList($oItem->id, T_FILES) ?: '';
     }
 
-    die(json_encode(array_values($aResult)));
+    $aResult['rows'] = array_values((array) $aLinks);
+
+    die(json_encode($aResult, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+    // $aResult = R::findAll(T_FILES, "ORDER BY id DESC");
+
+    // foreach ($aResult as $oItem) {
+    //     $oItem->tags = fnGetTagsAsStringList($oItem->id, T_FILES) ?: '';
+    // }
+
+    // die(json_encode(array_values($aResult)));
 }
 
 if ($sMethod == 'upload_files') {
@@ -63,13 +84,33 @@ if ($sMethod == 'update_file') {
 
 
 if ($sMethod == 'list_images') {
-    $aResult = R::findAll(T_IMAGES, "ORDER BY id DESC");
+    $sFilterRules = " 1 = 1";
+    if (isset($aRequest['filterRules'])) {
+        $aRequest['filterRules'] = json_decode($aRequest['filterRules']);
+        $sFilterRules = fnGenerateFilterRules($aRequest['filterRules']);
+    }
 
-    foreach ($aResult as $oItem) {
+    $sOffset = fnPagination($aRequest['page'], $aRequest['rows']);
+    $aResult = [];
+
+
+    $aLinks = R::findAll(T_IMAGES, "{$sFilterRules} ORDER BY id DESC {$sOffset}", []);
+    $aResult['total'] = R::count(T_IMAGES, "{$sFilterRules}");
+
+    foreach ($aItems as $oItem) {
         $oItem->tags = fnGetTagsAsStringList($oItem->id, T_IMAGES) ?: '';
     }
 
-    die(json_encode(array_values($aResult)));
+    $aResult['rows'] = array_values((array) $aLinks);
+
+    die(json_encode($aResult, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    // $aResult = R::findAll(T_IMAGES, "ORDER BY id DESC");
+
+    // foreach ($aResult as $oItem) {
+    //     $oItem->tags = fnGetTagsAsStringList($oItem->id, T_IMAGES) ?: '';
+    // }
+
+    // die(json_encode(array_values($aResult)));
 }
 
 if ($sMethod == 'get_image') {
@@ -111,28 +152,36 @@ if ($sMethod == 'upload_image') {
 
     $sTable = T_FILES;
     $sF = $sFFP;
-    $sR = $sFP;
+    $sR = $sBFP;
 
     if (in_array($sExt, ["jpg", "jpeg", "png", "gif", "webm"])) {
         $sTable = T_IMAGES;
         $sF = $sFIP;
-        $sR = $sIP;
+        $sR = $sBIP;
     }
 
-    $oFile = R::dispense($sTable);
+    $sHash = md5_file($_FILES['file']['tmp_name']);
+    $sFileName = $sHash.".".$sExt;
 
-    $oFile->created_at = date("Y-m-d H:i:s");
-    $oFile->updated_at = date("Y-m-d H:i:s");
-    $oFile->timestamp = time();
-    $oFile->name = $_FILES['file']['name'];
-    $oFile->type = $_FILES['file']['type'];
-    $oFile->filename = $oFile->timestamp.".".$sExt;
+    $oFile = R::findOne("filename = ?", [$sFileName]);
 
-    R::store($oFile);
+    if (!$oFile) {
+        $oFile = R::dispense($sTable);
 
-    $sFilePath = $sF."/".$oFile->filename;
+        $oFile->created_at = date("Y-m-d H:i:s");
+        $oFile->updated_at = date("Y-m-d H:i:s");
+        $oFile->timestamp = time();
+        $oFile->name = $_FILES['file']['name'];
+        $oFile->type = $_FILES['file']['type'];
+        $oFile->filename = $sFileName;
+
+        R::store($oFile);
+
+        $sFilePath = $sF."/".$oFile->filename;
+        copy($_FILES['file']['tmp_name'], $sFilePath);
+    }
+
     $sRelFilePath = $sR."/".$oFile->filename;
-    copy($_FILES['file']['tmp_name'], $sFilePath);
     
     die(json_encode(["location" => $sRelFilePath]));
     // die(json_encode(["data" => [ "filePath" => $sRelFilePath ]]));

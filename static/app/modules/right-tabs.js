@@ -99,52 +99,52 @@ export class RightTabs {
             }
         }).bind(this));
 
-        document.body.addEventListener('paste', (async (event) => {
-            var iI = this.fnGetSelectedTabIndex();
-            if (this.oTabsTablesIDs[iI] && document.activeElement==document.body) {
-                event.preventDefault();
+        // document.body.addEventListener('paste', (async (event) => {
+        //     var iI = this.fnGetSelectedTabIndex();
+        //     if (this.oTabsTablesIDs[iI] && document.activeElement==document.body) {
+        //         event.preventDefault();
 
-                var items = await navigator.clipboard.read();
-                var sPaste = '';
+        //         var items = await navigator.clipboard.read();
+        //         var sPaste = '';
 
-                for (var oI of items) {
-                    if (~oI.types.indexOf("text/html")) {
-                        const htmlBlob = await oI.getType("text/html");
-                        sPaste = sPaste + await (new Response(htmlBlob)).text();
-                    }
-                }
+        //         for (var oI of items) {
+        //             if (~oI.types.indexOf("text/html")) {
+        //                 const htmlBlob = await oI.getType("text/html");
+        //                 sPaste = sPaste + await (new Response(htmlBlob)).text();
+        //             }
+        //         }
 
-                var oE = this.oSpreadsheets[this.oTabsTablesIDs[iI]].editor;
+        //         var oE = this.oSpreadsheets[this.oTabsTablesIDs[iI]].editor;
 
-                if (oE.history)
-                    oE.history.add(oE.getData());
+        //         if (oE.history)
+        //             oE.history.add(oE.getData());
 
-                if (sPaste.match(/<table/)) {
-                    var oDiv = document.createElement('div');
-                    oDiv.innerHTML = sPaste;
-                    var aTr = oDiv.querySelectorAll('tr');
-                    for (var [iR, oTr] of Object.entries(aTr)) {
-                        var aTd = oTr.querySelectorAll('td');
-                        for (var [iC, oTd] of Object.entries(aTd)) {
-                            oE.cellText(iR, iC, oTd.innerText);
-                        }
-                    }
-                } else {
-                    var aLines = sPaste.split(/\n/);
+        //         if (sPaste.match(/<table/)) {
+        //             var oDiv = document.createElement('div');
+        //             oDiv.innerHTML = sPaste;
+        //             var aTr = oDiv.querySelectorAll('tr');
+        //             for (var [iR, oTr] of Object.entries(aTr)) {
+        //                 var aTd = oTr.querySelectorAll('td');
+        //                 for (var [iC, oTd] of Object.entries(aTd)) {
+        //                     oE.cellText(iR, iC, oTd.innerText);
+        //                 }
+        //             }
+        //         } else {
+        //             var aLines = sPaste.split(/\n/);
 
-                    for (var iR in aLines) {
-                        if (!aLines[iR] && iR==aLines.length-1) {
-                            continue;
-                        }
-                        var aCell = aLines[iR].split(/\t/);
-                        for (var iC in aCell) {
-                            oE.cellText(this.iSelectedRow*1 + iR*1, this.iSelectedColumn*1 + iC*1, aCell[iC]);
-                        }
-                    }
-                }
-                oE.reRender();
-            }
-        }).bind(this));
+        //             for (var iR in aLines) {
+        //                 if (!aLines[iR] && iR==aLines.length-1) {
+        //                     continue;
+        //                 }
+        //                 var aCell = aLines[iR].split(/\t/);
+        //                 for (var iC in aCell) {
+        //                     oE.cellText(this.iSelectedRow*1 + iR*1, this.iSelectedColumn*1 + iC*1, aCell[iC]);
+        //                 }
+        //             }
+        //         }
+        //         oE.reRender();
+        //     }
+        // }).bind(this));
     }
 
     static fnFireEvent_TabSaveContent(iID) {
@@ -171,6 +171,9 @@ export class RightTabs {
 
             onClose: ((title,index) => {
                 var iID = this.oTabsNotesIDs[index];
+                this.oEditors[iID].editor.remove();
+                delete this.oEditors[iID].editor;
+                delete this.oEditors[iID];
                 delete this.oTabsNotesIndexes[iID];
                 delete this.oTabsNotesIDs[index];
 
@@ -225,12 +228,14 @@ export class RightTabs {
         if (this.oTabsNotesNotSavedIDs[iID]) return;
         // this.fnAddTabTitleStar(this.oTabsNotesIndexes[iID]);
         $(`#tab-dirty-${iID}`).show();
+        $(`#tab-note-title-dirty-${iID}`).show();
         this.oTabsNotesNotSavedIDs[iID] = true;
     }
     static fnUnsetDirtyNote(iID) {
         if (!this.oTabsNotesNotSavedIDs[iID]) return;
         // this.fnRemoveTabTitleStar(this.oTabsNotesIndexes[iID]);
         $(`#tab-dirty-${iID}`).hide();
+        $(`#tab-note-title-dirty-${iID}`).hide();
         this.oTabsNotesNotSavedIDs[iID] = false;
     }
     static fnSetDirtyTable(iID) {
@@ -330,6 +335,7 @@ export class RightTabs {
                         <textarea id="note-${iID}" style="width:100%;height:100%"></textarea>
                     </div>
                     <div id="tab-note-tt-${iID}">
+                        <span class="tab-note-title-dirty-${iID}" style="display:none">не сохранено</span>
                         <a target="_blank" href="${sPageLink}" class="tab-note-title" id="tab-note-title-${iID}">${iID} - ${oR.name}</a>
                         <a href="javascript:void(0)" class="icon-edit" id="note-edit-btn-${iID}"></a>
                         <a href="javascript:void(0)" class="icon-delete" id="note-remove-btn-${iID}"></a>
@@ -353,17 +359,17 @@ export class RightTabs {
 
                 this.oEditors[iID] = { editor: null, title: oR.name, id: iID };
                 var oE = this.fnGetNote(iID);
-                var sC = oR.content;
+                var sC = oR.content ?? '';
 
                 var oEd = this.oEditors[iID].editor = fnCreateEditor(
                     oE[0], 
                     sC,
                     {
-                        onchange_callback: (() => {
-                            console.log('test');
-                            this.fnSetDirtyNote(this.oTabsNotesIDs[iI]);
-                        }).bind(this)
-                    }
+                    },
+                    (() => {
+                        console.log('test');
+                        this.fnSetDirtyNote(this.oTabsNotesIDs[iI]);
+                    }).bind(this)
                 );
 
                 this.fnGenerateHashForNote();

@@ -2,6 +2,27 @@
 
 include_once("./config.php");
 
+function fnGenerateFilterRules($aFilterRules)
+{
+    $sSQL = "";
+
+    foreach ($aFilterRules as $aRule) {
+        $aRule = (array) $aRule;
+        if ($aRule["op"] == "contains") {
+            $sSQL .= " {$aRule["field"]} LIKE '%{$aRule["value"]}%' ";
+        }
+    }
+
+    return $sSQL;
+}
+
+function fnPagination($iPage, $iRows)
+{
+    $iF = ($iPage-1)*$iRows;
+    return " LIMIT {$iF}, {$iRows}";
+}
+
+
 function fnFindImagesURLs($sContent)
 {
     $aResult = [];
