@@ -131,3 +131,48 @@ if ($sMethod == 'create_note') {
         "name" => $oNote->name
     ]));
 }
+
+if ($sMethod == 'download_note_as_html') {  
+    $oNote = R::findOne(T_NOTES, "id = ?", [$aRequest['id']]);
+
+    header( 'Content-Type: text/html' ); 
+    header("Content-disposition: attachment; filename={$oNote->name}-" .date("Y-m-d").".html");  
+
+    $html = $oNote->content;
+    $sURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://".$_SERVER['HTTP_HOST'];
+    $html = preg_replace('%/[^\\s]+\\.(jpg|jpeg|png|gif)%i', $sURL.'\\0', $html);
+
+    die($html);
+}
+
+if ($sMethod == 'download_note_as_word') {  
+    $oNote = R::findOne(T_NOTES, "id = ?", [$aRequest['id']]);
+    
+    header( 'Content-Type: application/msword' ); 
+    header("Content-disposition: attachment; filename={$oNote->name}-" .date("Y-m-d").".doc");  
+    /*
+    header("Content-type: application/vnd.ms-word");
+    header("Content-disposition: attachment; filename=" .date("Y-m-d").".rtf");
+    */
+
+    $html = $oNote->content;
+    $sURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://".$_SERVER['HTTP_HOST'];
+    $html = preg_replace('%/[^\\s]+\\.(jpg|jpeg|png|gif)%i', $sURL.'\\0', $html);
+
+print "<html xmlns:v=\"urn:schemas-microsoft-com:vml\"";
+print "xmlns:o=\"urn:schemas-microsoft-com:office:office\"";
+print "xmlns:w=\"urn:schemas-microsoft-com:office:word\"";
+print "xmlns=\"http://www.w3.org/TR/REC-html40\">";
+print "<xml>
+ <w:WordDocument>
+  <w:View>Print</w:View>
+  <w:DoNotHyphenateCaps/>
+  <w:PunctuationKerning/>
+  <w:DrawingGridHorizontalSpacing>9.35 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>9.35 pt</w:DrawingGridVerticalSpacing>
+ </w:WordDocument>
+</xml>
+";
+
+    die($html);
+}

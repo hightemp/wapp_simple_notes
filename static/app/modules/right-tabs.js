@@ -272,6 +272,16 @@ export class RightTabs {
         }).bind(this))
     }
 
+    static fnActionDownloadWord(iID)
+    {
+        window.open(`/ajax.php?method=download_note_as_word&id=${iID}`);
+    }
+
+    static fnActionDownloadHTML(iID)
+    {
+        window.open(`/ajax.php?method=download_note_as_html&id=${iID}`);
+    }
+
     static fnBindButtons(iID)
     {
         $(`#note-edit-btn-${iID}`).click((() => {
@@ -286,6 +296,12 @@ export class RightTabs {
         $(`#note-save-btn-${iID}`).click((() => {
             this.fnFireEvent_TabSaveContent(iID);
             this.fnActionSaveNoteContent(iID);
+        }).bind(this))
+        $(`#note-download-html-btn-${iID}`).click((() => {
+            this.fnActionDownloadHTML(iID);
+        }).bind(this))
+        $(`#note-download-word-btn-${iID}`).click((() => {
+            this.fnActionDownloadWord(iID);
         }).bind(this))
     }
 
@@ -319,6 +335,8 @@ export class RightTabs {
                         <a href="javascript:void(0)" class="icon-delete" id="note-remove-btn-${iID}"></a>
                         <!-- <a href="javascript:void(0)" class="icon-reload" id="note-reload-btn-${iID}"></a> -->
                         <a href="javascript:void(0)" class="icon-save" id="note-save-btn-${iID}"></a>
+                        <a href="javascript:void(0)" class="icon-page_world" id="note-download-html-btn-${iID}"></a>
+                        <a href="javascript:void(0)" class="icon-page_word" id="note-download-word-btn-${iID}"></a>
                     </div>
                     `,
                     closable: true,
