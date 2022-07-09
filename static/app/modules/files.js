@@ -390,7 +390,7 @@ export class Files {
             }).bind(this),
 
             onLoadSuccess: (() => {
-                console.log(this.fnComponentImagesList('getRows'));
+                
 
             }).bind(this)
         });

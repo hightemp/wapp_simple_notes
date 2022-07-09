@@ -175,7 +175,7 @@ table * {
     margin-right: auto !important;
 }
 
-.panel-tool {
+.tabs-panels .panel-tool {
     width: 100%;
     display: flex;
     padding-left: 20px;

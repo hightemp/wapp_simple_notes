@@ -60,7 +60,7 @@ export class RightTabs {
 
     static fnGenerateHashForNote()
     {
-        window.location.hash = Object.values(this.oTabsNotesIDs).filter((a)=>a)+''
+        window.location.hash = Object.values(this.oTabsNotesIDs).join(',')
     }
 
     static fnOpenNoteFromHash()
@@ -69,7 +69,6 @@ export class RightTabs {
 
         if (sHash) {
             var aIDs = sHash.split(',').filter((a)=>a);
-            console.log([aIDs, sHash]);
             for (var iID of aIDs) {
                 $.post(
                     this.oURLs.get_note,
@@ -87,7 +86,6 @@ export class RightTabs {
     static fnBindEvents()
     {
         window.addEventListener("message", ((oEvent) => {
-            console.log(oEvent);
             if (oEvent.data.action) {
                 if (oEvent.data.action == "unset_dirty") {
                     this.fnUnsetDirtyNote(oEvent.data.id);
@@ -166,7 +164,7 @@ export class RightTabs {
             }).bind(this),
 
             onAdd: ((title,index) => {
-                this.fnGenerateHashForNote();
+                // this.fnGenerateHashForNote();
             }).bind(this)
         })
     }
@@ -351,7 +349,7 @@ export class RightTabs {
         //     })
         // );
 
-        // this.fnGenerateHashForNote();
+        this.fnGenerateHashForNote();
 
         // oEd.codemirror.on("change", (() => {
         //     this.fnSetDirtyNote(this.oTabsNotesIDs[iI]);
