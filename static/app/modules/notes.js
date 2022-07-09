@@ -4,6 +4,7 @@ export class Notes {
     static sURL = ``
 
     static _oSelectedCategory = null;
+    static _bPressedCtrlKey = false;
 
     static oURLs = {
         create: 'ajax.php?method=create_note',
@@ -270,6 +271,10 @@ export class Notes {
 
     static fnBindEvents()
     {
+        $(document).on('keydown', (oEvent => {
+            this._bPressedCtrlKey = oEvent.ctrlKey;
+        }).bind(this));
+
         $(document).on(this.oEvents.categories_select, ((oEvent, oItem) => {
             this._oSelectedCategory = oItem;
             this.fnInitComponent(oItem.id);
@@ -468,7 +473,11 @@ export class Notes {
             }).bind(this),
 
             onDblClickRow: ((index, oRow) => {
-                this.fnFireEvent_TinyEditClick(oRow);
+                if (this._bPressedCtrlKey) {
+                    this.fnFireEvent_SimpleEditClick(oRow);
+                } else {
+                    this.fnFireEvent_TinyEditClick(oRow);
+                }
             }).bind(this),
 
             onRowContextMenu: ((oEvent, iIndex, oNode) => {
