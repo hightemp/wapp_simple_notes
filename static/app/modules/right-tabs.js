@@ -7,6 +7,7 @@ export class RightTabs {
     static oTabsNotesIndexes = {};
     static oTabsNotesIDs = {};
     static oTabsNotesNotSavedIDs = {};
+    static oNotes = {};
     static oEditors = {};
     static oSpreadsheets = {};
 
@@ -126,6 +127,18 @@ export class RightTabs {
         }).bind(this));
     }
 
+    static fnFireEvent_PreviewClick(oRow) {
+        $(document).trigger(this.oEvents.notes_preview_click, [ oRow ]);
+    }
+
+    static fnFireEvent_TinyEditClick(oRow) {
+        $(document).trigger(this.oEvents.notes_tiny_edit_click, [ oRow ]);
+    }
+
+    static fnFireEvent_SimpleEditClick(oRow) {
+        $(document).trigger(this.oEvents.notes_simple_edit_click, [ oRow ]);
+    }
+
     static fnFireEvent_TabSaveContent(iID) {
         $(document).trigger(this.oEvents.tabs_save_content, [iID]);
     }
@@ -155,6 +168,7 @@ export class RightTabs {
                 // delete this.oEditors[iID];
                 delete this.oTabsNotesIndexes[iID];
                 delete this.oTabsNotesIDs[index];
+                delete this.oNotes[iID];
 
                 this.fnGenerateHashForNote();
             }).bind(this),
@@ -254,6 +268,16 @@ export class RightTabs {
 
     static fnBindButtons(iID)
     {
+        $(`#note-edit-tiny-btn-${iID}`).click((() => {
+            this.fnFireEvent_TinyEditClick(this.oNotes[iID]);
+        }).bind(this))
+        $(`#note-edit-simple-btn-${iID}`).click((() => {
+            this.fnFireEvent_SimpleEditClick(this.oNotes[iID]);
+        }).bind(this))
+        $(`#note-view-btn-${iID}`).click((() => {
+            this.fnFireEvent_PreviewClick(this.oNotes[iID]);
+        }).bind(this))
+
         $(`#note-edit-btn-${iID}`).click((() => {
             $(document).trigger(this.oEvents.notes_edit_click, [ iID ]);
         }).bind(this))
@@ -296,6 +320,7 @@ export class RightTabs {
     static fnCreateTab(oNote)
     {
         var iID = oNote.id;
+        this.oNotes[iID] = oNote;
         var sPageLink = `#${iID}`;
 
         this.fnAddTab({
@@ -312,6 +337,12 @@ export class RightTabs {
             <div id="tab-note-tt-${iID}">
                 <span class="tab-note-title-dirty" id="tab-note-title-dirty-${iID}" style="display:none">не сохранено</span>
                 <a target="_blank" href="${sPageLink}" class="tab-note-title" id="tab-note-title-${iID}">${iID} - ${oNote.name}</a>
+
+                <a href="javascript:void(0)" class="icon-page_edit" id="note-edit-tiny-btn-${iID}"></a>
+                <a href="javascript:void(0)" class="icon-page_white_edit" id="note-edit-simple-btn-${iID}"></a>
+                <a href="javascript:void(0)" class="icon-eye" id="note-view-btn-${iID}"></a>
+
+                <span class="span-space"></span>
                 <a href="javascript:void(0)" class="icon-edit" id="note-edit-btn-${iID}"></a>
                 <a href="javascript:void(0)" class="icon-delete" id="note-remove-btn-${iID}"></a>
                 <a href="javascript:void(0)" class="icon-reload" id="note-reload-btn-${iID}"></a>

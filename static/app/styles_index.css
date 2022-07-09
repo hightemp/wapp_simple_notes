@@ -233,3 +233,12 @@ table * {
 .tools-panel-free-space {
     margin-right: auto !important;
 }
+
+.span-space {
+    display: inline-block;
+    width: 20px;
+}
+
+note-edit-tiny-btn-${iID}
+note-edit-simple-btn-${iID}
+note-view-btn-${iID}
