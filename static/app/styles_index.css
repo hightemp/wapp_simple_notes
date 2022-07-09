@@ -105,7 +105,7 @@ body {
 
 .images-list-panel,
 .files-list-panel {
-    
+
 }
 
 
@@ -172,6 +172,13 @@ table * {
 .tab-note-title {
     width: auto !important;
     height: auto !important;
+    margin-right: auto !important;
+}
+
+.panel-tool {
+    width: 100%;
+    display: flex;
+    padding-left: 20px;
 }
 
 /*Container, container body, iframe*/
@@ -213,4 +220,16 @@ table * {
     height: 100%;
     display: grid;
     grid-template-rows: 30px 1fr;
+}
+
+.tab-note-title-dirty {
+    background: red;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 10px;
+}
+
+.tools-panel-free-space {
+    margin-right: auto !important;
 }

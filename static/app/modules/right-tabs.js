@@ -8,20 +8,24 @@ export class RightTabs {
     static oTabsNotesIDs = {};
     static oTabsNotesNotSavedIDs = {};
     static oEditors = {};
-    static oTabsTablesIndexes = {};
-    static oTabsTablesIDs = {};
-    static oTabsTablesNotSavedIDs = {};
     static oSpreadsheets = {};
 
     static oSelectedCell = null;
     static iSelectedRow = 0;
     static iSelectedColumn = 0;
 
+    static iActiveID = null;
+
     static oEvents = {
         right_tabs_init: "right_tabs:init",
         tabs_save_content: "tabs:save_content",
         
+        notes_preview_click: "notes_preview_click",
+        notes_tiny_edit_click: "notes_tiny_edit_click",
+        notes_simple_edit_click: "notes_simple_edit_click",
+
         notes_item_click: "notes:item_click",
+        notes_item_dblclick: "notes:item_dblclick",
         notes_edit_click: "notes:edit_click",
         notes_delete_click: "notes:delete_click",
         notes_reload_click: "notes:reload_click",
@@ -31,9 +35,7 @@ export class RightTabs {
 
     static oURLs = {
         get_note: 'ajax.php?method=get_note',
-        get_table: 'ajax.php?method=get_table',
         update_note_content: `ajax.php?method=update_note_content`,
-        update_table_content: `ajax.php?method=update_table_content`,
     }
 
     static oSelectors = {
@@ -52,13 +54,13 @@ export class RightTabs {
         return $(`#note-${iID}`);
     }
 
-    static fnGetTable(iID) {
-        return $(`#table-${iID}`);
+    static fnGetSaveButton(iID) {
+        return $(`#note-save-btn-${iID}`);
     }
 
     static fnGenerateHashForNote()
     {
-        window.location.hash = Object.values(this.oTabsNotesIDs)+''
+        window.location.hash = Object.values(this.oTabsNotesIDs).filter((a)=>a)+''
     }
 
     static fnOpenNoteFromHash()
@@ -66,17 +68,52 @@ export class RightTabs {
         var sHash = window.location.hash.replace(/^#/, '');
 
         if (sHash) {
-            var aIDs = sHash.split(',');
+            var aIDs = sHash.split(',').filter((a)=>a);
+            console.log([aIDs, sHash]);
             for (var iID of aIDs) {
-                this.fnActionOpenNote(iID);
+                $.post(
+                    this.oURLs.get_note,
+                    { id: iID },
+                    ((oR) => {
+                        this.fnActionOpenNote(oR);
+                        this.fnActionLoadPreview(oR);                        
+                    }).bind(this),
+                    'json'
+                );
             }
         }
     }
 
     static fnBindEvents()
     {
-        $(document).on(this.oEvents.notes_item_click, ((oEvent, iID) => {
-            this.fnActionOpenNote(iID);
+        window.addEventListener("message", ((oEvent) => {
+            console.log(oEvent);
+            if (oEvent.data.action) {
+                if (oEvent.data.action == "unset_dirty") {
+                    this.fnUnsetDirtyNote(oEvent.data.id);
+                }
+                if (oEvent.data.action == "set_dirty") {
+                    this.fnSetDirtyNote(oEvent.data.id);
+                }
+                if (oEvent.data.action == "note_saved") {
+                    // alert('Сохранено');
+                }
+            }
+        }).bind(this));
+
+        $(document).on(this.oEvents.notes_simple_edit_click, ((oEvent, oNote) => {
+            this.fnActionOpenNote(oNote);
+            this.fnActionLoadSimpleEditor(oNote);
+        }).bind(this));
+
+        $(document).on(this.oEvents.notes_tiny_edit_click, ((oEvent, oNote) => {
+            this.fnActionOpenNote(oNote);
+            this.fnActionLoadTinymceEditor(oNote);
+        }).bind(this));
+
+        $(document).on(this.oEvents.notes_preview_click, ((oEvent, oNote) => {
+            this.fnActionOpenNote(oNote);
+            this.fnActionLoadPreview(oNote);
         }).bind(this));
 
         // $(document).on(this.oEvents.notes_to_save_click, ((oEvent, iID) => {
@@ -86,65 +123,9 @@ export class RightTabs {
         $(document).on('keydown', (oEvent => {
             if (oEvent.ctrlKey && (oEvent.key === 's' || oEvent.key === 'ы')) {
                 oEvent.preventDefault();
-                // var iI = this.fnGetSelectedTabIndex();
-                // if (this.oTabsNotesIDs[iI]) {
-                //     this.fnFireEvent_TabSaveContent();
-                //     this.fnActionSaveNoteContent();
-                // }
-                // if (this.oTabsTablesIDs[iI]) {
-                //     this.fnFireEvent_TabSaveContent();
-                //     this.fnActionSaveTableContent();
-                // }
-                $(".icon-save:visible").click();
+                this.fnActionSaveNote(this.iActiveID);
             }
         }).bind(this));
-
-        // document.body.addEventListener('paste', (async (event) => {
-        //     var iI = this.fnGetSelectedTabIndex();
-        //     if (this.oTabsTablesIDs[iI] && document.activeElement==document.body) {
-        //         event.preventDefault();
-
-        //         var items = await navigator.clipboard.read();
-        //         var sPaste = '';
-
-        //         for (var oI of items) {
-        //             if (~oI.types.indexOf("text/html")) {
-        //                 const htmlBlob = await oI.getType("text/html");
-        //                 sPaste = sPaste + await (new Response(htmlBlob)).text();
-        //             }
-        //         }
-
-        //         var oE = this.oSpreadsheets[this.oTabsTablesIDs[iI]].editor;
-
-        //         if (oE.history)
-        //             oE.history.add(oE.getData());
-
-        //         if (sPaste.match(/<table/)) {
-        //             var oDiv = document.createElement('div');
-        //             oDiv.innerHTML = sPaste;
-        //             var aTr = oDiv.querySelectorAll('tr');
-        //             for (var [iR, oTr] of Object.entries(aTr)) {
-        //                 var aTd = oTr.querySelectorAll('td');
-        //                 for (var [iC, oTd] of Object.entries(aTd)) {
-        //                     oE.cellText(iR, iC, oTd.innerText);
-        //                 }
-        //             }
-        //         } else {
-        //             var aLines = sPaste.split(/\n/);
-
-        //             for (var iR in aLines) {
-        //                 if (!aLines[iR] && iR==aLines.length-1) {
-        //                     continue;
-        //                 }
-        //                 var aCell = aLines[iR].split(/\t/);
-        //                 for (var iC in aCell) {
-        //                     oE.cellText(this.iSelectedRow*1 + iR*1, this.iSelectedColumn*1 + iC*1, aCell[iC]);
-        //                 }
-        //             }
-        //         }
-        //         oE.reRender();
-        //     }
-        // }).bind(this));
     }
 
     static fnFireEvent_TabSaveContent(iID) {
@@ -171,13 +152,17 @@ export class RightTabs {
 
             onClose: ((title,index) => {
                 var iID = this.oTabsNotesIDs[index];
-                this.oEditors[iID].editor.remove();
-                delete this.oEditors[iID].editor;
-                delete this.oEditors[iID];
+                // this.oEditors[iID].editor.remove();
+                // delete this.oEditors[iID].editor;
+                // delete this.oEditors[iID];
                 delete this.oTabsNotesIndexes[iID];
                 delete this.oTabsNotesIDs[index];
 
                 this.fnGenerateHashForNote();
+            }).bind(this),
+
+            onSelect: ((title,index) => {
+                this.iActiveID = this.oTabsNotesIDs[index];
             }).bind(this),
 
             onAdd: ((title,index) => {
@@ -238,44 +223,19 @@ export class RightTabs {
         $(`#tab-note-title-dirty-${iID}`).hide();
         this.oTabsNotesNotSavedIDs[iID] = false;
     }
-    static fnSetDirtyTable(iID) {
-        if (this.oTabsTablesNotSavedIDs[iID]) return;
-        this.fnAddTabTitleStar(this.oTabsTablesIndexes[iID]);
-        this.oTabsTablesNotSavedIDs[iID] = true;
-    }
-    static fnUnsetDirtyTable(iID) {
-        if (!this.oTabsTablesNotSavedIDs[iID]) return;
-        this.fnRemoveTabTitleStar(this.oTabsTablesIndexes[iID]);
-        this.oTabsTablesNotSavedIDs[iID] = false;
-    }
 
-    static fnActionSaveNoteContent(iID)
-    {
-        $.post(
-            this.oURLs.update_note_content,
-            {
-                id: iID,
-                content: this.oEditors[iID].editor.getContent()
-            }
-        ).done((() => {
-            this.fnUnsetDirtyNote(iID);
-        }).bind(this))
-    }
-
-    static fnActionSaveTableContent()
-    {
-        var iI = this.fnGetSelectedTabIndex();
-
-        $.post(
-            this.oURLs.update_table_content,
-            {
-                id: this.oTabsTablesIDs[iI],
-                content: JSON.stringify(this.oSpreadsheets[this.oTabsTablesIDs[iI]].editor.getContent())
-            }
-        ).done((() => {
-            this.fnUnsetDirtyTable(this.oTabsTablesIDs[iI]);
-        }).bind(this))
-    }
+    // static fnActionSaveNoteContent(iID)
+    // {
+    //     $.post(
+    //         this.oURLs.update_note_content,
+    //         {
+    //             id: iID,
+    //             content: this.oEditors[iID].editor.getContent()
+    //         }
+    //     ).done((() => {
+    //         this.fnUnsetDirtyNote(iID);
+    //     }).bind(this))
+    // }
 
     static fnActionDownloadWord(iID)
     {
@@ -285,6 +245,13 @@ export class RightTabs {
     static fnActionDownloadHTML(iID)
     {
         window.open(`/ajax.php?method=download_note_as_html&id=${iID}`);
+    }
+
+    static fnActionSaveNote(iID)
+    {
+        this.fnFireEvent_TabSaveContent(iID);
+        this.fnGetNote(iID)[0].contentWindow.postMessage({action:"save"});
+        // this.fnActionSaveNoteContent(iID);
     }
 
     static fnBindButtons(iID)
@@ -297,10 +264,10 @@ export class RightTabs {
         }).bind(this))
         $(`#note-reload-btn-${iID}`).click((() => {
             $(document).trigger(this.oEvents.notes_reload_click, [ ]);
+            this.fnGetNote(iID)[0].contentWindow.location.reload();
         }).bind(this))
         $(`#note-save-btn-${iID}`).click((() => {
-            this.fnFireEvent_TabSaveContent(iID);
-            this.fnActionSaveNoteContent(iID);
+            this.fnActionSaveNote(iID);
         }).bind(this))
         $(`#note-download-html-btn-${iID}`).click((() => {
             this.fnActionDownloadHTML(iID);
@@ -310,116 +277,106 @@ export class RightTabs {
         }).bind(this))
     }
 
-    static fnActionOpenNote(iID)
+    static fnActionLoadTinymceEditor(oNote)
     {
+        var iID = oNote.id;
+        this.fnGetNote(iID)[0].src = `p_tinymce_editor.php?id=${iID}`;
+    }
+
+    static fnActionLoadSimpleEditor(oNote)
+    {
+        var iID = oNote.id;
+        this.fnGetNote(iID)[0].src = `p_simple_editor.php?id=${iID}`;
+    }
+
+    static fnActionLoadPreview(oNote)
+    {
+        var iID = oNote.id;
+        this.fnGetNote(iID)[0].src = `p_page_viewer.php?id=${iID}`;
+    }
+
+    static fnCreateTab(oNote)
+    {
+        var iID = oNote.id;
+        var sPageLink = `#${iID}`;
+
+        this.fnAddTab({
+            title: `<span id="tab-dirty-${iID}" style="display:none">*</span> `+oNote.name,
+            content: `
+            <div 
+                class="easyui-panel" 
+                title="  " 
+                style="padding:0px;"
+                data-options="tools:'#tab-note-tt-${iID}', fit:true,border:false"
+            >
+                <iframe id="note-${iID}" src="about:blank" style="width:100%;height:calc(100% - 4px);border: 0px;"></iframe>
+            </div>
+            <div id="tab-note-tt-${iID}">
+                <span class="tab-note-title-dirty" id="tab-note-title-dirty-${iID}" style="display:none">не сохранено</span>
+                <a target="_blank" href="${sPageLink}" class="tab-note-title" id="tab-note-title-${iID}">${iID} - ${oNote.name}</a>
+                <a href="javascript:void(0)" class="icon-edit" id="note-edit-btn-${iID}"></a>
+                <a href="javascript:void(0)" class="icon-delete" id="note-remove-btn-${iID}"></a>
+                <a href="javascript:void(0)" class="icon-reload" id="note-reload-btn-${iID}"></a>
+                <a href="javascript:void(0)" class="icon-save" id="note-save-btn-${iID}"></a>
+                <a href="javascript:void(0)" class="icon-page_world" id="note-download-html-btn-${iID}"></a>
+                <a href="javascript:void(0)" class="icon-page_word" id="note-download-word-btn-${iID}"></a>
+            </div>
+            `,
+            closable: true,
+        });
+
+        this.fnBindButtons(iID);
+
+        var iI = this.fnGetSelectedTabIndex();
+
+        $(`.tabs .tabs-title:contains('${oNote.name}')`).attr('data-index', iI);
+
+        this.oTabsNotesIndexes[iID] = iI;
+        this.oTabsNotesIDs[iI] = iID;
+
+        // this.oEditors[iID] = { editor: null, title: oR.name, id: iID };
+        // var oE = this.fnGetNote(iID);
+        // var sC = oR.content ?? '';
+
+        // var oEd = this.oEditors[iID].editor = fnCreateEditor(
+        //     oE[0], 
+        //     sC,
+        //     {
+        //     },
+        //     (() => {
+        //         this.fnSetDirtyNote(this.oTabsNotesIDs[iI]);
+        //     }).bind(this),
+        //     (() => {
+        //         $(".icon-save:visible").click();
+        //     })
+        // );
+
+        // this.fnGenerateHashForNote();
+
+        // oEd.codemirror.on("change", (() => {
+        //     this.fnSetDirtyNote(this.oTabsNotesIDs[iI]);
+        // }).bind(this));        
+    }
+
+    static fnActionOpenNote(oNote)
+    {
+        var iID = oNote.id;
+
         if (this.fnGetNote(iID).length) {
             this.fnSelect(this.oTabsNotesIndexes[iID]);
             return;
         }
 
-        var sPageLink = `#${iID}`;
+        this.fnCreateTab(oNote);
 
-        $.post(
-            this.oURLs.get_note,
-            { id: iID },
-            ((oR) => {
-                this.fnAddTab({
-                    title: `<span id="tab-dirty-${iID}" style="display:none">*</span> `+oR.name,
-                    content: `
-                    <div 
-                        class="easyui-panel" 
-                        title="  " 
-                        style="padding:0px;"
-                        data-options="tools:'#tab-note-tt-${iID}', fit:true,border:false"
-                    >
-                        <textarea id="note-${iID}" style="width:100%;height:100%"></textarea>
-                    </div>
-                    <div id="tab-note-tt-${iID}">
-                        <span class="tab-note-title-dirty-${iID}" style="display:none">не сохранено</span>
-                        <a target="_blank" href="${sPageLink}" class="tab-note-title" id="tab-note-title-${iID}">${iID} - ${oR.name}</a>
-                        <a href="javascript:void(0)" class="icon-edit" id="note-edit-btn-${iID}"></a>
-                        <a href="javascript:void(0)" class="icon-delete" id="note-remove-btn-${iID}"></a>
-                        <!-- <a href="javascript:void(0)" class="icon-reload" id="note-reload-btn-${iID}"></a> -->
-                        <a href="javascript:void(0)" class="icon-save" id="note-save-btn-${iID}"></a>
-                        <a href="javascript:void(0)" class="icon-page_world" id="note-download-html-btn-${iID}"></a>
-                        <a href="javascript:void(0)" class="icon-page_word" id="note-download-word-btn-${iID}"></a>
-                    </div>
-                    `,
-                    closable: true,
-                });
-
-                this.fnBindButtons(iID);
-
-                var iI = this.fnGetSelectedTabIndex();
-
-                $(`.tabs .tabs-title:contains('${oR.name}')`).attr('data-index', iI);
-
-                this.oTabsNotesIndexes[iID] = iI;
-                this.oTabsNotesIDs[iI] = iID;
-
-                this.oEditors[iID] = { editor: null, title: oR.name, id: iID };
-                var oE = this.fnGetNote(iID);
-                var sC = oR.content ?? '';
-
-                var oEd = this.oEditors[iID].editor = fnCreateEditor(
-                    oE[0], 
-                    sC,
-                    {
-                    },
-                    (() => {
-                        this.fnSetDirtyNote(this.oTabsNotesIDs[iI]);
-                    }).bind(this)
-                );
-
-                this.fnGenerateHashForNote();
-
-                // oEd.codemirror.on("change", (() => {
-                //     this.fnSetDirtyNote(this.oTabsNotesIDs[iI]);
-                // }).bind(this));
-            }).bind(this),
-            'json'
-        );
-    }
-
-    static fnActionOpenTable(iID)
-    {
-        if (this.fnGetTable(iID).length) {
-            this.fnSelect(this.oTabsTablesIndexes[iID]);
-            return;
-        }
-        $.post(
-            this.oURLs.get_table,
-            { id: iID },
-            ((oR) => {
-                this.fnAddTab({
-                    title: oR.name,
-                    content: `<div id="table-${iID}" class="table-tab-content"></div>`,
-                    closable: true,
-                });
-
-                var iI = this.fnGetSelectedTabIndex();
-
-                $(`.tabs .tabs-title:contains('${oR.name}')`).attr('data-index', iI);
-
-                this.oTabsTablesIndexes[iID] = iI;
-                this.oTabsTablesIDs[iI] = iID;
-
-                this.oSpreadsheets[iID] = { editor: null, title: oR.name, id: iID };
-                var oData = JSON.parse(oR.content);
-
-                var oEd = this.oSpreadsheets[iID].editor = fnCreateSpeadsheet(`table-${iID}`);
-                oEd.loadData(oData);
-                oEd.on('cell-selected', ((cell, ri, ci) => {
-                    this.oSelectedCell = cell;
-                    this.iSelectedRow = ri;
-                    this.iSelectedColumn = ci;
-                }).bind(this));
-                oEd.change((() => {
-                    this.fnSetDirtyTable(this.oTabsTablesIDs[iI]);
-                }).bind(this))
-            }).bind(this),
-            'json'
-        );
+        // $.post(
+        //     this.oURLs.get_note,
+        //     { id: iID },
+        //     ((oR) => {
+                
+        //     }).bind(this),
+        //     'json'
+        // );
     }
 
     static fnInit()

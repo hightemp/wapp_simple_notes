@@ -12,6 +12,7 @@
                 <ul id="categories-tree" class="easyui-treegrid" data-options="fit:true"></ul>
             </div>
             <div id="categories-tt">
+                <div class="tools-panel-free-space"></div>
                 <a href="javascript:void(0)" class="icon-folder" id="category-collapse-btn"></a>
                 <a href="javascript:void(0)" class="icon-folder_page" id="category-expand-btn"></a>
                 <a href="javascript:void(0)" class="icon-add" id="category-add-btn"></a>
@@ -30,6 +31,7 @@
                 <ul id="notes-list" class="easyui-datagrid" title="" lines="true" data-options="fit:true"></ul>
             </div>
             <div id="notes-list-tt">
+                <div class="tools-panel-free-space"></div>
                 <a href="javascript:void(0)" class="icon-add" id="html-note-add-btn"></a>
                 <a href="javascript:void(0)" class="icon-add" id="note-add-btn"></a>
                 <a href="javascript:void(0)" class="icon-page_add" id="note-page-add-btn"></a>
@@ -55,10 +57,15 @@
 
             <!-- Меню - Заметки -->
             <div id="note-mm" class="easyui-menu" style="width:auto;">
+                <div data-options="id:'preview'">Превью</div>
+                <div data-options="id:'edit_with_tiny'">Редактировать с помощью tinymce</div>
+                <div data-options="id:'edit_with_simple_editor'">Редактировать с помощью простого редактора</div>
+
+                <div data-options="id:'edit'">Изменить</div>
+                <div data-options="id:'delete'">Удалить</div>
+
                 <div data-options="id:'add_to_fav'">В избранное</div>
                 <div data-options="id:'remove_from_fav'">Убрать из избранного</div>
-                <div data-options="id:'edit'">Радактировать</div>
-                <div data-options="id:'delete'">Удалить</div>
             </div>
 
             <!-- Категории -->
@@ -124,7 +131,7 @@
 
 
             <!-- Заметка из html контента -->
-            <div id="html-note-dlg" class="easyui-dialog" style="width:100%" data-options="closed:true,modal:true,border:'thin',buttons:'#html-note-dlg-buttons'">
+            <div id="html-note-dlg" class="easyui-dialog" style="width:90%" data-options="closed:true,modal:true,border:'thin',buttons:'#html-note-dlg-buttons'">
                 <form id="html-note-dlg-fm" method="post" novalidate style="margin:0;padding:5px">
                     <div>
                         <label>Категория:</label>

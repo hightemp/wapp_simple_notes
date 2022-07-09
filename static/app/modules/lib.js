@@ -117,7 +117,7 @@ function afterImageUploaded(editor, url) {
 }
 
 
-export function fnCreateEditor(oElement, sContent, oOptions={}, fnOnChange=()=>{})
+export function fnCreateEditor(oElement, sContent, oOptions={}, fnOnChange=()=>{}, fnOnSave=()=>{})
 {
     /*
     var oEditor = new EasyMDE({
@@ -216,6 +216,8 @@ export function fnCreateEditor(oElement, sContent, oOptions={}, fnOnChange=()=>{
         toolbar: 'undo redo | h1 h2 h3 h4 h5 h6 bold italic | table | link image | bullist numlist outdent indent lists | print preview media | alignleft aligncenter alignright alignjustify | forecolor backcolor emoticons | codesample code | emoticons nonbreaking quickbars visualchars anchor fullscreen importcss template wordcount autolink charmap directionality insertdatetime media preview searchreplace visualblocks | help',
         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
         setup: function (editor) {
+            editor.addShortcut("ctrl+s", "Custom Ctrl+S", "custom_ctrl_s");
+            editor.addCommand("custom_ctrl_s", fnOnSave)
             editor.on('init', function () {
                 editor.setContent(sContent);
             });

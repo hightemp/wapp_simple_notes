@@ -11,6 +11,7 @@
                 <ul id="tags-list" class="easyui-datalist" lines="true" data-options="fit:true"></ul>
             </div>
             <div id="tags-tt">
+                <div class="tools-panel-free-space"></div>
                 <a href="javascript:void(0)" class="icon-add" id="tags-add-btn"></a>
                 <a href="javascript:void(0)" class="icon-edit" id="tags-edit-btn"></a>
                 <a href="javascript:void(0)" class="icon-remove" id="tags-remove-btn"></a>
@@ -27,6 +28,7 @@
                 <ul id="tags-items-list" class="easyui-datalist" title="" lines="true" data-options="fit:true"></ul>
             </div>
             <div id="tags-items-list-tt">
+                <div class="tools-panel-free-space"></div>
                 <a href="javascript:void(0)" class="icon-add" id="tags-items-list-add-btn"></a>
                 <a href="javascript:void(0)" class="icon-edit" id="tags-items-list-edit-btn"></a>
                 <a href="javascript:void(0)" class="icon-remove" id="tags-items-list-remove-btn"></a>

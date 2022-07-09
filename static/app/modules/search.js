@@ -104,9 +104,9 @@ export class Search {
         $(document).trigger(this.oEvents.search_save);
     }
 
-    static fnFireEvent_ItemClick(oRow) {
-        $(document).trigger(this.oEvents.search_item_click, [ oRow ]);
-    }
+    // static fnFireEvent_ItemClick(oRow) {
+    //     $(document).trigger(this.oEvents.search_item_click, [ oRow ]);
+    // }
 
     static fnFireEvent_Select(oRow) {
         $(document).trigger(this.oEvents.search_select, [ oRow ]);
@@ -117,7 +117,7 @@ export class Search {
     }
 
     static fnFireEvent_ItemClick(oRow) {
-        $(document).trigger(this.oEvents.notes_item_click, [ oRow.id ]);
+        $(document).trigger(this.oEvents.notes_item_click, [ oRow ]);
     }
 
     static fnFireEvent_ItemDeleteClick(oRow) {

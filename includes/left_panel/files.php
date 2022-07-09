@@ -12,6 +12,7 @@
             </div>
             <div style="position:fixed">
                 <div id="images-tt">
+                    <div class="tools-panel-free-space"></div>
                     <a href="javascript:void(0)" class="icon-add" id="images-add-btn"></a>
                     <a href="javascript:void(0)" class="icon-edit" id="images-edit-btn"></a>
                     <a href="javascript:void(0)" class="icon-remove" id="images-remove-btn"></a>
@@ -30,6 +31,7 @@
             </div>
             <div style="position:fixed">
                 <div id="files-tt">
+                    <div class="tools-panel-free-space"></div>
                     <a href="javascript:void(0)" class="icon-add" id="files-add-btn"></a>
                     <a href="javascript:void(0)" class="icon-edit" id="files-edit-btn"></a>
                     <a href="javascript:void(0)" class="icon-remove" id="files-remove-btn"></a>

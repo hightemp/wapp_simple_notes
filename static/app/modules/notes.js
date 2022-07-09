@@ -29,6 +29,10 @@ export class Notes {
         notes_save: "notes:save",
         notes_create: "notes:create",
         notes_item_click: "notes:item_click",
+        notes_item_dblclick: "notes:item_dblclick",
+        notes_preview_click: "notes_preview_click",
+        notes_tiny_edit_click: "notes_tiny_edit_click",
+        notes_simple_edit_click: "notes_simple_edit_click",
         notes_init: "notes:init",
 
         fav_notes_click_add_note: "fav_notes:click_add_note",
@@ -376,8 +380,24 @@ export class Notes {
         $(document).trigger(this.oEvents.notes_save);
     }
 
+    static fnFireEvent_PreviewClick(oRow) {
+        $(document).trigger(this.oEvents.notes_preview_click, [ oRow ]);
+    }
+
+    static fnFireEvent_TinyEditClick(oRow) {
+        $(document).trigger(this.oEvents.notes_tiny_edit_click, [ oRow ]);
+    }
+
+    static fnFireEvent_SimpleEditClick(oRow) {
+        $(document).trigger(this.oEvents.notes_simple_edit_click, [ oRow ]);
+    }
+
     static fnFireEvent_ItemClick(oRow) {
-        $(document).trigger(this.oEvents.notes_item_click, [ oRow.id ]);
+        $(document).trigger(this.oEvents.notes_item_click, [ oRow ]);
+    }
+
+    static fnFireEvent_ItemDblClick(oRow) {
+        $(document).trigger(this.oEvents.notes_item_dblclick, [ oRow ]);
     }
 
     static fnFireEvent_ItemDeleteClick(oRow) {
@@ -444,7 +464,11 @@ export class Notes {
             ]],
 
             onClickRow: ((index, oRow) => {
-                this.fnFireEvent_ItemClick(oRow);
+                this.fnFireEvent_PreviewClick(oRow);
+            }).bind(this),
+
+            onDblClickRow: ((index, oRow) => {
+                this.fnFireEvent_TinyEditClick(oRow);
             }).bind(this),
 
             onRowContextMenu: ((oEvent, iIndex, oNode) => {
@@ -455,6 +479,16 @@ export class Notes {
                         left: oEvent.pageX,
                         top: oEvent.pageY,
                         onClick: ((item) => {
+                            if (item.id == 'preview') {
+                                this.fnFireEvent_PreviewClick(oNode);
+                            }
+                            if (item.id == 'edit_with_tiny') {
+                                this.fnFireEvent_TinyEditClick(oNode);
+                            }
+                            if (item.id == 'edit_with_simple_editor') {
+                                this.fnFireEvent_SimpleEditClick(oNode);
+                            }
+
                             if (item.id == 'add_to_fav') {
                                 this.fnFireEvent_FavAddItemClick(oNode);
                             }
