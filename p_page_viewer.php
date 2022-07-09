@@ -17,3 +17,7 @@ body, html {
     font-family: Arial, sans-serif;
 }
 </style>
+
+<link rel="stylesheet" href="<?php echo $sBA ?>/prism/themes/prism.min.css">
+<script src="<?php echo $sBA ?>/prism/prism.js"></script>
+<script src="<?php echo $sBA ?>/prism/plugins/autoloader/prism-autoloader.js"></script>

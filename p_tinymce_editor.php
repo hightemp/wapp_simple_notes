@@ -28,6 +28,7 @@ if (isset($_GET["id"]) && $_GET["id"]) {
 
     <script type="text/javascript" src="<?php echo $sB ?>/jquery.min.js"></script>
     <script type="text/javascript" src="<?php echo $sBA ?>/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script src="<?php echo $sBA ?>/prism/plugins/autoloader/prism-autoloader.js"></script>
 </head>
 
 <body onload="">
