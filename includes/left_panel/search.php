@@ -25,6 +25,10 @@
 
     <div style="position:fixed">
         <div id="search-mm" class="easyui-menu" style="width:auto;">
+            <div data-options="id:'preview'">Превью</div>
+            <div data-options="id:'edit_with_tiny'">Редактировать с помощью tinymce</div>
+            <div data-options="id:'edit_with_simple_editor'">Редактировать с помощью простого редактора</div>
+            
             <div data-options="id:'edit'">Радактировать</div>
             <div data-options="id:'delete'">Удалить</div>
         </div>

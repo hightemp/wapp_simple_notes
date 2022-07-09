@@ -6,6 +6,8 @@ export class Search {
     static _sSearchQuery = ``
     static _sSearchType = ``
 
+    static _bPressedCtrlKey = false;
+
     static oURLs = {
         list: tpl`ajax.php?method=search&query=${0}&type=${1}`,
     }
@@ -27,6 +29,10 @@ export class Search {
 
         notes_delete_click: "notes:delete_click",
         tables_delete_click: "tables:delete_click",
+
+        notes_preview_click: "notes_preview_click",
+        notes_tiny_edit_click: "notes_tiny_edit_click",
+        notes_simple_edit_click: "notes_simple_edit_click",
     }
 
     static get oDialog() {
@@ -95,6 +101,10 @@ export class Search {
 
     static fnBindEvents()
     {
+        $(document).on('keydown', (oEvent => {
+            this._bPressedCtrlKey = oEvent.ctrlKey;
+        }).bind(this));
+
         this.oPanelReloadButton.click((() => {
             this.fnReload();
         }).bind(this))
@@ -122,6 +132,18 @@ export class Search {
 
     static fnFireEvent_ItemDeleteClick(oRow) {
         $(document).trigger(this.oEvents.notes_delete_click, [ oRow.id ]);
+    }
+
+    static fnFireEvent_PreviewClick(oRow) {
+        $(document).trigger(this.oEvents.notes_preview_click, [ oRow ]);
+    }
+
+    static fnFireEvent_TinyEditClick(oRow) {
+        $(document).trigger(this.oEvents.notes_tiny_edit_click, [ oRow ]);
+    }
+
+    static fnFireEvent_SimpleEditClick(oRow) {
+        $(document).trigger(this.oEvents.notes_simple_edit_click, [ oRow ]);
     }
 
     static fnInitButtons()
@@ -173,18 +195,40 @@ export class Search {
                 }
             }).bind(this),
 
-            onRowContextMenu: (function(oEvent, index, node) {
+            onClickRow: ((index, oRow) => {
+                this.fnFireEvent_PreviewClick(oRow);
+            }).bind(this),
+
+            onDblClickRow: ((index, oRow) => {
+                if (this._bPressedCtrlKey) {
+                    this.fnFireEvent_SimpleEditClick(oRow);
+                } else {
+                    this.fnFireEvent_TinyEditClick(oRow);
+                }
+            }).bind(this),
+
+            onRowContextMenu: (function(oEvent, index, oNode) {
                 oEvent.preventDefault();
                 // this.fnSelect(node.target);
                 this.oContextMenu.menu('show', {
                     left: oEvent.pageX,
                     top: oEvent.pageY,
                     onClick: ((item) => {
+                        if (item.id == 'preview') {
+                            this.fnFireEvent_PreviewClick(oNode);
+                        }
+                        if (item.id == 'edit_with_tiny') {
+                            this.fnFireEvent_TinyEditClick(oNode);
+                        }
+                        if (item.id == 'edit_with_simple_editor') {
+                            this.fnFireEvent_SimpleEditClick(oNode);
+                        }
+
                         if (item.id == 'edit') {
-                            this.fnFireEvent_ItemEditClick(node);
+                            this.fnFireEvent_ItemEditClick(oNode);
                         }
                         if (item.id == 'delete') {
-                            this.fnFireEvent_ItemDeleteClick(node);
+                            this.fnFireEvent_ItemDeleteClick(oNode);
                         }
                     }).bind(this)
                 });
