@@ -12,3 +12,8 @@ if (isset($_GET["id"]) && $_GET["id"]) {
 
 echo $sContent;
 ?>
+<style>
+body, html {
+    font-family: Arial, sans-serif;
+}
+</style>
