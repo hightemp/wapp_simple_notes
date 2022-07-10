@@ -70,10 +70,20 @@ class MetaTags extends BaseModel
         R::trashAll($aRelations);
     }
 
-    static function fnDeleteChildren($iID)
+    static function fnDeleteChildren($aIDs)
     {
-        // $aChildren = R::findAll(static::$sRelationsTableName, "ttags_id = ?", [$iID]);
+        static::fnDelete($aIDs);
 
+        foreach ($aIDs as $iID) {
+            static::fnDeleteParentRelations($iID);
+        }
+    }
+
+    static function fnDeleteParentRelations($iID)
+    {
+        $aRelations = R::findAll(static::$sRelationsTableName, "content_type = ? AND content_id = ?", [static::$sTableName, $iID]);
+
+        R::trashAll($aRelations);
     }
 
     static function fnList($aParams=[])
@@ -85,9 +95,15 @@ class MetaTags extends BaseModel
 
     static function fnListForTag($aParams=[])
     {
-        $aNotes = static::findAll("ttags_id = ? AND content_type = ? ORDER BY name ASC, id DESC", [$aParams['tag_id'], static::$sTableName]);
+        $sRelTable = static::$sRelationsTableName;
+        $sTable = static::$sTableName;
 
-        return $aNotes;
+        $aTags = R::getAll("
+            SELECT t.* FROM {$sTable} AS t
+            INNER JOIN {$sRelTable} AS r ON t.id = r.content_id AND r.content_type = ? AND r.ttags_id = ?
+        ", [$sTable, $aParams["tag_id"]]);
+
+        return $aTags;
     }
 
     static function fnListNotesForTag($aParams=[])

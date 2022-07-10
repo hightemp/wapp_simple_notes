@@ -10,8 +10,8 @@ export class TagsChildrenList {
         create: 'ajax.php?method=create_tag_children',
         update: tpl`ajax.php?method=update_tag_children&id=${0}`,
         delete: 'ajax.php?method=delete_tag_children',
-        list: tpl`ajax.php?method=list_tag_childrens&tag_id=${0}`,
-        list_tag_children: 'ajax.php?method=list_tag_childrens',
+        list: tpl`ajax.php?method=list_tag_children&tag_id=${0}`,
+        list_tag_children: 'ajax.php?method=list_tag_children',
         get_tag_children: 'ajax.php?method=get_tag_children',
     }
     static oWindowTitles = {
@@ -100,8 +100,7 @@ export class TagsChildrenList {
 
         if (this._oSelectedTag && this._oSelectedTag.id) {
             oData = {
-                category_id: this._oSelectedTag ? this._oSelectedTag.id : null,
-                category: this._oSelectedTag ? this._oSelectedTag.text : ""
+                tag_id: this._oSelectedTag ? this._oSelectedTag.id : null,
             }
         }
 
@@ -127,7 +126,7 @@ export class TagsChildrenList {
         this.oDialogForm.form('submit', {
             url: this.sURL,
             queryParams: {
-                'tag_children_list': this.oTagsTagBox.tagbox('getValues').join(',')
+                tag_id: this._oSelectedTag ? this._oSelectedTag.id : null,
             },
             iframe: false,
             onSubmit: function(){
@@ -148,17 +147,6 @@ export class TagsChildrenList {
 
     static fnSelect(oTarget) {
         this.fnComponent('select', oTarget);
-    }
-
-    static fnUploadHTMLFile() {
-        $.post(
-            this.oURLs.upload_html_file,
-            { id: iID },
-            ((oR) => {
-                
-            }).bind(this),
-            'json'
-        );
     }
 
     static fnBindEvents()

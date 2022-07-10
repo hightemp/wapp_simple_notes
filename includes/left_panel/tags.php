@@ -4,7 +4,7 @@
         <div data-options="region:'west',split:true" title="" style="width:200px;">
             <div 
                 class="easyui-panel" 
-                title="  " 
+                title="Тэги" 
                 style="padding:0px;"
                 data-options="tools:'#tags-tt', fit:true,border:false"
             >
@@ -24,7 +24,7 @@
                 <div data-options="region:'west',split:true,border:false" title="" style="width:200px;">
                     <div 
                         class="easyui-panel" 
-                        title="  " 
+                        title="Подтэги" 
                         style="padding:0px;"
                         data-options="tools:'#tag-children-list-tt', fit:true"
                     >
@@ -32,16 +32,16 @@
                     </div>
                     <div id="tag-children-list-tt">
                         <div class="tools-panel-free-space"></div>
-                        <a href="javascript:void(0)" class="icon-add" id="tag-children-list-add-btn"></a>
-                        <a href="javascript:void(0)" class="icon-edit" id="tag-children-list-edit-btn"></a>
-                        <a href="javascript:void(0)" class="icon-remove" id="tag-children-list-remove-btn"></a>
-                        <a href="javascript:void(0)" class="icon-reload" id="tag-children-list-reload-btn"></a>
+                        <a href="javascript:void(0)" class="icon-add" id="tag-children-add-btn"></a>
+                        <a href="javascript:void(0)" class="icon-edit" id="tag-children-edit-btn"></a>
+                        <a href="javascript:void(0)" class="icon-remove" id="tag-children-remove-btn"></a>
+                        <a href="javascript:void(0)" class="icon-reload" id="tag-children-reload-btn"></a>
                     </div>
                 </div>
                 <div data-options="region:'center',title:'',border:false">
                     <div 
                         class="easyui-panel" 
-                        title="  " 
+                        title="Заметки" 
                         style="padding:0px;"
                         data-options="tools:'#tags-notes-list-tt', fit:true,border:false"
                     >
@@ -78,15 +78,6 @@
                     <label>Заголовок:</label>
                     <input name="name" class="easyui-textbox" required="true" style="width:100%">
                 </div>
-                <div style="margin-bottom:10px">
-                    <label>Тэги:</label>
-                    <input 
-                        name="tags"
-                        id="tag-children-tags-box"
-                        class="easyui-tagbox" 
-                        style="width:100%" 
-                    >
-                </div>
             </form>
         </div>
         <div id="tag-children-dlg-buttons">
@@ -102,7 +93,8 @@
         </div>
 
         <div id="tags-mm" class="easyui-menu" style="width:auto;">
-            <div data-options="id:'create_category'">Создать категорию</div>
+            <div data-options="id:'edit'">Радактировать</div>
+            <div data-options="id:'delete'">Удалить</div>
         </div>
 
         <!-- Меню - Заметки -->

@@ -127,7 +127,7 @@ export class TagsList {
         this.oDialogForm.form('submit', {
             url: this.sURL,
             queryParams: {
-                'tags_list': this.oTagsTagBox.tagbox('getValues').join(',')
+                
             },
             iframe: false,
             onSubmit: function(){
