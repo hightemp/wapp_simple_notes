@@ -72,7 +72,7 @@ class MetaTags extends BaseModel
 
     static function fnDeleteChildren($aIDs)
     {
-        static::fnDelete($aIDs);
+        // static::fnDelete($aIDs);
 
         foreach ($aIDs as $iID) {
             static::fnDeleteParentRelations($iID);
