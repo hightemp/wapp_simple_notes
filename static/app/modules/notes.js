@@ -222,11 +222,16 @@ export class Notes {
             onSubmit: function(){
                 return $(this).form('validate');
             },
-            success: (function(result){
+            success: (function(sResult){
                 this.oHTMLNoteDialog.dialog('close');
                 this.fnReload();
 
                 this.fnFireEvent_Save();
+
+                var oResult = JSON.parse(sResult);
+                if (this.sURL == this.oURLs.create) {
+                    this.fnFireEvent_TinyEditClick(oResult);
+                }
             }).bind(this)
         });
     }
@@ -241,11 +246,16 @@ export class Notes {
             onSubmit: function(){
                 return $(this).form('validate');
             },
-            success: (function(result){
+            success: (function(sResult){
                 this.oDialog.dialog('close');
                 this.fnReload();
 
                 this.fnFireEvent_Save();
+
+                var oResult = JSON.parse(sResult);
+                if (this.sURL == this.oURLs.create) {
+                    this.fnFireEvent_TinyEditClick(oResult);
+                }
             }).bind(this)
         });
     }

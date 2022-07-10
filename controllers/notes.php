@@ -27,26 +27,17 @@ if ($sMethod == 'delete_note') {
 
 if ($sMethod == 'update_note_content') {
     $oNote = Notes::fnUpdate($aRequest);
-    die(json_encode([
-        "id" => $oNote->id, 
-        "name" => $oNote->name
-    ]));
+    die(json_encode($oNote));
 }
 
 if ($sMethod == 'update_note') {
     $oNote = Notes::fnUpdate($aRequest);
-    die(json_encode([
-        "id" => $oNote->id, 
-        "name" => $oNote->name
-    ]));
+    die(json_encode($oNote));
 }
 
 if ($sMethod == 'create_note') {    
     $oNote = Notes::fnCreate($aRequest);
-    die(json_encode([
-        "id" => $oNote->id, 
-        "name" => $oNote->name
-    ]));
+    die(json_encode($oNote));
 }
 
 if ($sMethod == 'download_note_as_html') {  
