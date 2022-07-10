@@ -6,12 +6,7 @@ $sContent = "";
 $sTitle = "";
 $iID = (int) @$_GET["id"];
 if (isset($_GET["id"]) && $_GET["id"]) {
-    $oNote = R::findOne(T_NOTES, "id = ?", [$iID]);
-
-    if (isset($_GET["content"]) && $_GET["content"]) {
-        $oNote->content = $_GET["content"];
-        R::store($oNote);
-    }
+    $oNote = Notes::fnGetOne($_GET);
 
     $sContent = $oNote->content;
     $sTitle = $oNote->name;

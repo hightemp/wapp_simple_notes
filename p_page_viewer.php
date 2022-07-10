@@ -5,7 +5,7 @@ include_once("./database.php");
 $sContent = "";
 $iID = (int) @$_GET["id"];
 if (isset($_GET["id"]) && $_GET["id"]) {
-    $oNote = R::findOne(T_NOTES, "id = ?", [$iID]);
+    $oNote = Notes::fnGetOne($_GET);
 
     $sContent = $oNote->content;
 }

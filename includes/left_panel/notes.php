@@ -28,7 +28,7 @@
                 style="padding:0px;"
                 data-options="tools:'#notes-list-tt', fit:true,border:false"
             >
-                <ul id="notes-list" class="easyui-datagrid" title="" lines="true" data-options="fit:true"></ul>
+                <ul id="notes-list" class="easyui-datagrid" title="" lines="true" data-options="fit:true,border:false"></ul>
             </div>
             <div id="notes-list-tt">
                 <div class="tools-panel-free-space"></div>

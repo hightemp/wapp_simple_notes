@@ -6,10 +6,15 @@ include_once("./config.php");
 include_once("rb.php");
 include_once("lib.php");
 
+include_once("./models/tags.php");
+include_once("./models/Notes.php");
+include_once("./models/MetaTags.php");
+
 // Config::fnLoad();
 
 define('T_CATEGORIES', 'tcategories');
 define('T_NOTES', 'tnotes');
+define('T_NOTES_HISTORY', 'tnoteshistory');
 
 define('T_FILES', 'tfiles');
 define('T_IMAGES', 'timages');
