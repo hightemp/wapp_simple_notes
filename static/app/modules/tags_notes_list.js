@@ -189,39 +189,6 @@ export class TagsNotesList {
             this.fnInitComponent(oItem.id);
         }).bind(this))
 
-        $(document).on(this.oEvents.tags_edit_click, ((oEvent, iID) => {
-            // this.oTagsTagBox.tagbox('reload');
-            $.post(
-                this.oURLs.get_tag,
-                { id: iID },
-                ((oR) => {
-                    this.fnShowEditWindow(oR);
-                }).bind(this),
-                'json'
-            );
-        }).bind(this))
-        $(document).on(this.oEvents.tags_delete_click, ((oEvent, iID) => {
-            $.messager.confirm(
-                'Confirm',
-                'Удалить?',
-                (function(r) {
-                    if (r) {
-                        $.post(
-                            this.oURLs.delete,
-                            { id: iID },
-                            (function(result) {
-                                this.fnReload();
-                            }).bind(this),
-                            'json'
-                        );
-                    }
-                }).bind(this)
-            );
-        }).bind(this))
-        $(document).on(this.oEvents.tags_create_new_click, ((oEvent) => {
-            this.fnShowCreateWindow();
-        }).bind(this))
-
         this.oEditDialogCategoryCleanBtn.click((() => {
             this.oHTMLNoteNoteCategoryIDComboTree.combotree('clear');
         }).bind(this))

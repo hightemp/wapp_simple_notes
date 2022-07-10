@@ -49,6 +49,7 @@
                     </div>
                     <div id="tags-notes-list-tt">
                         <div class="tools-panel-free-space"></div>
+                        <a href="javascript:void(0)" class="icon-reload" id="tags-notes-reload-btn"></a>
                     </div>
                 </div>
             </div>

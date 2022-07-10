@@ -67,7 +67,7 @@ class Notes extends BaseModel
 
     static function fnDelete($aIDs)
     {
-        static::fnDelete($aIDs);
+        R::trashBatch(static::$sTableName, $aIDs);
 
         foreach ($aIDs as $iID) {
             $oNote = static::fnGetOne(["id" => $iID]);
