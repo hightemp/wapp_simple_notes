@@ -326,13 +326,19 @@ export class Notes {
 
         this.oHTMLPaste.on('input', (function (e) {
             this.oHTMLPreview.text(e.target.innerHTML);
-            var sTitle = $($(e.target).find("h1,h2,h3,h4,h5,h6")[0]).text();
-            this.oHTMLNoteTitleInput.textbox('setValue', sTitle);
+
+            if (!this.oHTMLNoteTitleInput.textbox('getValue')) {
+                var sTitle = $($(e.target).find("h1,h2,h3,h4,h5,h6")[0]).text();
+                this.oHTMLNoteTitleInput.textbox('setValue', sTitle);
+            }
         }).bind(this))
         this.oHTMLPreview.on('input', (function (e) {
             this.oHTMLPaste.html(e.target.innerText);
-            var sTitle = $(this.oHTMLPaste.find("h1,h2,h3,h4,h5,h6")[0]).text();
-            this.oHTMLNoteTitleInput.textbox('setValue', sTitle);
+
+            if (!this.oHTMLNoteTitleInput.textbox('getValue')) {
+                var sTitle = $(this.oHTMLPaste.find("h1,h2,h3,h4,h5,h6")[0]).text();
+                this.oHTMLNoteTitleInput.textbox('setValue', sTitle);
+            }
         }).bind(this))
 
         this.oEditDialogCategoryCleanBtn.click((() => {
@@ -383,7 +389,6 @@ export class Notes {
         }).bind(this))
         this.oConvertHTMLToMarkdownButton.click((() => {
             var sHTML = this.oHTMLPaste.html();
-            console.log(window.libclient.html2markdown.NodeHtmlMarkdown);
             var sNewHTML = window.libclient.html2markdown.NodeHtmlMarkdown.translate(sHTML);
             // this.oHTMLPaste.html(sNewHTML);
             this.oHTMLPreview.text(sNewHTML);
