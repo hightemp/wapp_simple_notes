@@ -32,6 +32,7 @@ export class TagsChildrenList {
         tag_children_init: "tag_children:init",
 
         tags_item_click: "tags:item_click",
+        tags_item_dblclick: "tags:item_dblclick",
     }
 
     static get oDialog() {
@@ -251,7 +252,15 @@ export class TagsChildrenList {
             treeField:'name',
             columns:[[
                 {
-                    title:'Название',field:'name',width:180
+                    title:'Название',field:'name',width:180,
+                    formatter: function(value,row,index) {
+                        var s = row.name;
+
+                        if (row.count_tags) {
+                            s += `&nbsp;<br><span style=\'color:blue\'>тэгов: ${row.count_tags}</span>&nbsp;<span style=\'color:green\'>заметок: ${row.count_notes}</span>`;
+                        }
+                        return s;
+                    }
                 },
             ]],
 

@@ -35,6 +35,8 @@ export class TagsNotesList {
         notes_tiny_edit_click: "notes_tiny_edit_click",
         notes_simple_edit_click: "notes_simple_edit_click",
 
+        tag_children_item_click: "tag_children:item_click",
+
         fav_tags_click_add_tag: "fav_tags:click_add_tag",
         fav_tags_click_remove_tag: "fav_tags:click_remove_tag",
 
@@ -176,6 +178,11 @@ export class TagsNotesList {
         $(document).on('keydown', (oEvent => {
             this._bPressedCtrlKey = oEvent.ctrlKey;
         }).bind(this));
+
+        $(document).on(this.oEvents.tag_children_item_click, ((oEvent, oItem) => {
+            this._oSelectedTag = oItem;
+            this.fnInitComponent(oItem.id);
+        }).bind(this))
 
         $(document).on(this.oEvents.tags_item_click, ((oEvent, oItem) => {
             this._oSelectedTag = oItem;

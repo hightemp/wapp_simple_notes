@@ -104,7 +104,7 @@ class Notes extends BaseModel
     static function fnListForCategory($aParams=[])
     {
         if ($aParams['category_id']<1) {
-            $aNotes = static::findAll("ORDER BY name ASC, id DESC", []);
+            $aNotes = static::findAll("ORDER BY id DESC", []);
         } else {
             $aNotes = static::findAll("tcategories_id = ? ORDER BY name ASC, id DESC", [$aParams['category_id']]);
         }

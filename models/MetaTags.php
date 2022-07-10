@@ -88,9 +88,20 @@ class MetaTags extends BaseModel
 
     static function fnList($aParams=[])
     {
-        $aNotes = static::findAll("ORDER BY name ASC, id DESC");
+        // $aNotes = static::findAll("ORDER BY name ASC, id DESC");
+        $sRelTable = static::$sRelationsTableName;
+        $sTable = static::$sTableName;
 
-        return $aNotes;
+        $aTags = R::getAll("
+            SELECT 
+            t.*,
+            (SELECT COUNT(*) FROM {$sRelTable} AS r WHERE r.content_type = ? AND r.ttags_id = t.id) AS count_tags,
+            (SELECT COUNT(*) FROM {$sRelTable} AS r WHERE r.content_type = ? AND r.ttags_id = t.id) AS count_notes
+            FROM {$sTable} AS t
+            ORDER BY count_tags DESC, count_notes DESC, name ASC, id DESC
+        ", [$sTable, Notes::$sTableName]);
+
+        return $aTags;
     }
 
     static function fnListForTag($aParams=[])
@@ -99,9 +110,14 @@ class MetaTags extends BaseModel
         $sTable = static::$sTableName;
 
         $aTags = R::getAll("
-            SELECT t.* FROM {$sTable} AS t
+            SELECT 
+            t.*,
+            (SELECT COUNT(*) FROM {$sRelTable} AS r WHERE r.content_type = ? AND r.ttags_id = t.id) AS count_tags,
+            (SELECT COUNT(*) FROM {$sRelTable} AS r WHERE r.content_type = ? AND r.ttags_id = t.id) AS count_notes
+            FROM {$sTable} AS t
             INNER JOIN {$sRelTable} AS r ON t.id = r.content_id AND r.content_type = ? AND r.ttags_id = ?
-        ", [$sTable, $aParams["tag_id"]]);
+            ORDER BY count_tags DESC, count_notes DESC, name ASC, id DESC
+        ", [$sTable, Notes::$sTableName, $sTable, $aParams["tag_id"]]);
 
         return $aTags;
     }
