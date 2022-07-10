@@ -240,10 +240,14 @@ export class Categories {
                     title:'Название',field:'name',width:280,
                     formatter: function(value,row,index) {
                         var s = row.text;
-                        if (!row.count) {
+                        if (~[0].indexOf(row.id)) {
+                            s = `<b>${s}</b>`;
+                        } else if (!row.count) {
                             s = `<i>${s}</i>`;
                         }
-                        s += '&nbsp;<span style=\'color:blue\'>(' + row.count + ')</span>';
+                        if (row.count) {
+                            s += '&nbsp;<span style=\'color:blue\'>(' + row.count + ')</span>';
+                        }
                         return s;
                     }
                 },

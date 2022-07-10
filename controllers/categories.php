@@ -29,6 +29,18 @@ if ($sMethod == 'list_tree_categories') {
 
     fnBuildRecursiveCategoriesTree($aResult, $aCategories);
 
+    $aResult = [
+        [
+            'id' => 0,
+            'text' => "Все",
+            'name' => "Все",
+            'description' => "",
+            'category_id' => null,
+            'children' => $aResult,
+            // 'count' => null
+        ]
+    ];
+
     die(json_encode(array_values($aResult)));
 }
 
