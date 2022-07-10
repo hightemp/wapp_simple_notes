@@ -257,7 +257,7 @@ export class TagsList {
             treeField:'name',
             columns:[[
                 {
-                    title:'Название',field:'name',width:375
+                    title:'Название',field:'name',width:193
                 },
             ]],
 
