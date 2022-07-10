@@ -299,7 +299,9 @@ export class TagsList {
     static fnInit()
     {
         this.fnBindEvents();
-        this.fnInitComponent();
+        setTimeout(() => {
+            this.fnInitComponent();
+        }, 1000)
 
         $(document).trigger(this.oEvents.tags_init);
     }
