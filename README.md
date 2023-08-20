@@ -1,4 +1,6 @@
-# wapp_notes
+# wapp_simple_notes
+
+[![](https://asdertasd.site/counter/wapp_simple_notes?a=1)](https://asdertasd.site/counter/wapp_simple_notes)
 
 Ведение заметок в форматке markdown
 
